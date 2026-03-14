@@ -109,7 +109,7 @@ export const MOCK_ESPECIES: Especie[] = [
     media: [
       { tipo: 'foto', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Red_snapper_opelousas.jpg/1280px-Red_snapper_opelousas.jpg', esPrincipal: true, licencia: 'Public Domain' },
     ],
-    estado: 'publicado', completitud: 85, completudMedia: 85, publicadoEn: '2024-02-10T00:00:00Z', createdAt: '2024-02-01T00:00:00Z',
+    estado: 'publicado', completitud: 85, publicadoEn: '2024-02-10T00:00:00Z', createdAt: '2024-02-01T00:00:00Z',
   },
   {
     id: '5',

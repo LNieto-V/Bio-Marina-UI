@@ -2,7 +2,7 @@
 import { onMounted } from 'vue'
 import AppHeader from '@/shared/components/AppHeader.vue'
 import { useSpeciesStore } from '@/app/stores/speciesStore'
-import { UICN_COLORS, UICN_LABELS, HABITAT_LABELS } from '@/shared/types/especie'
+import { UICN_COLORS, UICN_LABELS, HABITAT_LABELS, type Especie, type Media } from '@/shared/types/especie'
 
 const speciesStore = useSpeciesStore()
 
@@ -16,8 +16,8 @@ const clearFilters = () => {
   speciesStore.clearFilters()
 }
 
-const getImage = (especie: any) => {
-  return especie.media?.find((m: any) => m.esPrincipal)?.url
+const getImage = (especie: Especie) => {
+  return especie.media?.find((m: Media) => m.esPrincipal)?.url
     || especie.media?.[0]?.url
     || `https://placehold.co/400x300/0b3c5b/white?text=${encodeURIComponent(especie.nombreCientifico)}`
 }
@@ -119,7 +119,7 @@ const vedaOpts = [
         <!-- Veda -->
         <div class="space-y-3">
           <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500">Estado de Veda</h3>
-          <select v-model="speciesStore.filters.veda" @change="speciesStore.currentPage = 1" class="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-primary focus:border-primary">
+          <select v-model="speciesStore.filters.vedaTipo" @change="speciesStore.currentPage = 1" class="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-primary focus:border-primary">
             <option v-for="opt in vedaOpts" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
           </select>
         </div>

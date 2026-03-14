@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { MOCK_ESPECIES } from '@/shared/services/mockData'
-import type { Especie, FiltrosEspecie } from '@/shared/types/especie'
+import type { Especie, FiltrosEspecie, Media } from '@/shared/types/especie'
 import { searchFishBaseCached, type FishBaseEnrichment } from '@/shared/services/fishbaseService'
 
 export const useSpeciesStore = defineStore('species', () => {
@@ -11,7 +11,7 @@ export const useSpeciesStore = defineStore('species', () => {
     habitat: undefined,
     uicn: undefined,
     estado: undefined,
-    veda: '',
+    vedaTipo: undefined,
   })
   
   const loading = ref(false)
@@ -56,7 +56,7 @@ export const useSpeciesStore = defineStore('species', () => {
   )
 
   const imagenPrincipal = computed(() => {
-    const localImg = selectedSpecies.value?.media?.find((m: any) => m.esPrincipal)?.url
+    const localImg = selectedSpecies.value?.media?.find((m: Media) => m.esPrincipal)?.url
     return localImg || fishbaseData.value?.imageUrl || null
   })
 
@@ -106,7 +106,7 @@ export const useSpeciesStore = defineStore('species', () => {
       habitat: undefined,
       uicn: undefined,
       estado: undefined,
-      veda: '',
+      vedaTipo: undefined,
     }
     currentPage.value = 1
   }
