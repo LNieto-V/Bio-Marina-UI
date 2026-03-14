@@ -5,7 +5,7 @@
 
 import { ref, computed, watch } from 'vue'
 import type { Ref } from 'vue'
-import type { Especie, EspeciePaginada, FiltrosEspecie, EstadisticasCatalogo } from '@/shared/types/especie'
+import type { Especie, EspeciePaginada, FiltrosEspecie, EstadisticasCatalogo, Media, ZonaDistribucion } from '@/shared/types/especie'
 import { MOCK_ESPECIES, MOCK_ESTADISTICAS } from '../services/mockData'
 import { searchFishBaseCached, type FishBaseEnrichment } from '../services/fishbaseService'
 
@@ -46,7 +46,7 @@ export function useEspecies(filtros?: Ref<FiltrosEspecie>, pagina?: Ref<number>,
       if (f.vedaTipo) results = results.filter((e) => e.conservacion.vedaTipo === f.vedaTipo)
       if (f.valorComercial) results = results.filter((e) => e.pesca?.valorComercial === f.valorComercial)
       if (f.protegida !== undefined) results = results.filter((e) => e.conservacion.protegida === f.protegida)
-      if (f.zona) results = results.filter((e) => e.zonas?.some((z) => z.nombre.toLowerCase().includes(f.zona!.toLowerCase())))
+      if (f.zona) results = results.filter((e) => e.zonas?.some((z: ZonaDistribucion) => z.nombre.toLowerCase().includes(f.zona!.toLowerCase())))
 
       total.value = results.length
       const start = (currentPage.value - 1) * limite
@@ -108,7 +108,7 @@ export function useEspecie(id: Ref<string> | string) {
 
   /** Imagen principal de la especie o fallback a FishBase */
   const imagenPrincipal = computed(() => {
-    const localImg = especie.value?.media?.find((m) => m.esPrincipal)?.url
+    const localImg = especie.value?.media?.find((m: Media) => m.esPrincipal)?.url
     return localImg || fishbaseData.value?.imageUrl || null
   })
 
@@ -143,7 +143,7 @@ export function useEspeciesCercanas(lat: number, lng: number, radioKm = 100) {
     // Filtro por distancia euclidiana aproximada (mock)
     const R2KM = 111
     especies.value = MOCK_ESPECIES.filter((e) =>
-      e.zonas?.some((z) => {
+      e.zonas?.some((z: ZonaDistribucion) => {
         if (!z.punto) return false
         const [lngZ, latZ] = z.punto.coordinates
         const dx = (lngZ - lng) * R2KM * Math.cos((latZ * Math.PI) / 180)

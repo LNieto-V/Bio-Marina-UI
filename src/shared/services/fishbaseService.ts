@@ -65,6 +65,7 @@ export async function searchFishBase(nombreCientifico: string): Promise<FishBase
     if (items.length === 0) return null
 
     const item = items[0]
+    if (!item) return null
 
     // Componer URL de imagen si existe el campo
     let imageUrl: string | undefined

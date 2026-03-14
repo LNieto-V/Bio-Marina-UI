@@ -286,7 +286,7 @@ watch(() => route.params.id, init)
               <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">Curiosidades</p>
               <ul class="space-y-3">
                 <li v-for="(c, i) in speciesStore.selectedSpecies.curiosidades" :key="i" class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
-                  <span class="text-primary dark:text-blue-400 font-black text-lg leading-none">{{ i + 1 }}</span>
+                  <span class="text-primary dark:text-blue-400 font-black text-lg leading-none">{{ (i as number) + 1 }}</span>
                   <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">{{ c }}</p>
                 </li>
               </ul>
