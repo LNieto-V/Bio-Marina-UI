@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAuth } from '@/shared/composables/useAuth'
 import { useAdminStore } from '@/app/stores/adminStore'
-import { UICN_COLORS, UICN_LABELS, type Especie } from '@/shared/types/especie'
+import { UICN_COLORS, UICN_LABELS, type Especie, type Media } from '@/shared/types/especie'
 
 // ─── Autenticación ──────────────────────────────────────────
 const { currentUser, logout } = useAuth()
