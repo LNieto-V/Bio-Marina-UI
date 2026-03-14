@@ -1,10 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
-<<<<<<< Updated upstream
-    history: createWebHistory(import.meta.env.BASE_URL),
-    routes: [],
-=======
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
@@ -38,7 +34,6 @@ const router = createRouter({
       component: () => import('../views/ReportingView.vue'),
     },
   ],
->>>>>>> Stashed changes
 })
 
 export default router

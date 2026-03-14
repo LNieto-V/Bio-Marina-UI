@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 <script setup lang="ts">
 import AppHeader from '../components/AppHeader.vue'
 import SidebarMenu from '../components/SidebarMenu.vue'
@@ -44,4 +42,3 @@ import AppFooter from '../components/AppFooter.vue'
     </main>
   <AppFooter />
 </template>
->>>>>>> Stashed changes
