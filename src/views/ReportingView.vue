@@ -7,8 +7,8 @@ import BaseButton from '../components/Common/BaseButton.vue'
   <AppHeader />
     <main class="flex-1 max-w-[1000px] mx-auto w-full px-6 py-10 gap-8 flex flex-col">
       <div class="flex flex-col gap-2">
-        <h1 class="text-4xl font-black leading-tight">Export & Reporting</h1>
-        <p class="text-slate-500 text-lg">Configure and generate your data synthesis reports.</p>
+        <h1 class="text-4xl font-black leading-tight dark:text-white transition-colors">Export & Reporting</h1>
+        <p class="text-slate-500 dark:text-slate-400 text-lg transition-colors">Configure and generate your data synthesis reports.</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
