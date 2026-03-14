@@ -110,7 +110,7 @@ const getImageUrl = (item: Especie) => {
         <div class="flex flex-wrap items-end justify-between gap-6">
           <div class="space-y-1">
             <h2 class="text-3xl font-black tracking-tight text-primary dark:text-blue-400">Gestión de Especies</h2>
-            <p class="text-slate-500 dark:text-slate-400 font-medium">Monitoreo de {{ stats?.totalEspecies || '...' }} especies registradas en la base de datos.</p>
+            <p class="text-slate-500 dark:text-slate-400 font-medium">Monitoreo de {{ adminStore.stats.totalEspecies }} especies registradas en la base de datos.</p>
           </div>
           <button class="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg font-black shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-95">
             <span class="material-symbols-outlined text-[20px]">add_circle</span>
