@@ -33,7 +33,7 @@ const handleGenerate = async () => {
     format: format.value,
     range: dateRange.value,
     datasets: Object.entries(datasets.value)
-      .filter(([_, active]) => active)
+      .filter(([, active]) => active)
       .map(([name]) => name)
   }
 
