@@ -1,9 +1,27 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
+
+const isDark = ref(false)
+
+const toggleTheme = () => {
+  isDark.value = !isDark.value
+  if (isDark.value) {
+    document.documentElement.classList.add('dark')
+    localStorage.setItem('theme', 'dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+    localStorage.setItem('theme', 'light')
+  }
+}
+
+onMounted(() => {
+  isDark.value = document.documentElement.classList.contains('dark')
+})
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 flex items-center justify-between border-b border-primary/10 bg-white/80 backdrop-blur-md dark:bg-background-dark/80 px-6 md:px-20 lg:px-40 py-4">
+  <header class="sticky top-0 z-50 flex items-center justify-between border-b border-primary/10 bg-white/80 backdrop-blur-md dark:bg-slate-900/80 px-6 md:px-20 lg:px-40 py-4 transition-colors duration-300">
     <RouterLink to="/" class="flex items-center gap-4 text-primary dark:text-slate-100">
       <div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
         <span class="material-symbols-outlined">water_drop</span>
@@ -39,7 +57,16 @@ import { RouterLink } from 'vue-router'
     </nav>
 
     <div class="flex items-center gap-3">
-      <button class="flex items-center justify-center rounded-lg h-10 w-10 bg-primary/5 text-primary hover:bg-primary/10 transition-colors">
+      <button 
+        @click="toggleTheme"
+        class="flex items-center justify-center rounded-lg h-10 w-10 bg-primary/5 text-primary hover:bg-primary/10 dark:text-slate-100 dark:bg-white/5 dark:hover:bg-white/10 transition-colors"
+        :title="isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+      >
+        <span class="material-symbols-outlined shrink-0">
+          {{ isDark ? 'light_mode' : 'dark_mode' }}
+        </span>
+      </button>
+      <button class="flex items-center justify-center rounded-lg h-10 w-10 bg-primary/5 text-primary hover:bg-primary/10 dark:text-slate-100 dark:bg-white/5 dark:hover:bg-white/10 transition-colors">
         <span class="material-symbols-outlined shrink-0">notifications</span>
       </button>
       <RouterLink to="/login" class="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center border-2 border-primary/10 overflow-hidden shrink-0">

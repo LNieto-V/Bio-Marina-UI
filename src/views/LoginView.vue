@@ -16,8 +16,8 @@
       <!-- Form Section -->
       <div class="w-full md:w-1/2 flex flex-col justify-center px-8 py-12 lg:px-16">
         <div class="max-w-md w-full mx-auto">
-          <h2 class="text-3xl font-bold mb-2">Welcome Back</h2>
-          <p class="text-slate-500 mb-8">Please enter your credentials.</p>
+          <h2 class="text-3xl font-bold mb-2 dark:text-white transition-colors">Welcome Back</h2>
+          <p class="text-slate-500 dark:text-slate-400 mb-8 font-medium transition-colors">Please enter your credentials.</p>
 
           <form class="space-y-6">
             <div class="flex flex-col gap-2">

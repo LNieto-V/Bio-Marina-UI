@@ -12,14 +12,14 @@ import AppHeader from '../components/AppHeader.vue'
 
       <!-- Overlay UI -->
       <div class="absolute inset-0 pointer-events-none p-6">
-        <div class="w-80 bg-white/95 backdrop-blur shadow-xl rounded-xl p-4 border border-slate-200 pointer-events-auto">
-          <h3 class="font-bold flex items-center gap-2 mb-4">
-            <span class="material-symbols-outlined text-primary">layers</span>
+        <div class="w-80 bg-white/95 dark:bg-slate-900/95 backdrop-blur shadow-xl rounded-xl p-4 border border-slate-200 dark:border-white/10 pointer-events-auto transition-colors duration-300">
+          <h3 class="font-bold flex items-center gap-2 mb-4 dark:text-white">
+            <span class="material-symbols-outlined text-primary dark:text-blue-400">layers</span>
             Habitat Explorer
           </h3>
           <div class="space-y-2">
             <!-- Layers list -->
-            <p class="text-xs text-slate-500 italic">Toggle layers to visualize data...</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 italic">Toggle layers to visualize data...</p>
           </div>
         </div>
       </div>
