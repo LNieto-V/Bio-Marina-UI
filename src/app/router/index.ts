@@ -6,42 +6,42 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('../views/HomeView.vue'),
+      component: () => import('../../modules/home/HomeView.vue'),
     },
     {
       path: '/admin',
       name: 'admin',
-      component: () => import('../views/AdminView.vue'),
+      component: () => import('../../modules/admin/AdminView.vue'),
     },
     {
       path: '/search',
       name: 'search',
-      component: () => import('../views/AdvancedSearchView.vue'),
+      component: () => import('../../modules/species/AdvancedSearchView.vue'),
     },
     {
       path: '/catalog',
       name: 'catalog',
-      component: () => import('../views/CatalogView.vue'),
+      component: () => import('../../modules/species/CatalogView.vue'),
     },
     {
       path: '/species/:id',
       name: 'species-detail',
-      component: () => import('../views/SpeciesDetailView.vue'),
+      component: () => import('../../modules/species/SpeciesDetailView.vue'),
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/LoginView.vue'),
+      component: () => import('../../modules/auth/LoginView.vue'),
     },
     {
       path: '/map',
       name: 'map',
-      component: () => import('../views/InteractiveMapView.vue'),
+      component: () => import('../../modules/map/InteractiveMapView.vue'),
     },
     {
       path: '/reports',
       name: 'reports',
-      component: () => import('../views/ReportingView.vue'),
+      component: () => import('../../modules/reports/ReportingView.vue'),
     },
   ],
 })
