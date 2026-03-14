@@ -3,8 +3,7 @@ import AppHeader from '../components/AppHeader.vue'
 </script>
 
 <template>
-  <div class="layout-container h-screen overflow-hidden">
-    <AppHeader />
+  <AppHeader />
     <main class="relative flex-1 bg-slate-200 dark:bg-slate-800">
       <!-- Map Background Placeholder -->
       <div class="absolute inset-0 flex items-center justify-center opacity-20">
@@ -25,5 +24,4 @@ import AppHeader from '../components/AppHeader.vue'
         </div>
       </div>
     </main>
-  </div>
 </template>

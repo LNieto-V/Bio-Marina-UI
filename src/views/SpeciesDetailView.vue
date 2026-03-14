@@ -4,8 +4,7 @@ import AppFooter from '../components/AppFooter.vue'
 </script>
 
 <template>
-  <div class="layout-container">
-    <AppHeader />
+  <AppHeader />
     <main class="flex-1 max-w-[1200px] mx-auto w-full px-4 py-8">
       <h1 class="text-4xl font-black mb-4">Species Detail</h1>
       <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -16,5 +15,4 @@ import AppFooter from '../components/AppFooter.vue'
       </div>
     </main>
     <AppFooter />
-  </div>
 </template>

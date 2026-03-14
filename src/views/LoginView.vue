@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-background-light dark:bg-background-dark p-4">
+  <div class="flex-1 flex items-center justify-center bg-background-light dark:bg-background-dark p-4">
     <div class="relative w-full max-w-[1100px] min-h-[700px] bg-white dark:bg-slate-900 shadow-2xl rounded-xl overflow-hidden flex flex-col md:flex-row">
       <!-- Image Section -->
       <div class="hidden md:flex md:w-1/2 relative overflow-hidden bg-primary/20">

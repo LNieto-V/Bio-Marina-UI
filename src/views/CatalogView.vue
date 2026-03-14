@@ -6,10 +6,9 @@ import AppFooter from '../components/AppFooter.vue'
 </script>
 
 <template>
-  <div class="layout-container">
-    <AppHeader />
+  <AppHeader />
 
-    <main class="flex flex-1 flex-col lg:flex-row px-6 lg:px-20 py-8 gap-8">
+  <main class="flex flex-1 flex-col lg:flex-row px-6 lg:px-20 py-8 gap-8">
       <SidebarMenu>
         <!-- Taxonomy Section Placeholder -->
         <section class="flex flex-col gap-3">
@@ -41,7 +40,5 @@ import AppFooter from '../components/AppFooter.vue'
         </div>
       </div>
     </main>
-
-    <AppFooter />
-  </div>
+  <AppFooter />
 </template>

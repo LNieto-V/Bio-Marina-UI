@@ -4,8 +4,7 @@ import BaseButton from '../components/Common/BaseButton.vue'
 </script>
 
 <template>
-  <div class="layout-container">
-    <AppHeader />
+  <AppHeader />
     <main class="flex-1 max-w-[1000px] mx-auto w-full px-6 py-10 gap-8 flex flex-col">
       <div class="flex flex-col gap-2">
         <h1 class="text-4xl font-black leading-tight">Export & Reporting</h1>
@@ -38,5 +37,4 @@ import BaseButton from '../components/Common/BaseButton.vue'
         </aside>
       </div>
     </main>
-  </div>
 </template>
