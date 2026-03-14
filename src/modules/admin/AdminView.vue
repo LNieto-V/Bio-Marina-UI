@@ -1,39 +1,21 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useDashboard, useEspecies } from '@/shared/composables/index'
 import { useAuth } from '@/shared/composables/useAuth'
-import { UICN_COLORS, UICN_LABELS } from '@/shared/types/especie'
+import { useAdminStore } from '@/app/stores/adminStore'
+import { UICN_COLORS, UICN_LABELS, type Especie } from '@/shared/types/especie'
 
 // ─── Autenticación ──────────────────────────────────────────
 const { currentUser, logout } = useAuth()
 
-// ─── Estadísticas ───────────────────────────────────────────
-const { stats, loading: statsLoading } = useDashboard()
-
-// ─── Lista de Especies (Tabla) ──────────────────────────────
-const searchQuery = ref('')
-const currentPage = ref(1)
-const limite = ref(10)
-
-const filtros = computed(() => ({
-  busqueda: searchQuery.value || undefined,
-}))
-
-const { 
-  especies, 
-  total, 
-  totalPages, 
-  loading: speciesLoading 
-} = useEspecies(filtros, currentPage, limite.value)
+const adminStore = useAdminStore()
 
 // ─── Helpers ────────────────────────────────────────────────
 const getBadgeClass = (uicn: string) => {
   return (UICN_COLORS[uicn as keyof typeof UICN_COLORS] || 'bg-slate-100 text-slate-600') + ' dark:bg-opacity-20 dark:text-opacity-90'
 }
 
-const getImageUrl = (item: any) => {
-  return (item.media as any[])?.find((m: any) => m.esPrincipal)?.url 
-    || (item.media as any[])?.[0]?.url 
+const getImageUrl = (item: Especie) => {
+  return item.media?.find((m: Media) => m.esPrincipal)?.url 
+    || item.media?.[0]?.url 
     || `https://placehold.co/100x100/0b3c5b/white?text=${encodeURIComponent(item.nombreCientifico)}`
 }
 </script>
@@ -102,8 +84,8 @@ const getImageUrl = (item: any) => {
           <div class="relative group">
             <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
             <input 
-              v-model="searchQuery"
-              @input="currentPage = 1"
+              :value="adminStore.searchQuery"
+              @input="(e: Event) => adminStore.setSearchQuery((e.target as HTMLInputElement).value)"
               class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm placeholder:text-slate-400 text-slate-900 dark:text-slate-100 transition-all" 
               placeholder="Buscar especie por nombre o familia..." 
               type="text"
@@ -140,29 +122,25 @@ const getImageUrl = (item: any) => {
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10 shadow-sm flex flex-col gap-2 transition-all hover:scale-[1.02]">
             <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Total Biodiversidad</span>
-            <div v-if="statsLoading" class="h-10 w-20 bg-slate-100 dark:bg-slate-800 animate-pulse rounded"></div>
-            <div v-else class="text-4xl font-black text-primary dark:text-blue-400">{{ stats?.totalEspecies || 0 }}</div>
+            <div class="text-4xl font-black text-primary dark:text-blue-400">{{ adminStore.stats.totalEspecies }}</div>
             <p class="text-[10px] text-slate-400 font-bold uppercase">Especies catalogadas</p>
           </div>
           
           <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10 shadow-sm flex flex-col gap-2 transition-all hover:scale-[1.02]">
             <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">En Peligro (EN/CR)</span>
-            <div v-if="statsLoading" class="h-10 w-20 bg-slate-100 dark:bg-slate-800 animate-pulse rounded"></div>
-            <div v-else class="text-4xl font-black text-red-600 dark:text-red-400">{{ (stats?.enPeligro || 0) + (stats?.porUICN?.find(u => u.uicn === 'CR')?.total || 0) }}</div>
+            <div class="text-4xl font-black text-red-600 dark:text-red-400">{{ adminStore.stats.enPeligro }}</div>
             <p class="text-[10px] text-red-400 font-bold uppercase">Requieren atención</p>
           </div>
           
           <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10 shadow-sm flex flex-col gap-2 transition-all hover:scale-[1.02]">
             <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Salud de Datos</span>
-            <div v-if="statsLoading" class="h-10 w-20 bg-slate-100 dark:bg-slate-800 animate-pulse rounded"></div>
-            <div v-else class="text-4xl font-black text-primary dark:text-blue-400">{{ stats?.completitudMedia || 0 }}%</div>
+            <div class="text-4xl font-black text-primary dark:text-blue-400">{{ adminStore.stats.completitudMedia }}%</div>
             <p class="text-[10px] text-slate-400 font-bold uppercase">Completitud promedio</p>
           </div>
 
           <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10 shadow-sm flex flex-col gap-2 transition-all hover:scale-[1.02]">
             <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Protegidas</span>
-            <div v-if="statsLoading" class="h-10 w-20 bg-slate-100 dark:bg-slate-800 animate-pulse rounded"></div>
-            <div v-else class="text-4xl font-black text-green-600 dark:text-green-400">{{ stats?.protegidas || 0 }}</div>
+            <div class="text-4xl font-black text-green-600 dark:text-green-400">{{ adminStore.stats.protegidas }}</div>
             <p class="text-[10px] text-green-400 font-bold uppercase">Bajo marco legal</p>
           </div>
         </div>
@@ -171,9 +149,9 @@ const getImageUrl = (item: any) => {
         <div class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 shadow-sm overflow-hidden transition-colors">
           <div class="p-6 border-b border-primary/10 flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center gap-3">
-              <button class="bg-primary/10 text-primary dark:text-blue-400 px-4 py-1.5 rounded-lg text-xs font-black border border-primary/20">Todas</button>
-              <button class="text-slate-500 dark:text-slate-400 px-4 py-1.5 rounded-lg text-xs font-black hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors uppercase tracking-wider">Pendientes</button>
-              <button class="text-slate-500 dark:text-slate-400 px-4 py-1.5 rounded-lg text-xs font-black hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors uppercase tracking-wider">En Revisión</button>
+              <button @click="adminStore.setStatus('todas')" :class="['px-4 py-1.5 rounded-lg text-xs font-black border transition-all uppercase tracking-wider', adminStore.selectedStatus === 'todas' ? 'bg-primary/10 text-primary border-primary/20' : 'text-slate-500 border-transparent hover:bg-slate-50 dark:hover:bg-slate-800']">Todas</button>
+              <button @click="adminStore.setStatus('borrador')" :class="['px-4 py-1.5 rounded-lg text-xs font-black border transition-all uppercase tracking-wider', adminStore.selectedStatus === 'borrador' ? 'bg-primary/10 text-primary border-primary/20' : 'text-slate-500 border-transparent hover:bg-slate-50 dark:hover:bg-slate-800']">Borradores</button>
+              <button @click="adminStore.setStatus('revision')" :class="['px-4 py-1.5 rounded-lg text-xs font-black border transition-all uppercase tracking-wider', adminStore.selectedStatus === 'revision' ? 'bg-primary/10 text-primary border-primary/20' : 'text-slate-500 border-transparent hover:bg-slate-50 dark:hover:bg-slate-800']">En Revisión</button>
             </div>
             <div class="flex items-center gap-2">
               <button class="flex items-center gap-2 px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-lg text-[11px] font-black uppercase text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
@@ -199,16 +177,8 @@ const getImageUrl = (item: any) => {
                 </tr>
               </thead>
               <tbody class="divide-y divide-primary/5">
-                <tr v-if="speciesLoading" v-for="i in 5" :key="i" class="animate-pulse">
-                  <td class="px-6 py-4"><div class="h-10 w-40 bg-slate-100 dark:bg-slate-800 rounded"></div></td>
-                  <td class="px-6 py-4"><div class="h-6 w-20 bg-slate-100 dark:bg-slate-800 rounded-full"></div></td>
-                  <td class="px-6 py-4"><div class="h-4 w-32 bg-slate-100 dark:bg-slate-800 rounded"></div></td>
-                  <td class="px-6 py-4"><div class="h-4 w-24 bg-slate-100 dark:bg-slate-800 rounded"></div></td>
-                  <td class="px-6 py-4"></td>
-                </tr>
                 <tr 
-                  v-else
-                  v-for="item in especies" 
+                  v-for="item in adminStore.paginatedSpecies" 
                   :key="item.id" 
                   class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group"
                 >
@@ -257,7 +227,7 @@ const getImageUrl = (item: any) => {
                       <button class="p-1.5 hover:bg-primary/10 rounded-lg text-slate-400 hover:text-primary dark:hover:text-blue-400 transition-colors">
                         <span class="material-symbols-outlined text-[20px]">edit</span>
                       </button>
-                      <button class="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-slate-400 hover:text-red-500 transition-colors">
+                      <button @click="adminStore.deleteSpecies(item.id)" class="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-slate-400 hover:text-red-500 transition-colors">
                         <span class="material-symbols-outlined text-[20px]">delete</span>
                       </button>
                     </div>
@@ -269,24 +239,24 @@ const getImageUrl = (item: any) => {
           
           <!-- Paginación Mock -->
           <div class="p-6 border-t border-primary/10 flex items-center justify-between">
-            <p class="text-[11px] font-bold text-slate-500 uppercase">Mostrando {{ especies.length }} de {{ total }} resultados</p>
+            <p class="text-[11px] font-bold text-slate-500 uppercase">Mostrando {{ adminStore.paginatedSpecies.length }} de {{ adminStore.filteredSpecies.length }} resultados</p>
             <div class="flex items-center gap-2">
               <button 
-                @click="currentPage--"
-                :disabled="currentPage === 1"
+                @click="adminStore.setPage(adminStore.currentPage - 1)"
+                :disabled="adminStore.currentPage === 1"
                 class="p-1.5 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-400 disabled:opacity-30 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800"
               >
                 <span class="material-symbols-outlined text-[18px]">chevron_left</span>
               </button>
               
-              <button v-for="p in totalPages" :key="p" 
-                @click="currentPage = p"
-                :class="['w-8 h-8 rounded-lg text-[11px] font-black transition-all', p === currentPage ? 'bg-primary text-white shadow-md' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800']"
+              <button v-for="p in adminStore.totalPages" :key="p" 
+                @click="adminStore.setPage(p)"
+                :class="['w-8 h-8 rounded-lg text-[11px] font-black transition-all', p === adminStore.currentPage ? 'bg-primary text-white shadow-md' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800']"
               >{{ p }}</button>
               
               <button 
-                @click="currentPage++"
-                :disabled="currentPage === totalPages"
+                @click="adminStore.setPage(adminStore.currentPage + 1)"
+                :disabled="adminStore.currentPage === adminStore.totalPages"
                 class="p-1.5 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-400 disabled:opacity-30 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800"
               >
                 <span class="material-symbols-outlined text-[18px]">chevron_right</span>

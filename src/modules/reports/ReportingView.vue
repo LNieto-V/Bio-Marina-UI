@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import AppHeader from '@/shared/components/AppHeader.vue'
+import { useAdminStore } from '@/app/stores/adminStore'
+
+const adminStore = useAdminStore()
 
 const currentStep = ref(1)
 const format = ref('pdf')
@@ -23,13 +26,29 @@ const sections = ref({
 
 const generating = ref(false)
 
-const handleGenerate = () => {
+const handleGenerate = async () => {
   generating.value = true
-  setTimeout(() => {
-    generating.value = false
-    alert('¡Reporte generado con éxito! Se ha iniciado la descarga automática.')
-  }, 2500)
+  
+  const config = {
+    format: format.value,
+    range: dateRange.value,
+    datasets: Object.entries(datasets.value)
+      .filter(([_, active]) => active)
+      .map(([name]) => name)
+  }
+
+  await adminStore.generateReport(config)
+  
+  generating.value = false
+  alert('¡Reporte generado con éxito! Se ha iniciado la descarga automática.')
 }
+
+const canGoToNext = computed(() => {
+  if (currentStep.value === 2) {
+    return Object.values(datasets.value).some(v => v)
+  }
+  return true
+})
 </script>
 
 <template>
@@ -163,9 +182,9 @@ const handleGenerate = () => {
                 <button @click="currentStep = 1" class="px-8 py-3 text-slate-400 font-black uppercase text-[10px] tracking-widest hover:text-slate-900 dark:hover:text-white transition-colors">
                   Atrás
                 </button>
-                <button @click="currentStep = 3" class="px-10 py-4 bg-primary text-white font-black rounded-2xl hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 active:scale-95 uppercase text-xs tracking-[0.2em]" :disabled="!datasets.population && !datasets.sightings && !datasets.incidents && !datasets.environment">
-                  Configurar Estilo
-                </button>
+                 <button @click="currentStep = 3" class="px-10 py-4 bg-primary text-white font-black rounded-2xl hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 active:scale-95 uppercase text-xs tracking-[0.2em]" :disabled="!canGoToNext">
+                    Configurar Estilo
+                  </button>
               </div>
             </div>
           </section>
