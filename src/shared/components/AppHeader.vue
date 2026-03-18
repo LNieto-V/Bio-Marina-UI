@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useAuth } from '@/shared/composables/useAuth'
+
+const { isAuthenticated } = useAuth()
 
 const isDark = ref(false)
 
@@ -57,6 +60,16 @@ onMounted(() => {
     </nav>
 
     <div class="flex items-center gap-3">
+      <!-- Admin Link (Only for logged-in users) -->
+      <RouterLink
+        v-if="isAuthenticated"
+        to="/admin"
+        class="hidden sm:flex items-center gap-2 px-4 py-2 mr-2 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-bold rounded-xl transition-colors shadow-sm shadow-blue-500/20"
+      >
+        <span class="material-symbols-outlined text-[18px]">admin_panel_settings</span>
+        Panel Admin
+      </RouterLink>
+
       <button 
         @click="toggleTheme"
         class="flex items-center justify-center rounded-lg h-10 w-10 bg-primary/5 text-primary hover:bg-primary/10 dark:text-slate-100 dark:bg-white/5 dark:hover:bg-white/10 transition-colors"
