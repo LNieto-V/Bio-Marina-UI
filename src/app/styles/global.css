@@ -150,5 +150,11 @@ textarea::placeholder {
 
 .dark input::placeholder,
 .dark textarea::placeholder {
-  color: #64748b; /* slate-500 */
+  color: #cbd5e1; /* slate-300 */
+}
+
+.dark label,
+.dark .text-slate-400, 
+.dark .text-slate-500 {
+  color: #e2e8f0; /* Force lighter gray for better contrast on all small labels */
 }
