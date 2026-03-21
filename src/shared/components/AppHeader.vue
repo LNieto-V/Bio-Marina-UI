@@ -44,27 +44,27 @@ onMounted(() => {
       <nav class="hidden md:flex flex-1 justify-center gap-8">
         <RouterLink
           to="/"
-          class="text-sm font-bold transition-colors"
-          active-class="text-slate-900 border-b-2 border-primary dark:text-white dark:border-cyan-400 pb-1"
-          inactive-class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-cyan-400"
+          class="text-sm font-semibold transition-colors"
+          active-class="text-primary border-b-2 border-primary pb-1"
+          inactive-class="text-slate-600 dark:text-slate-400 hover:text-primary"
         >Home</RouterLink>
         <RouterLink
           to="/catalog"
-          class="text-sm font-bold transition-colors"
-          active-class="text-slate-900 border-b-2 border-primary dark:text-white dark:border-cyan-400 pb-1"
-          inactive-class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-cyan-400"
+          class="text-sm font-medium transition-colors"
+          active-class="text-primary border-b-2 border-primary pb-1"
+          inactive-class="text-slate-600 dark:text-slate-400 hover:text-primary"
         >Catalog</RouterLink>
         <RouterLink
           to="/map"
-          class="text-sm font-bold transition-colors"
-          active-class="text-slate-900 border-b-2 border-primary dark:text-white dark:border-cyan-400 pb-1"
-          inactive-class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-cyan-400"
+          class="text-sm font-medium transition-colors"
+          active-class="text-primary border-b-2 border-primary pb-1"
+          inactive-class="text-slate-600 dark:text-slate-400 hover:text-primary"
         >Map</RouterLink>
         <RouterLink
           to="/reports"
-          class="text-sm font-bold transition-colors"
-          active-class="text-slate-900 border-b-2 border-primary dark:text-white dark:border-cyan-400 pb-1"
-          inactive-class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-cyan-400"
+          class="text-sm font-medium transition-colors"
+          active-class="text-primary border-b-2 border-primary pb-1"
+          inactive-class="text-slate-600 dark:text-slate-400 hover:text-primary"
         >Regulations</RouterLink>
       </nav>
 
@@ -79,7 +79,7 @@ onMounted(() => {
           Panel Admin
         </RouterLink>
 
-        <button 
+        <button
           @click="toggleTheme"
           class="flex items-center justify-center rounded-lg h-9 w-9 md:h-10 md:w-10 bg-primary/5 text-primary hover:bg-primary/10 dark:text-slate-100 dark:bg-white/5 dark:hover:bg-white/10 transition-colors"
           :title="isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
@@ -96,7 +96,7 @@ onMounted(() => {
         </RouterLink>
 
         <!-- Hamburger Button (mobile only) -->
-        <button 
+        <button
           @click="isMenuOpen = !isMenuOpen"
           class="md:hidden flex items-center justify-center rounded-lg h-9 w-9 bg-primary/5 text-primary hover:bg-primary/10 dark:text-slate-100 dark:bg-white/5 dark:hover:bg-white/10 transition-colors"
           aria-label="Toggle menu"
@@ -121,36 +121,32 @@ onMounted(() => {
         <div class="flex flex-col gap-1">
           <RouterLink
             to="/"
-            class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-bold transition-colors hover:bg-primary/5 dark:hover:bg-white/5"
-            active-class="text-primary bg-primary/10 dark:bg-blue-900/20 dark:text-blue-400"
-            inactive-class="text-slate-700 dark:text-slate-300"
+            class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-bold transition-colors text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50"
+            active-class="!text-primary !bg-primary/10 dark:!bg-cyan-900/20 dark:!text-cyan-400"
           >
             <span class="material-symbols-outlined text-[20px]">home</span>
             Home
           </RouterLink>
           <RouterLink
             to="/catalog"
-            class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-bold transition-colors hover:bg-primary/5 dark:hover:bg-white/5"
-            active-class="text-primary bg-primary/10 dark:bg-blue-900/20 dark:text-blue-400"
-            inactive-class="text-slate-700 dark:text-slate-300"
+            class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-bold transition-colors text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50"
+            active-class="!text-primary !bg-primary/10 dark:!bg-cyan-900/20 dark:!text-cyan-400"
           >
             <span class="material-symbols-outlined text-[20px]">menu_book</span>
             Catalog
           </RouterLink>
           <RouterLink
             to="/map"
-            class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-bold transition-colors hover:bg-primary/5 dark:hover:bg-white/5"
-            active-class="text-primary bg-primary/10 dark:bg-blue-900/20 dark:text-blue-400"
-            inactive-class="text-slate-700 dark:text-slate-300"
+            class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-bold transition-colors text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50"
+            active-class="!text-primary !bg-primary/10 dark:!bg-cyan-900/20 dark:!text-cyan-400"
           >
             <span class="material-symbols-outlined text-[20px]">map</span>
             Map
           </RouterLink>
           <RouterLink
             to="/reports"
-            class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-bold transition-colors hover:bg-primary/5 dark:hover:bg-white/5"
-            active-class="text-primary bg-primary/10 dark:bg-blue-900/20 dark:text-blue-400"
-            inactive-class="text-slate-700 dark:text-slate-300"
+            class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-bold transition-colors text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50"
+            active-class="!text-primary !bg-primary/10 dark:!bg-cyan-900/20 dark:!text-cyan-400"
           >
             <span class="material-symbols-outlined text-[20px]">gavel</span>
             Regulations
@@ -167,8 +163,8 @@ onMounted(() => {
             <span class="material-symbols-outlined text-[18px]">admin_panel_settings</span>
             Panel Admin
           </RouterLink>
-          <RouterLink 
-            to="/login" 
+          <RouterLink
+            to="/login"
             class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary dark:text-blue-400 text-sm font-bold transition-colors"
           >
             <span class="material-symbols-outlined text-[18px]">person</span>

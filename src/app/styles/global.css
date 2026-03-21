@@ -12,9 +12,9 @@
   --color-slate-500: #2684d6;
   --color-slate-600: #1766b8;
   --color-slate-700: #145295;
-  --color-slate-800: #13447a;
-  --color-slate-900: #153966;
-  --color-slate-950: #0d2440;
+  --color-slate-800: #0e2b4f;
+  --color-slate-900: #0a1f38;
+  --color-slate-950: #05101a;
 
   --color-background-light: var(--color-slate-50);
   --color-background-dark: var(--color-slate-950);
@@ -128,9 +128,27 @@ body {
   pointer-events: none;
 }
 
-/* Force black text on all form inputs regardless of theme */
+/* Form input text colors — respects light/dark mode */
 input,
 select,
 textarea {
-  color: #000 !important;
+  color: var(--text-color);
+}
+
+/* Fix select option text in dark mode */
+.dark select option {
+  background-color: #0a1f38;
+  color: #dfeefb;
+}
+
+/* Placeholder styling */
+input::placeholder,
+textarea::placeholder {
+  color: #94a3b8; /* slate-400 */
+  opacity: 1;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #64748b; /* slate-500 */
 }
