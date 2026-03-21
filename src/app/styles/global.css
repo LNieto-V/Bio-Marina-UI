@@ -2,8 +2,9 @@
 
 @theme {
   --color-primary: var(--primary);
-  
+
   /* Vibrant oceanic palette — alive & saturated */
+<<<<<<< HEAD
   --color-slate-50: #f0f7ff;
   --color-slate-100: #dfeefb;
   --color-slate-200: #bddcf7;
@@ -15,6 +16,19 @@
   --color-slate-800: #0e2b4f;
   --color-slate-900: #0a1f38;
   --color-slate-950: #05101a;
+=======
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #0f172a;
+  --color-slate-900: #090e1a; /* Very deep navy for cards */
+  --color-slate-950: #03060c; /* Pitch black navy for backgrounds */
+>>>>>>> 1cc99b3 (style(ui): deepen dark mode navy colors in global css for higher text contrast)
 
   --color-background-light: var(--color-slate-50);
   --color-background-dark: var(--color-slate-950);

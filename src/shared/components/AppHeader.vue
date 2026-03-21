@@ -44,27 +44,23 @@ onMounted(() => {
       <nav class="hidden md:flex flex-1 justify-center gap-8">
         <RouterLink
           to="/"
-          class="text-sm font-semibold transition-colors"
-          active-class="text-primary border-b-2 border-primary pb-1"
-          inactive-class="text-slate-600 dark:text-slate-400 hover:text-primary"
+          class="text-sm font-bold transition-colors pb-1 border-b-2 border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+          active-class="!text-primary !border-primary dark:!text-cyan-400 dark:!border-cyan-400"
         >Home</RouterLink>
         <RouterLink
           to="/catalog"
-          class="text-sm font-medium transition-colors"
-          active-class="text-primary border-b-2 border-primary pb-1"
-          inactive-class="text-slate-600 dark:text-slate-400 hover:text-primary"
+          class="text-sm font-bold transition-colors pb-1 border-b-2 border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+          active-class="!text-primary !border-primary dark:!text-cyan-400 dark:!border-cyan-400"
         >Catalog</RouterLink>
         <RouterLink
           to="/map"
-          class="text-sm font-medium transition-colors"
-          active-class="text-primary border-b-2 border-primary pb-1"
-          inactive-class="text-slate-600 dark:text-slate-400 hover:text-primary"
+          class="text-sm font-bold transition-colors pb-1 border-b-2 border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+          active-class="!text-primary !border-primary dark:!text-cyan-400 dark:!border-cyan-400"
         >Map</RouterLink>
         <RouterLink
           to="/reports"
-          class="text-sm font-medium transition-colors"
-          active-class="text-primary border-b-2 border-primary pb-1"
-          inactive-class="text-slate-600 dark:text-slate-400 hover:text-primary"
+          class="text-sm font-bold transition-colors pb-1 border-b-2 border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+          active-class="!text-primary !border-primary dark:!text-cyan-400 dark:!border-cyan-400"
         >Regulations</RouterLink>
       </nav>
 
