@@ -71,10 +71,88 @@ export const CREATE_SPECIES = gql`
 `;
 
 export const UPDATE_SPECIES = gql`
-  mutation UpdateSpecies($id: ID!, $input: UpdateSpeciesInput!) {
-    updateSpecies(id: $id, updateSpeciesInput: $input) {
+  mutation UpdateSpecies($updateSpeciesInput: UpdateSpeciesInput!) {
+    updateSpecies(updateSpeciesInput: $updateSpeciesInput) {
       _id
+      alternativeCommonNames
+      bibliographicReferences
+      biology {
+        averageLengthCm
+        averageWeightKg
+        diet
+        longevityYears
+        maximumLengthCm
+        maximumWeightKg
+        migration
+        reproductionMode
+        trophicLevel
+      }
+      commonName
+      completeness
+      conservation {
+        closureMonths
+        closureType
+        ecologicalValue
+        iucn
+        iucnYear
+        legalNotes
+        protected
+      }
+      createdAt
+      createdBy
+      emoji
+      fishery {
+        annualCatchTon
+        aquariumTrade
+        artisanal
+        commercialValue
+        fishingGears
+        industrial
+        mainPorts
+      }
+      funFacts
+      generalDescription
+      habitat {
+        maxDepthM
+        maxTempC
+        minDepthM
+        minTempC
+        salinityPpt
+        substrate
+        type
+      }
+      media {
+        _id
+        authorship
+        createdAt
+        isMain
+        license
+        thumbnail
+        type
+        url
+      }
+      notes
+      publishedAt
+      scientificName
       status
+      taxonomy {
+        class
+        family
+        genus
+        kingdom
+        order
+        phylum
+        species
+      }
+      updatedAt
+      updatedBy
+      zones {
+        _id
+        coordinates
+        department
+        name
+        type
+      }
     }
   }
 `;

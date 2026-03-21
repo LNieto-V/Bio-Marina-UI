@@ -26,6 +26,7 @@ import type {
   Media,
   Zone
 } from '../types/species';
+import { sanitizeInput } from '../../../shared/utils/utils';
 import { computed } from 'vue';
 
 export function useSpecies() {
@@ -63,7 +64,15 @@ export function useSpecies() {
 
   const updateSpecies = async (id: string, input: UpdateSpeciesInput) => {
     try {
-      const result = await updateSpeciesMutation({ id, input });
+      const result = await updateSpeciesMutation({
+        updateSpeciesInput: {
+          ...sanitizeInput(input),
+          _id: id
+        }
+      });
+
+      await refetchSpecies();
+
       return result?.data?.updateSpecies;
     } catch (e) {
       console.error('Error updating species:', e);

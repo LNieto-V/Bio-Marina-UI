@@ -1,5 +1,6 @@
- <script setup lang="ts">
+<script setup lang="ts">
 import { getProxyUrl, isImageUrl } from '../../../shared/utils/image';
+import { sanitizeInput } from '../../../shared/utils/utils';
 import { ref, reactive, computed, watch } from 'vue';
 import { useQuery } from '@vue/apollo-composable';
 import { useSpecies } from '../../species/composables/useSpecies';
@@ -179,13 +180,13 @@ const handleSaveSection = async (section: string) => {
   saving.value = true;
   try {
     switch (section) {
-      case 'taxonomy': await updateTaxonomy(props.speciesId!, form.taxonomy); break;
-      case 'biology': await updateBiology(props.speciesId!, form.biology); break;
+      case 'taxonomy': await updateTaxonomy(props.speciesId!, sanitizeInput(form.taxonomy)); break;
+      case 'biology': await updateBiology(props.speciesId!, sanitizeInput(form.biology)); break;
       case 'habitat':
-        await updateHabitat(props.speciesId!, form.habitat);
-        await updateConservation(props.speciesId!, form.conservation);
+        await updateHabitat(props.speciesId!, sanitizeInput(form.habitat));
+        await updateConservation(props.speciesId!, sanitizeInput(form.conservation));
         break;
-      case 'fishery': await updateFishery(props.speciesId!, form.fishery); break;
+      case 'fishery': await updateFishery(props.speciesId!, sanitizeInput(form.fishery)); break;
     }
   } finally {
     saving.value = false;
