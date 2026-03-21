@@ -676,7 +676,6 @@ const handleImageError = (event: Event) => {
               <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">Multimedia & Galería</h3>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Gestiona las imágenes que se mostrarán en el catálogo público.</p>
             </div>
-
             <div class="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-[24px] border border-dashed border-slate-200 dark:border-slate-700 space-y-4">
               <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-1">Nueva URL de Imagen</label>
               <div class="flex gap-3">
