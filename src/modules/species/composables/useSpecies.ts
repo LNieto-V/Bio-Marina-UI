@@ -62,9 +62,9 @@ export function useSpecies() {
   // Mutation: Update Base
   const { mutate: updateSpeciesMutation } = useMutation(UPDATE_SPECIES);
 
-  const updateSpecies = async (id: string, input: UpdateSpeciesInput) => {
+  const updateSpecies = async (specId: string, input: UpdateSpeciesInput) => {
     try {
-      const result = await updateSpeciesMutation({ id, input });
+      const result = await updateSpeciesMutation({ input: { ...input, _id: specId } });
       return result?.data?.updateSpecies;
     } catch (e) {
       console.error('Error updating species:', e);

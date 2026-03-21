@@ -3,7 +3,7 @@ import { ref, reactive, computed, watch } from 'vue';
 import { useQuery } from '@vue/apollo-composable';
 import { useSpecies } from '../../species/composables/useSpecies';
 import { GET_SPECIES_BY_ID } from '../../species/graphql/species.operations';
-import { SpeciesStatus, type CreateSpeciesInput } from '../../species/types/species';
+import { SpeciesStatus, MediaType, type CreateSpeciesInput } from '../../species/types/species';
 
 const props = defineProps<{
   speciesId?: string;
@@ -179,8 +179,8 @@ const handleSaveSection = async (section: string) => {
 const newMediaUrl = ref('');
 const handleAddMedia = async () => {
   if (!newMediaUrl.value || isNew.value) return;
-  await addMedia(props.speciesId!, { url: newMediaUrl.value, type: MediaType.IMAGE, title: '' });
-  form.media.push({ url: newMediaUrl.value, type: MediaType.IMAGE, title: '' });
+    await addMedia(props.speciesId!, { url: newMediaUrl.value, type: MediaType.IMAGE, authorship: '', isMain: false });
+    form.media.push({ url: newMediaUrl.value, type: MediaType.IMAGE, authorship: '', isMain: false });
   newMediaUrl.value = '';
 };
 

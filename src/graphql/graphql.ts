@@ -388,7 +388,7 @@ export type UpdateHabitatInput = {
 };
 
 export type UpdateSpeciesInput = {
-  _id: Scalars['ID']['input'];
+  id: Scalars['ID']['input'];
   alternativeCommonNames?: InputMaybe<Array<Scalars['String']['input']>>;
   bibliographicReferences?: InputMaybe<Array<Scalars['String']['input']>>;
   biology?: InputMaybe<BiologyInput>;

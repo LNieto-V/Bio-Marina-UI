@@ -107,8 +107,11 @@ export interface Fishery {
 
 export interface Media {
     url: string;
-    title?: string;
     type: MediaType;
+    authorship: string;
+    isMain: boolean;
+    license?: string;
+    thumbnail?: string;
 }
 
 export interface Zone {
@@ -158,4 +161,6 @@ export interface CreateSpeciesInput {
     fishery: Partial<Fishery>;
 }
 
-export interface UpdateSpeciesInput extends Partial<Omit<Species, '_id' | 'createdAt' | 'updatedAt'>> { }
+export interface UpdateSpeciesInput extends Partial<Omit<Species, '_id' | 'createdAt' | 'updatedAt'>> {
+    _id?: string;
+}
