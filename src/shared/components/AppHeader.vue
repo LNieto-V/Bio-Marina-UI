@@ -31,7 +31,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 border-b border-primary/10 bg-white/80 backdrop-blur-md dark:bg-slate-950/90 dark:border-slate-800 transition-colors duration-300">
+  <header class="sticky top-0 z-50 border-b border-primary/10 bg-white/95 backdrop-blur-xl dark:bg-slate-950/95 dark:border-slate-800 transition-colors duration-300">
     <!-- Main bar -->
     <div class="flex items-center justify-between px-4 sm:px-6 md:px-20 lg:px-40 py-3 md:py-4">
       <RouterLink to="/" class="flex items-center gap-3 md:gap-4 text-primary dark:text-slate-100">
@@ -44,27 +44,27 @@ onMounted(() => {
       <nav class="hidden md:flex flex-1 justify-center gap-8">
         <RouterLink
           to="/"
-          class="text-sm font-semibold transition-colors"
-          active-class="text-primary border-b-2 border-primary pb-1"
-          inactive-class="text-slate-600 dark:text-slate-400 hover:text-primary"
+          class="text-sm font-bold transition-colors"
+          active-class="text-slate-900 border-b-2 border-primary dark:text-white dark:border-cyan-400 pb-1"
+          inactive-class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-cyan-400"
         >Home</RouterLink>
         <RouterLink
           to="/catalog"
-          class="text-sm font-medium transition-colors"
-          active-class="text-primary border-b-2 border-primary pb-1"
-          inactive-class="text-slate-600 dark:text-slate-400 hover:text-primary"
+          class="text-sm font-bold transition-colors"
+          active-class="text-slate-900 border-b-2 border-primary dark:text-white dark:border-cyan-400 pb-1"
+          inactive-class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-cyan-400"
         >Catalog</RouterLink>
         <RouterLink
           to="/map"
-          class="text-sm font-medium transition-colors"
-          active-class="text-primary border-b-2 border-primary pb-1"
-          inactive-class="text-slate-600 dark:text-slate-400 hover:text-primary"
+          class="text-sm font-bold transition-colors"
+          active-class="text-slate-900 border-b-2 border-primary dark:text-white dark:border-cyan-400 pb-1"
+          inactive-class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-cyan-400"
         >Map</RouterLink>
         <RouterLink
           to="/reports"
-          class="text-sm font-medium transition-colors"
-          active-class="text-primary border-b-2 border-primary pb-1"
-          inactive-class="text-slate-600 dark:text-slate-400 hover:text-primary"
+          class="text-sm font-bold transition-colors"
+          active-class="text-slate-900 border-b-2 border-primary dark:text-white dark:border-cyan-400 pb-1"
+          inactive-class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-cyan-400"
         >Regulations</RouterLink>
       </nav>
 
