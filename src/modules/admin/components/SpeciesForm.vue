@@ -648,18 +648,10 @@ const handleRemoveMedia = async (mediaId: string, url: string) => {
           </section>
         </div>
         <div v-if="activeTab === 'media'" class="space-y-6">
-<<<<<<< HEAD
-          <section class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 dark:border-slate-800 shadow-xl space-y-6 transition-colors">
-            <h3 class="text-lg font-medium text-white dark:text-white">Media Gallery</h3>
-            <div class="flex gap-2">
-              <input v-model="newMediaUrl" type="text" placeholder="Paste Image URL here..." class="flex-1 px-4 py-3 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-primary/20 dark:focus:ring-cyan-500/20 focus:border-primary dark:focus:border-cyan-500 outline-none text-white dark:text-white" />
-              <button @click="handleAddMedia" class="px-6 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-xl font-semibold shadow-lg shadow-cyan-500/25 hover:from-cyan-500 hover:to-blue-500 transition-all active:scale-95">Add Image</button>
-=======
           <section class="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-primary/10 dark:border-slate-800 shadow-xl space-y-8 transition-colors">
             <div>
               <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">Multimedia & Galería</h3>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Gestiona las imágenes que se mostrarán en el catálogo público.</p>
->>>>>>> 92bfc90 (feat: add species thumbnails, image previews, and finalize reports module)
             </div>
 <<<<<<< HEAD
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
