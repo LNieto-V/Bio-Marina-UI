@@ -3,7 +3,7 @@ import { setContext } from '@apollo/client/link/context'
 
 // HTTP connection to the GraphQL API
 const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_GRAPHQL_ENDPOINT || 'http://localhost:4000/graphql',
+  uri: import.meta.env.VITE_GRAPHQL_ENDPOINT || 'http://localhost:3000/graphql',
 })
 
 // Auth middleware — attaches the JWT token stored in localStorage to every request

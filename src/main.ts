@@ -6,6 +6,8 @@ import App from './App.vue'
 import './app/styles/global.css'
 import router from './app/router'
 
+
+
 const app = createApp({
   setup() {
     provide(DefaultApolloClient, apolloClient)
