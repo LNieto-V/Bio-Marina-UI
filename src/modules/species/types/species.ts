@@ -158,4 +158,4 @@ export interface CreateSpeciesInput {
     fishery: Partial<Fishery>;
 }
 
-export interface UpdateSpeciesInput extends Partial<Omit<Species, '_id' | 'createdAt' | 'updatedAt'>> { }
+export type UpdateSpeciesInput = Partial<Omit<Species, '_id' | 'createdAt' | 'updatedAt'>>;
