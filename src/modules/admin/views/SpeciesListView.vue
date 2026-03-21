@@ -55,28 +55,28 @@ const totalPages = computed(() => Math.ceil(displayedSpecies.value.length / admi
 </script>
 
 <template>
-  <div class="p-6 md:p-8 space-y-6">
+  <div class="p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
 
     <!-- Header -->
-    <div class="flex flex-wrap items-end justify-between gap-4">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
       <div>
-        <h2 class="text-2xl font-black text-slate-900 dark:text-white">Inventario de Especies</h2>
-        <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+        <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">Inventario de Especies</h2>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
           {{ displayedSpecies.length }} especies encontradas
         </p>
       </div>
-      <div class="flex gap-3">
-        <button class="flex items-center gap-2 px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+      <div class="flex flex-wrap gap-2 sm:gap-3">
+        <button class="flex-1 sm:flex-none justify-center items-center gap-2 px-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
           <span class="material-symbols-outlined text-[18px]">download</span>
           Exportar
         </button>
         <RouterLink
           v-if="can('species.create')"
           to="/admin/species/create"
-          class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-blue-600/20 transition-all active:scale-95"
+          class="flex-1 sm:flex-none flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-blue-600/20 transition-all active:scale-95"
         >
           <span class="material-symbols-outlined text-[18px]">add</span>
-          Nueva Especie
+          Nueva
         </RouterLink>
       </div>
     </div>
@@ -92,7 +92,7 @@ const totalPages = computed(() => Math.ceil(displayedSpecies.value.length / admi
     />
 
     <!-- Table Card -->
-    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col min-w-0">
       <SpeciesTable
         :species="paginatedDisplayed"
         @preview="handlePreview"
@@ -101,17 +101,17 @@ const totalPages = computed(() => Math.ceil(displayedSpecies.value.length / admi
       />
 
       <!-- Pagination -->
-      <div v-if="totalPages > 1" class="px-5 py-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-        <p class="text-[11px] font-bold text-slate-400 uppercase">
+      <div v-if="totalPages > 1" class="px-3 sm:px-5 py-3 sm:py-4 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase text-center sm:text-left">
           Mostrando {{ paginatedDisplayed.length }} de {{ displayedSpecies.length }}
         </p>
-        <div class="flex items-center gap-1.5">
+        <div class="flex items-center justify-center gap-1 sm:gap-1.5 flex-wrap">
           <button
             @click="adminStore.setPage(adminStore.currentPage - 1)"
             :disabled="adminStore.currentPage === 1"
-            class="p-1.5 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-400 disabled:opacity-30 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+            class="p-1 sm:p-1.5 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-400 disabled:opacity-30 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
           >
-            <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+            <span class="material-symbols-outlined text-[16px] sm:text-[18px]">chevron_left</span>
           </button>
 
           <button
@@ -119,7 +119,7 @@ const totalPages = computed(() => Math.ceil(displayedSpecies.value.length / admi
             :key="p"
             @click="adminStore.setPage(p)"
             :class="[
-              'w-8 h-8 rounded-lg text-[11px] font-black transition-all',
+              'w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-[10px] sm:text-[11px] font-black transition-all',
               p === adminStore.currentPage
                 ? 'bg-blue-600 text-white shadow-md'
                 : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800',
@@ -129,9 +129,9 @@ const totalPages = computed(() => Math.ceil(displayedSpecies.value.length / admi
           <button
             @click="adminStore.setPage(adminStore.currentPage + 1)"
             :disabled="adminStore.currentPage === totalPages"
-            class="p-1.5 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-400 disabled:opacity-30 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+            class="p-1 sm:p-1.5 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-400 disabled:opacity-30 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
           >
-            <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+            <span class="material-symbols-outlined text-[16px] sm:text-[18px]">chevron_right</span>
           </button>
         </div>
       </div>

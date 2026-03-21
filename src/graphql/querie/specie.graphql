@@ -1,0 +1,6 @@
+query GetSpecies {
+  getSpecies {
+
+    _id
+  }
+}

@@ -6,6 +6,14 @@ import { useAdminPermissions } from '@/shared/composables/useAdminPermissions'
 import { ROL_LABELS } from '@/shared/types/usuario'
 import type { RolUsuario } from '@/shared/types/usuario'
 
+const props = defineProps<{
+  isOpen: boolean
+}>()
+
+const emit = defineEmits<{
+  (e: 'close'): void
+}>()
+
 const route  = useRoute()
 const { currentUser, logout } = useAuth()
 const { can, isAdmin } = useAdminPermissions()
@@ -57,23 +65,39 @@ const userInitials = computed(() => {
 </script>
 
 <template>
-  <aside class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0 transition-colors">
+  <aside 
+    :class="[
+      'fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:shrink-0',
+      props.isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
+    ]"
+  >
     <!-- Logo / Brand -->
-    <div class="p-6 flex items-center gap-3 border-b border-slate-100 dark:border-slate-800">
-      <div class="w-9 h-9 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-xl flex items-center justify-center shadow-md">
-        <span class="material-symbols-outlined text-white text-xl fill">waves</span>
+    <div class="p-6 flex items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-xl flex items-center justify-center shadow-md">
+          <span class="material-symbols-outlined text-white text-xl fill">waves</span>
+        </div>
+        <div class="min-w-0">
+          <h1 class="font-black text-base text-slate-900 dark:text-white leading-tight">BioMarina</h1>
+          <span class="text-[9px] text-slate-400 font-black uppercase tracking-widest">Admin Panel</span>
+        </div>
       </div>
-      <div class="min-w-0">
-        <h1 class="font-black text-base text-slate-900 dark:text-white leading-tight">BioMarina</h1>
-        <span class="text-[9px] text-slate-400 font-black uppercase tracking-widest">Admin Panel</span>
+      <!-- Actions -->
+      <div class="flex items-center gap-1">
+        <button 
+          @click="emit('close')" 
+          class="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+        >
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+        <RouterLink
+          to="/"
+          title="Volver al sitio"
+          class="hidden lg:flex p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+        >
+          <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+        </RouterLink>
       </div>
-      <RouterLink
-        to="/"
-        title="Volver al sitio"
-        class="ml-auto p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
-      >
-        <span class="material-symbols-outlined text-[18px]">open_in_new</span>
-      </RouterLink>
     </div>
 
     <!-- Navigation -->
@@ -83,6 +107,7 @@ const userInitials = computed(() => {
         v-for="link in visibleLinks"
         :key="link.to"
         :to="link.to"
+        @click="emit('close')"
         :class="[
           'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150',
           isActive(link.name)

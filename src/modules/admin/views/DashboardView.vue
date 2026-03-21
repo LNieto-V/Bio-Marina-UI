@@ -39,20 +39,20 @@ const completitudColor = computed(() =>
 </script>
 
 <template>
-  <div class="p-6 md:p-8 space-y-8">
+  <div class="p-4 sm:p-6 md:p-8 space-y-6 md:space-y-8">
 
     <!-- Page Header -->
-    <div class="flex flex-wrap items-end justify-between gap-4">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
       <div>
-        <h2 class="text-2xl font-black text-slate-900 dark:text-white">Panel de Control</h2>
-        <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+        <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">Panel de Control</h2>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
           Resumen del catálogo marino — {{ new Date().toLocaleDateString('es-CO', { dateStyle: 'long' }) }}
         </p>
       </div>
       <RouterLink
         v-if="can('species.create')"
         to="/admin/species/create"
-        class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40 transition-all active:scale-95"
+        class="flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40 transition-all active:scale-95"
       >
         <span class="material-symbols-outlined text-[20px]">add_circle</span>
         Nueva Especie
@@ -61,14 +61,14 @@ const completitudColor = computed(() =>
 
     <!-- Skeleton on loading -->
     <template v-if="loading">
-      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5">
         <div v-for="i in 6" :key="i" class="h-28 bg-slate-200 dark:bg-slate-800 rounded-2xl animate-pulse" />
       </div>
     </template>
 
     <template v-else>
       <!-- KPI Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5">
         <StatCard
           label="Total Biodiversidad"
           :value="adminStore.stats.totalEspecies"
@@ -116,13 +116,13 @@ const completitudColor = computed(() =>
       </div>
 
       <!-- Completitud Progress -->
-      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
         <div class="flex items-center justify-between mb-4">
           <div>
             <h3 class="text-sm font-black text-slate-900 dark:text-white">Salud del Catálogo</h3>
             <p class="text-[11px] text-slate-400">Completitud de datos científicos promedio</p>
           </div>
-          <span :class="['text-2xl font-black', completitudColor]">{{ completitud }}%</span>
+          <span :class="['text-xl sm:text-2xl font-black', completitudColor]">{{ completitud }}%</span>
         </div>
         <div class="h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
           <div
@@ -133,24 +133,24 @@ const completitudColor = computed(() =>
         </div>
         <div class="flex justify-between mt-2 text-[10px] font-bold text-slate-400 uppercase">
           <span>0%</span>
-          <span :class="completitud > 50 ? 'opacity-0' : 'text-blue-500'">Óptimo: 80%+</span>
+          <span :class="completitud > 50 ? 'hidden sm:block opacity-0' : 'text-blue-500'">Óptimo: 80%+</span>
           <span>100%</span>
         </div>
       </div>
 
       <!-- Charts Row -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6"
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6"
            v-if="stats?.porHabitat?.length || stats?.porUICN?.length">
-        <HabitatChart :data="stats?.porHabitat ?? []" />
-        <UicnChart    :data="stats?.porUICN    ?? []" />
+        <HabitatChart :data="stats?.porHabitat ?? []" class="w-full overflow-hidden" />
+        <UicnChart    :data="stats?.porUICN    ?? []" class="w-full overflow-hidden" />
       </div>
 
       <!-- Recent Species -->
-      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-        <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col min-w-0">
+        <div class="px-5 sm:px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
           <div>
             <h3 class="text-sm font-black text-slate-900 dark:text-white">Últimas Especies Registradas</h3>
-            <p class="text-[11px] text-slate-400">Las 5 entradas más recientes en el catálogo</p>
+            <p class="text-[11px] text-slate-400 hidden sm:block">Las 5 entradas más recientes en el catálogo</p>
           </div>
           <RouterLink
             to="/admin/species"
@@ -161,50 +161,56 @@ const completitudColor = computed(() =>
           </RouterLink>
         </div>
 
-        <div class="divide-y divide-slate-100 dark:divide-slate-800">
-          <div
-            v-for="sp in recentSpecies"
-            :key="sp.id"
-            class="flex items-center gap-4 px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group"
-          >
-            <!-- Thumbnail -->
+        <div class="divide-y divide-slate-100 dark:divide-slate-800 overflow-x-auto w-full">
+          <div class="min-w-[600px] w-full">
             <div
-              class="w-12 h-12 rounded-xl bg-center bg-cover bg-slate-100 dark:bg-slate-800 shrink-0 border border-slate-200 dark:border-slate-700"
-              :style="`background-image: url('${getImageUrl(sp)}')`"
-            />
-            <!-- Info -->
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-bold text-slate-900 dark:text-white truncate">{{ sp.nombreCientifico }}</p>
-              <p class="text-[11px] text-slate-400 truncate">{{ sp.nombreComun }}</p>
-            </div>
-            <!-- IUCN Badge -->
-            <span :class="['px-2 py-0.5 rounded-full text-[10px] font-black uppercase', UICN_COLORS[sp.conservacion.uicn]]">
-              {{ sp.conservacion.uicn }}
-            </span>
-            <!-- Status -->
-            <span :class="[
-              'px-2.5 py-1 rounded-lg text-[10px] font-black uppercase',
-              sp.estado === 'publicado' ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400' :
-              sp.estado === 'revision'  ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400' :
-              'bg-slate-100 dark:bg-slate-800 text-slate-500'
-            ]">
-              {{ sp.estado }}
-            </span>
-            <!-- Actions -->
-            <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-              <RouterLink
-                :to="`/species/${sp.id}`"
-                class="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
-              >
-                <span class="material-symbols-outlined text-[18px]">visibility</span>
-              </RouterLink>
-              <RouterLink
-                v-if="can('species.edit')"
-                :to="`/admin/species/${sp.id}/edit`"
-                class="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
-              >
-                <span class="material-symbols-outlined text-[18px]">edit</span>
-              </RouterLink>
+              v-for="sp in recentSpecies"
+              :key="sp.id"
+              class="flex items-center gap-3 sm:gap-4 px-5 sm:px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group"
+            >
+              <!-- Thumbnail -->
+              <div
+                class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-center bg-cover bg-slate-100 dark:bg-slate-800 shrink-0 border border-slate-200 dark:border-slate-700"
+                :style="`background-image: url('${getImageUrl(sp)}')`"
+              />
+              <!-- Info -->
+              <div class="flex-1 min-w-0 pr-2">
+                <p class="text-sm font-bold text-slate-900 dark:text-white truncate">{{ sp.nombreCientifico }}</p>
+                <p class="text-[11px] text-slate-400 truncate">{{ sp.nombreComun }}</p>
+              </div>
+              <!-- IUCN Badge -->
+              <div class="shrink-0 w-12 flex justify-center">
+                <span :class="['px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-black uppercase text-center', UICN_COLORS[sp.conservacion.uicn]]">
+                  {{ sp.conservacion.uicn }}
+                </span>
+              </div>
+              <!-- Status -->
+              <div class="shrink-0 w-24">
+                <span :class="[
+                  'block text-center px-2 py-1 rounded-lg text-[9px] sm:text-[10px] font-black uppercase',
+                  sp.estado === 'publicado' ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400' :
+                  sp.estado === 'revision'  ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400' :
+                  'bg-slate-100 dark:bg-slate-800 text-slate-500'
+                ]">
+                  {{ sp.estado }}
+                </span>
+              </div>
+              <!-- Actions -->
+              <div class="flex gap-1 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                <RouterLink
+                  :to="`/species/${sp.id}`"
+                  class="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+                >
+                  <span class="material-symbols-outlined text-[18px]">visibility</span>
+                </RouterLink>
+                <RouterLink
+                  v-if="can('species.edit')"
+                  :to="`/admin/species/${sp.id}/edit`"
+                  class="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+                >
+                  <span class="material-symbols-outlined text-[18px]">edit</span>
+                </RouterLink>
+              </div>
             </div>
           </div>
         </div>
