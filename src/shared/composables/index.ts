@@ -5,7 +5,7 @@
 
 import { ref, computed, watch } from 'vue'
 import type { Ref } from 'vue'
-import type { Especie, EspeciePaginada, FiltrosEspecie, EstadisticasCatalogo, Media, ZonaDistribucion } from '@/shared/types/especie'
+import type { Especie, FiltrosEspecie, EstadisticasCatalogo, Media, ZonaDistribucion } from '@/shared/types/especie'
 import { MOCK_ESPECIES, MOCK_ESTADISTICAS } from '../services/mockData'
 import { searchFishBaseCached, type FishBaseEnrichment } from '../services/fishbaseService'
 
@@ -51,7 +51,7 @@ export function useEspecies(filtros?: Ref<FiltrosEspecie>, pagina?: Ref<number>,
       total.value = results.length
       const start = (currentPage.value - 1) * limite
       especies.value = results.slice(start, start + limite)
-    } catch (e) {
+    } catch {
       error.value = 'Error cargando especies'
     } finally {
       loading.value = false
@@ -84,7 +84,7 @@ export function useEspecie(id: Ref<string> | string) {
     try {
       const found = MOCK_ESPECIES.find((e) => e.id === idVal) ?? null
       especie.value = found
-    } catch (e) {
+    } catch {
       error.value = 'Error cargando especie'
     } finally {
       loading.value = false
@@ -95,7 +95,7 @@ export function useEspecie(id: Ref<string> | string) {
       fishbaseLoading.value = true
       try {
         fishbaseData.value = await searchFishBaseCached(especie.value.nombreCientifico)
-      } catch (_) {
+      } catch {
         fishbaseData.value = null
       } finally {
         fishbaseLoading.value = false

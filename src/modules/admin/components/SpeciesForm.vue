@@ -1,7 +1,18 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed } from 'vue';
 import { useSpecies } from '../../species/composables/useSpecies';
-import { SpeciesStatus, MediaType, type Species, type CreateSpeciesInput } from '../../species/types/species';
+import { 
+  SpeciesStatus, 
+  MediaType, 
+  IUCNStatus, 
+  HabitatType, 
+  ReproductionMode, 
+  EcologicalValue, 
+  FishingClosureType,
+  type Media,
+  type Zone,
+  type CreateSpeciesInput 
+} from '../../species/types/species';
 
 const props = defineProps<{
   speciesId?: string;
@@ -9,9 +20,9 @@ const props = defineProps<{
 
 const emit = defineEmits(['close', 'saved']);
 
-const { 
-  getSpeciesDetail, 
-  createSpecies, 
+const {
+  getSpeciesDetail,
+  createSpecies,
   updateSpecies,
   updateTaxonomy,
   updateBiology,
@@ -24,36 +35,40 @@ const activeTab = ref('basic');
 const loading = ref(false);
 const saving = ref(false);
 
-const form = reactive<any>({
+const form = reactive({
   commonName: '',
   scientificName: '',
   emoji: '🐟',
   status: SpeciesStatus.DRAFT,
   taxonomy: { kingdom: 'Animalia', phylum: 'Chordata', class: '', order: '', family: '', genus: '', species: '' },
-  biology: { commonNames: [], description: '', feedingHabits: '', reproduction: '', reproductionMode: 'SEXUAL', weightAverageKg: 0, lengthAverageCm: 0 },
-  habitat: { distribution: '', depthRange: [0, 0], temperatureRange: [0, 0], environment: '', habitatType: 'MARINO' },
-  conservation: { iucnStatus: 'NE', cites: '', localProtection: '' },
-  fishery: { commercialValue: 'MEDIO', catchMethods: [], seasonality: '', closureType: 'TEMPORAL' },
-  media: [],
-  zones: []
+  biology: { commonNames: [] as string[], description: '', feedingHabits: '', reproduction: '', reproductionMode: ReproductionMode.SEXUAL, weightAverageKg: 0, lengthAverageCm: 0 },
+  habitat: { distribution: '', depthRange: [0, 0] as [number, number], temperatureRange: [0, 0] as [number, number], environment: '', habitatType: HabitatType.MARINO },
+  conservation: { iucnStatus: IUCNStatus.NE, cites: '', localProtection: '' },
+  fishery: { commercialValue: EcologicalValue.MEDIO, catchMethods: [] as string[], seasonality: '', closureType: FishingClosureType.TEMPORAL },
+  media: [] as Media[],
+  zones: [] as Zone[]
 });
 
 onMounted(async () => {
   if (props.speciesId) {
     loading.value = true;
     const { onResult, onError } = getSpeciesDetail(props.speciesId);
-    
+
     onResult((result) => {
       const s = result.data?.getSpeciesById;
       if (s) {
         // Deep merge/assign to keep reactivity for nested objects
         Object.keys(s).forEach(key => {
-          if (s[key] && typeof s[key] === 'object' && !Array.isArray(s[key])) {
-             form[key] = { ...form[key], ...s[key] };
-          } else if (Array.isArray(s[key])) {
-             form[key] = [...s[key]];
+          const k = key as keyof typeof form;
+          if (s[k] && typeof s[k] === 'object' && !Array.isArray(s[k])) {
+             // eslint-disable-next-line @typescript-eslint/no-explicit-any
+             (form as any)[k] = { ...(form as any)[k], ...s[k] };
+          } else if (Array.isArray(s[k])) {
+             // eslint-disable-next-line @typescript-eslint/no-explicit-any
+             (form as any)[k] = [...s[k]];
           } else {
-             form[key] = s[key];
+             // eslint-disable-next-line @typescript-eslint/no-explicit-any
+             (form as any)[k] = s[k];
           }
         });
       }
@@ -131,7 +146,7 @@ const handleAddMedia = async () => {
 const handleRemoveMedia = async (url: string) => {
   if (isNew.value) return;
   await removeMedia(props.speciesId!, url);
-  form.media = form.media.filter((m: any) => m.url !== url);
+  form.media = form.media.filter((m: { url: string }) => m.url !== url);
 };
 
 </script>
@@ -153,8 +168,8 @@ const handleRemoveMedia = async (url: string) => {
 
     <!-- Tabs Navigation -->
     <div class="bg-white px-6 border-b border-slate-200 sticky top-0 z-10 flex gap-2 overflow-x-auto">
-      <button 
-        v-for="tab in tabs" 
+      <button
+        v-for="tab in tabs"
         :key="tab.id"
         @click="activeTab = tab.id"
         :class="[
@@ -175,7 +190,7 @@ const handleRemoveMedia = async (url: string) => {
       </div>
 
       <div v-else class="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
-        
+
         <!-- Tab: Basic Info -->
         <div v-if="activeTab === 'basic'" class="space-y-6">
           <section class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
@@ -221,7 +236,7 @@ const handleRemoveMedia = async (url: string) => {
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div v-for="field in ['kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species']" :key="field" class="space-y-2">
                 <label class="text-xs font-black text-slate-600 uppercase">{{ field }}</label>
-                <input v-model="form.taxonomy[field]" type="text" class="w-full px-4 py-2 bg-white border-2 border-slate-300 rounded-lg focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 outline-none transition-all text-slate-900" />
+                <input v-model="(form.taxonomy as any)[field]" type="text" class="w-full px-4 py-2 bg-white border-2 border-slate-300 rounded-lg focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 outline-none transition-all text-slate-900" />
               </div>
             </div>
             <div class="pt-4 border-t border-slate-100 flex justify-end" v-if="!isNew">
@@ -247,9 +262,9 @@ const handleRemoveMedia = async (url: string) => {
               <div class="space-y-2">
                 <label class="text-xs font-black text-slate-600 uppercase">Reproduction Mode</label>
                 <select v-model="form.biology.reproductionMode" class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl text-slate-900 font-bold">
-                  <option value="SEXUAL">Sexual</option>
-                  <option value="ASEXUAL">Asexual</option>
-                  <option value="HERMAFRODITA">Hermafrodita</option>
+                  <option :value="ReproductionMode.SEXUAL">Sexual</option>
+                  <option :value="ReproductionMode.ASEXUAL">Asexual</option>
+                  <option :value="ReproductionMode.HERMAFRODITA">Hermafrodita</option>
                 </select>
               </div>
             </div>
@@ -269,24 +284,24 @@ const handleRemoveMedia = async (url: string) => {
               <div class="space-y-2">
                 <label class="text-xs font-black text-slate-600 uppercase">Habitat Type</label>
                 <select v-model="form.habitat.habitatType" class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl text-slate-900 font-bold">
-                  <option value="MARINO">Marino</option>
-                  <option value="AGUA_DULCE">Agua Dulce</option>
-                  <option value="ESTUARIO">Estuario</option>
-                  <option value="SALOBRE">Salobre</option>
+                  <option :value="HabitatType.MARINO">Marino</option>
+                  <option :value="HabitatType.AGUA_DULCE">Agua Dulce</option>
+                  <option :value="HabitatType.ESTUARIO">Estuario</option>
+                  <option :value="HabitatType.SALOBRE">Salobre</option>
                 </select>
               </div>
               <div class="space-y-2">
                 <label class="text-xs font-black text-slate-600 uppercase">IUCN Status</label>
                 <select v-model="form.conservation.iucnStatus" class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl text-slate-900 font-bold">
-                  <option value="NE">No Evaluado (NE)</option>
-                  <option value="DD">Datos Insuficientes (DD)</option>
-                  <option value="LC">Preocupación Menor (LC)</option>
-                  <option value="NT">Casi Amenazado (NT)</option>
-                  <option value="VU">Vulnerable (VU)</option>
-                  <option value="EN">En Peligro (EN)</option>
-                  <option value="CR">En Peligro Crítico (CR)</option>
-                  <option value="EW">Extinto en Naturaleza (EW)</option>
-                  <option value="EX">Extinto (EX)</option>
+                  <option :value="IUCNStatus.NE">No Evaluado (NE)</option>
+                  <option :value="IUCNStatus.DD">Datos Insuficientes (DD)</option>
+                  <option :value="IUCNStatus.LC">Preocupación Menor (LC)</option>
+                  <option :value="IUCNStatus.NT">Casi Amenazado (NT)</option>
+                  <option :value="IUCNStatus.VU">Vulnerable (VU)</option>
+                  <option :value="IUCNStatus.EN">En Peligro (EN)</option>
+                  <option :value="IUCNStatus.CR">En Peligro Crítico (CR)</option>
+                  <option :value="IUCNStatus.EW">Extinto en Naturaleza (EW)</option>
+                  <option :value="IUCNStatus.EX">Extinto (EX)</option>
                 </select>
               </div>
             </div>

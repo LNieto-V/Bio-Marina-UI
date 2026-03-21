@@ -65,7 +65,7 @@ export const useSpeciesStore = defineStore('species', () => {
     try {
       await new Promise(r => setTimeout(r, 400))
       allSpecies.value = [...MOCK_ESPECIES]
-    } catch (e) {
+    } catch {
       error.value = 'Error al cargar especies'
     } finally {
       loading.value = false
@@ -87,7 +87,7 @@ export const useSpeciesStore = defineStore('species', () => {
       fishbaseLoading.value = true
       try {
         fishbaseData.value = await searchFishBaseCached(species.nombreCientifico)
-      } catch (_) {
+      } catch {
         fishbaseData.value = null
       } finally {
         fishbaseLoading.value = false

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { Reporte, ConfigReporte, FormatoReporte } from '@/shared/types/reporte'
+import type { Reporte, ConfigReporte } from '@/shared/types/reporte'
 
 // ─── Mock recent reports ────────────────────────────────────
 const MOCK_REPORTES: Reporte[] = [

@@ -4,7 +4,7 @@ import { useSpeciesStore } from '../../species/stores/speciesStore';
 import { onMounted, watch } from 'vue';
 import { SpeciesStatus } from '../../species/types/species';
 
-const { speciesList, loadingSpecies, removeSpecies, refetchSpecies } = useSpecies();
+const { speciesList, loadingSpecies, removeSpecies } = useSpecies();
 const store = useSpeciesStore();
 
 const emit = defineEmits(['edit', 'create']);

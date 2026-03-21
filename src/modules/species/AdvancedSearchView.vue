@@ -55,8 +55,11 @@ const clearFilters = () => {
   currentPage.value = 1
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getImageUrl = (item: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return item.media?.find((m: any) => m.esPrincipal)?.url 
+     
     || item.media?.[0]?.url 
     || `https://placehold.co/400x300/0b3c5b/white?text=${encodeURIComponent(item.nombreCientifico)}`
 }
