@@ -2,6 +2,7 @@
 import { ref, reactive, computed, watch } from 'vue';
 import { useQuery } from '@vue/apollo-composable';
 import { useSpecies } from '../../species/composables/useSpecies';
+import { SpeciesStatus, MediaType, type Species, type CreateSpeciesInput } from '../../species/types/species';
 import { GET_SPECIES_BY_ID } from '../../species/graphql/species.operations';
 import { SpeciesStatus, type CreateSpeciesInput } from '../../species/types/species';
 
@@ -11,8 +12,8 @@ const props = defineProps<{
 
 const emit = defineEmits(['close', 'saved']);
 
-const { 
-  createSpecies, 
+const {
+  createSpecies,
   updateSpecies,
   updateTaxonomy,
   updateBiology,
@@ -39,28 +40,28 @@ const form = reactive<any>({
   bibliographicReferences: [],
   completeness: 0,
   taxonomy: { kingdom: 'Animalia', phylum: 'Chordata', class: '', order: '', family: '', genus: '', species: '' },
-  biology: { 
-    diet: [], 
-    reproductionMode: 'OVIPAROUS', 
-    averageWeightKg: 0, 
-    maximumWeightKg: 0, 
-    averageLengthCm: 0, 
+  biology: {
+    diet: [],
+    reproductionMode: 'OVIPAROUS',
+    averageWeightKg: 0,
+    maximumWeightKg: 0,
+    averageLengthCm: 0,
     maximumLengthCm: 0,
     trophicLevel: 0,
     migration: false,
     longevityYears: 0
   },
-  habitat: { 
-    type: 'PELAGIC', 
-    minDepthM: 0, 
-    maxDepthM: 0, 
-    minTempC: 0, 
-    maxTempC: 0, 
-    salinityPpt: 0, 
+  habitat: {
+    type: 'PELAGIC',
+    minDepthM: 0,
+    maxDepthM: 0,
+    minTempC: 0,
+    maxTempC: 0,
+    salinityPpt: 0,
     substrate: [],
   },
-  conservation: { 
-    iucn: 'NE', 
+  conservation: {
+    iucn: 'NE',
     iucnYear: new Date().getFullYear(),
     closureType: 'TEMPORARY',
     closureMonths: [],
@@ -68,21 +69,21 @@ const form = reactive<any>({
     protected: false,
     legalNotes: ''
   },
-  fishery: { 
-    commercialValue: '', 
-    annualCatchTon: 0, 
-    artisanal: false, 
-    industrial: false, 
-    aquariumTrade: false, 
-    fishingGears: [], 
-    mainPorts: [] 
+  fishery: {
+    commercialValue: '',
+    annualCatchTon: 0,
+    artisanal: false,
+    industrial: false,
+    aquariumTrade: false,
+    fishingGears: [],
+    mainPorts: []
   },
   media: [],
   zones: []
 });
 
-const { result, loading: queryLoading, error } = useQuery(GET_SPECIES_BY_ID, 
-  () => ({ id: props.speciesId }), 
+const { result, loading: queryLoading, error } = useQuery(GET_SPECIES_BY_ID,
+  () => ({ id: props.speciesId }),
   () => ({ enabled: !!props.speciesId, fetchPolicy: 'network-only' })
 );
 
@@ -165,8 +166,8 @@ const handleSaveSection = async (section: string) => {
     switch (section) {
       case 'taxonomy': await updateTaxonomy(props.speciesId!, form.taxonomy); break;
       case 'biology': await updateBiology(props.speciesId!, form.biology); break;
-      case 'habitat': 
-        await updateHabitat(props.speciesId!, form.habitat); 
+      case 'habitat':
+        await updateHabitat(props.speciesId!, form.habitat);
         await updateConservation(props.speciesId!, form.conservation);
         break;
       case 'fishery': await updateFishery(props.speciesId!, form.fishery); break;
@@ -179,8 +180,8 @@ const handleSaveSection = async (section: string) => {
 const newMediaUrl = ref('');
 const handleAddMedia = async () => {
   if (!newMediaUrl.value || isNew.value) return;
-  await addMedia(props.speciesId!, { url: newMediaUrl.value, type: 'IMAGE', title: '' });
-  form.media.push({ url: newMediaUrl.value, type: 'IMAGE', title: '' });
+  await addMedia(props.speciesId!, { url: newMediaUrl.value, type: MediaType.IMAGE, title: '' });
+  form.media.push({ url: newMediaUrl.value, type: MediaType.IMAGE, title: '' });
   newMediaUrl.value = '';
 };
 
@@ -209,8 +210,8 @@ const handleRemoveMedia = async (url: string) => {
 
     <!-- Tabs Navigation -->
     <div class="bg-white px-6 border-b border-slate-200 sticky top-0 z-10 flex gap-2 overflow-x-auto">
-      <button 
-        v-for="tab in tabs" 
+      <button
+        v-for="tab in tabs"
         :key="tab.id"
         @click="activeTab = tab.id"
         :class="[
@@ -231,7 +232,7 @@ const handleRemoveMedia = async (url: string) => {
       </div>
 
       <div v-else class="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
-        
+
         <div v-if="activeTab === 'basic'" class="space-y-6">
           <section class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -251,7 +252,7 @@ const handleRemoveMedia = async (url: string) => {
                   <div class="flex-1 text-xs text-slate-500 bg-slate-50 p-3 rounded-xl flex items-center">Used as a visual identifier in maps and lists.</div>
                 </div>
               </div>
-              
+
               <div class="space-y-2 col-span-2">
                 <label class="text-sm font-black text-slate-900 uppercase tracking-tight">Alternative Common Names (Separated by commas)</label>
                 <div class="flex flex-wrap gap-2 mb-2" v-if="form.alternativeCommonNames.length">
@@ -260,14 +261,14 @@ const handleRemoveMedia = async (url: string) => {
                     <button @click="form.alternativeCommonNames.splice(i, 1)" class="hover:text-rose-600">×</button>
                   </span>
                 </div>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   placeholder="Type and press Enter to add..."
-                  @keydown.enter.prevent="(e) => { 
-                    const val = (e.target as HTMLInputElement).value.trim(); 
+                  @keydown.enter.prevent="(e) => {
+                    const val = (e.target as HTMLInputElement).value.trim();
                     if (val) { form.alternativeCommonNames.push(val); (e.target as HTMLInputElement).value = ''; }
                   }"
-                  class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl outline-none" 
+                  class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl outline-none"
                 />
               </div>
 
@@ -278,14 +279,14 @@ const handleRemoveMedia = async (url: string) => {
                     {{ ref }} <button @click="form.bibliographicReferences.splice(i, 1)" class="ml-1 text-slate-400 hover:text-rose-600">×</button>
                   </span>
                 </div>
-                <input 
-                  type="text" 
-                  @keydown.enter.prevent="(e) => { 
-                    const v = (e.target as HTMLInputElement).value.trim(); 
-                    if (v) { form.bibliographicReferences.push(v); (e.target as HTMLInputElement).value = ''; } 
+                <input
+                  type="text"
+                  @keydown.enter.prevent="(e) => {
+                    const v = (e.target as HTMLInputElement).value.trim();
+                    if (v) { form.bibliographicReferences.push(v); (e.target as HTMLInputElement).value = ''; }
                   }"
                   placeholder="e.g. FAO Species Fact Sheets: Engraulis ringens"
-                  class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl outline-none focus:border-indigo-600" 
+                  class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl outline-none focus:border-indigo-600"
                 />
               </div>
 
@@ -296,14 +297,14 @@ const handleRemoveMedia = async (url: string) => {
                     💡 {{ fact }} <button @click="form.funFacts.splice(i, 1)" class="ml-1 text-amber-400 hover:text-rose-600">×</button>
                   </span>
                 </div>
-                <input 
-                  type="text" 
-                  @keydown.enter.prevent="(e) => { 
-                    const v = (e.target as HTMLInputElement).value.trim(); 
-                    if (v) { form.funFacts.push(v); (e.target as HTMLInputElement).value = ''; } 
+                <input
+                  type="text"
+                  @keydown.enter.prevent="(e) => {
+                    const v = (e.target as HTMLInputElement).value.trim();
+                    if (v) { form.funFacts.push(v); (e.target as HTMLInputElement).value = ''; }
                   }"
                   placeholder="e.g. It is the most captured marine species in the world."
-                  class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl outline-none focus:border-indigo-600" 
+                  class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl outline-none focus:border-indigo-600"
                 />
               </div>
 
@@ -321,7 +322,7 @@ const handleRemoveMedia = async (url: string) => {
                 <label class="text-sm font-black text-slate-900 uppercase tracking-tight">Completeness (%)</label>
                 <input v-model.number="form.completeness" type="number" step="0.1" class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl outline-none" />
               </div>
-              
+
               <div class="space-y-2">
                 <label class="text-sm font-black text-slate-900 uppercase tracking-tight">Record Status</label>
                 <select v-model="form.status" class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 outline-none transition-all text-slate-900 font-bold">
@@ -370,10 +371,10 @@ const handleRemoveMedia = async (url: string) => {
                     {{ item }} <button @click="form.biology.diet.splice(i, 1)">×</button>
                   </span>
                 </div>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   @keydown.enter.prevent="(e) => { const v = (e.target as HTMLInputElement).value.trim(); if (v) { form.biology.diet.push(v); (e.target as HTMLInputElement).value = ''; } }"
-                  class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg" 
+                  class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg"
                 />
               </div>
 
@@ -472,11 +473,11 @@ const handleRemoveMedia = async (url: string) => {
                     {{ item }} <button @click="form.habitat.substrate.splice(i, 1)">×</button>
                   </span>
                 </div>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   @keydown.enter.prevent="(e) => { const v = (e.target as HTMLInputElement).value.trim(); if (v) { form.habitat.substrate.push(v); (e.target as HTMLInputElement).value = ''; } }"
                   placeholder="e.g. Water column, Rocky reef..."
-                  class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg" 
+                  class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg"
                 />
               </div>
             </div>
@@ -521,7 +522,7 @@ const handleRemoveMedia = async (url: string) => {
               <div class="space-y-2 col-span-2">
                 <label class="text-xs font-black text-slate-600 uppercase italic">Fishing Closure Months</label>
                 <div class="grid grid-cols-4 md:grid-cols-6 gap-2">
-                  <label v-for="m in ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']" :key="m" 
+                  <label v-for="m in ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']" :key="m"
                     class="flex items-center gap-1 text-[10px] font-bold p-1 border rounded cursor-pointer transition-colors"
                     :class="form.conservation.closureMonths.includes(m) ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-400 border-slate-200'"
                   >
@@ -567,7 +568,7 @@ const handleRemoveMedia = async (url: string) => {
                   <input v-model="form.fishery.aquariumTrade" type="checkbox" class="w-4 h-4 accent-indigo-600" /> Aquarium
                 </label>
               </div>
-              
+
               <div class="space-y-2">
                 <label class="text-xs font-black text-slate-600 uppercase">Fishing Gears Used</label>
                 <div class="flex flex-wrap gap-2 mb-2" v-if="form.fishery.fishingGears.length">
@@ -575,11 +576,11 @@ const handleRemoveMedia = async (url: string) => {
                     {{ gear }} <button @click="form.fishery.fishingGears.splice(i, 1)">×</button>
                   </span>
                 </div>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   @keydown.enter.prevent="(e) => { const v = (e.target as HTMLInputElement).value.trim(); if (v) { form.fishery.fishingGears.push(v); (e.target as HTMLInputElement).value = ''; } }"
                   placeholder="e.g. Purse seine, Trawling..."
-                  class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg" 
+                  class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg"
                 />
               </div>
 
@@ -590,11 +591,11 @@ const handleRemoveMedia = async (url: string) => {
                     {{ port }} <button @click="form.fishery.mainPorts.splice(i, 1)">×</button>
                   </span>
                 </div>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   @keydown.enter.prevent="(e) => { const v = (e.target as HTMLInputElement).value.trim(); if (v) { form.fishery.mainPorts.push(v); (e.target as HTMLInputElement).value = ''; } }"
                   placeholder="e.g. Chimbote, Pisco..."
-                  class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg" 
+                  class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg"
                 />
               </div>
             </div>
