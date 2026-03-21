@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAdminStore } from '@/app/stores/adminStore'
 
 const route      = useRoute()
 const adminStore = useAdminStore()
+
+const emit = defineEmits<{
+  (e: 'toggle-sidebar'): void
+}>()
 
 const notificationsOpen = ref(false)
 
@@ -19,16 +23,23 @@ const pageTitle = computed(() => {
   }
   return map[route.name as string] ?? 'Admin Panel'
 })
-
-import { computed } from 'vue'
 </script>
 
 <template>
-  <header class="sticky top-0 z-30 flex items-center gap-4 px-6 py-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-colors">
+  <header class="sticky top-0 z-30 flex items-center gap-2 md:gap-4 px-4 sm:px-6 py-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-colors">
+    
+    <!-- Mobile Hamburger -->
+    <button 
+      @click="emit('toggle-sidebar')"
+      class="lg:hidden p-2 -ml-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shrink-0"
+    >
+      <span class="material-symbols-outlined text-[24px]">menu</span>
+    </button>
+
     <!-- Page Title -->
     <div class="flex-1 min-w-0">
       <h2 class="text-sm font-black text-slate-900 dark:text-white truncate">{{ pageTitle }}</h2>
-      <p class="text-[10px] text-slate-400 font-medium">
+      <p class="text-[10px] text-slate-400 font-medium hidden sm:block">
         BioMarina · Panel de Administración
       </p>
     </div>
@@ -53,7 +64,15 @@ import { computed } from 'vue'
     </div>
 
     <!-- Action Bar -->
-    <div class="flex items-center gap-1">
+    <div class="flex items-center gap-1 shrink-0">
+      <RouterLink
+        to="/"
+        title="Volver al sitio"
+        class="lg:hidden p-2 rounded-lg text-slate-500 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+      >
+        <span class="material-symbols-outlined text-[20px]">open_in_new</span>
+      </RouterLink>
+
       <!-- Notifications -->
       <button
         @click="notificationsOpen = !notificationsOpen"
@@ -64,14 +83,14 @@ import { computed } from 'vue'
       </button>
 
       <!-- Help -->
-      <button class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+      <button class="hidden sm:block p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
         <span class="material-symbols-outlined text-[20px]">help</span>
       </button>
 
-      <div class="w-px h-5 bg-slate-200 dark:bg-slate-700 mx-1" />
+      <div class="hidden sm:block w-px h-5 bg-slate-200 dark:bg-slate-700 mx-1" />
 
       <!-- Dark mode (cosmetic for now) -->
-      <button class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+      <button class="hidden sm:block p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
         <span class="material-symbols-outlined text-[20px]">dark_mode</span>
       </button>
     </div>
