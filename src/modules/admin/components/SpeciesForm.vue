@@ -653,16 +653,6 @@ const handleRemoveMedia = async (mediaId: string, url: string) => {
               <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">Multimedia & Galería</h3>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Gestiona las imágenes que se mostrarán en el catálogo público.</p>
             </div>
-<<<<<<< HEAD
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <div v-for="m in form.media" :key="m.url" class="relative group aspect-square rounded-lg overflow-hidden bg-slate-100 border border-slate-200">
-                <img :src="m.url" class="w-full h-full object-cover" />
-                <button @click="handleRemoveMedia(m._id, m.url)" class="absolute top-2 right-2 p-1.5 bg-rose-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="6 18L18 6M6 6l12 12" />
-                  </svg>
-=======
-
             <div class="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-[24px] border border-dashed border-slate-200 dark:border-slate-700 space-y-4">
               <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-1">Nueva URL de Imagen</label>
               <div class="flex gap-3">
@@ -670,7 +660,6 @@ const handleRemoveMedia = async (mediaId: string, url: string) => {
                 <button @click="handleAddMedia" class="px-8 bg-primary hover:bg-primary-dark text-white rounded-xl font-black text-sm shadow-xl shadow-primary/30 transition-all active:scale-95 flex items-center gap-2">
                   <span class="material-symbols-outlined text-[20px]">add_photo_alternate</span>
                   Agregar
->>>>>>> ef1803f0edfb3824a34d9a682d8d87ba8acd6a19
                 </button>
               </div>
             </div>
