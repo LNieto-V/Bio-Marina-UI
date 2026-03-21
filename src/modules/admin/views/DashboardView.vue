@@ -7,7 +7,7 @@ import { useAdminPermissions } from '@/shared/composables/useAdminPermissions'
 import StatCard    from '../components/dashboard/StatCard.vue'
 import HabitatChart from '../components/dashboard/HabitatChart.vue'
 import UicnChart   from '../components/dashboard/UicnChart.vue'
-import { UICN_LABELS, UICN_COLORS, type Especie, type Media } from '@/shared/types/especie'
+import { UICN_COLORS, type Especie, type Media } from '@/shared/types/especie'
 
 const adminStore   = useAdminStore()
 const speciesStore = useSpeciesStore()

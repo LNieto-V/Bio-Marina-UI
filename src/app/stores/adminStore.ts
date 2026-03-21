@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { useSpeciesStore } from './speciesStore'
-import type { Especie, EstadisticasCatalogo } from '@/shared/types/especie'
+import type { EstadisticasCatalogo } from '@/shared/types/especie'
 
 export const useAdminStore = defineStore('admin', () => {
   const speciesStore = useSpeciesStore()

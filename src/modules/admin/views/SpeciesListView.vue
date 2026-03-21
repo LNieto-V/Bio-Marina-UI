@@ -2,17 +2,15 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAdminStore } from '@/app/stores/adminStore'
-import { useSpeciesStore } from '@/app/stores/speciesStore'
 import { useAdminPermissions } from '@/shared/composables/useAdminPermissions'
 import SpeciesFilters from '../components/species/SpeciesFilters.vue'
 import SpeciesTable  from '../components/species/SpeciesTable.vue'
 import SpeciesPreview from '../components/species/SpeciesPreview.vue'
 import type { Especie } from '@/shared/types/especie'
-import type { TipoHabitat, EstadoUICN, EstadoPublicacion } from '@/shared/types/especie'
+import type { TipoHabitat, EstadoUICN } from '@/shared/types/especie'
 
 const router       = useRouter()
 const adminStore   = useAdminStore()
-const speciesStore = useSpeciesStore()
 const { can }      = useAdminPermissions()
 
 // Filter state

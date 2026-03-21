@@ -9,8 +9,11 @@ const featuredSpecies = computed(() => {
   return MOCK_ESPECIES.slice(0, 3)
 })
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getImageUrl = (item: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (item.media as any[])?.find((m: any) => m.esPrincipal)?.url 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     || (item.media as any[])?.[0]?.url 
     || `https://placehold.co/400x300/0b3c5b/white?text=${encodeURIComponent(item.nombreCientifico)}`
 }

@@ -27,7 +27,7 @@ const activeTab = ref('basic');
 const loading = ref(false);
 const saving = ref(false);
 
-const form = reactive<any>({
+const form = reactive({
   commonName: '',
   scientificName: '',
   alternativeCommonNames: [],
@@ -179,15 +179,15 @@ const handleSaveSection = async (section: string) => {
 const newMediaUrl = ref('');
 const handleAddMedia = async () => {
   if (!newMediaUrl.value || isNew.value) return;
-  await addMedia(props.speciesId!, { url: newMediaUrl.value, type: 'IMAGE', title: '' });
-  form.media.push({ url: newMediaUrl.value, type: 'IMAGE', title: '' });
+  await addMedia(props.speciesId!, { url: newMediaUrl.value, type: MediaType.IMAGE, title: '' });
+  form.media.push({ url: newMediaUrl.value, type: MediaType.IMAGE, title: '' });
   newMediaUrl.value = '';
 };
 
 const handleRemoveMedia = async (url: string) => {
   if (isNew.value) return;
   await removeMedia(props.speciesId!, url);
-  form.media = form.media.filter((m: any) => m.url !== url);
+  form.media = form.media.filter((m: { url: string }) => m.url !== url);
 };
 
 </script>
@@ -209,8 +209,8 @@ const handleRemoveMedia = async (url: string) => {
 
     <!-- Tabs Navigation -->
     <div class="bg-white px-6 border-b border-slate-200 sticky top-0 z-10 flex gap-2 overflow-x-auto">
-      <button 
-        v-for="tab in tabs" 
+      <button
+        v-for="tab in tabs"
         :key="tab.id"
         @click="activeTab = tab.id"
         :class="[
@@ -348,7 +348,7 @@ const handleRemoveMedia = async (url: string) => {
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div v-for="field in ['kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species']" :key="field" class="space-y-2">
                 <label class="text-xs font-black text-slate-600 uppercase">{{ field }}</label>
-                <input v-model="form.taxonomy[field]" type="text" class="w-full px-4 py-2 bg-white border-2 border-slate-300 rounded-lg focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 outline-none transition-all text-slate-900" />
+                <input v-model="(form.taxonomy as any)[field]" type="text" class="w-full px-4 py-2 bg-white border-2 border-slate-300 rounded-lg focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 outline-none transition-all text-slate-900" />
               </div>
             </div>
             <div class="pt-4 border-t border-slate-100 flex justify-end" v-if="!isNew">
