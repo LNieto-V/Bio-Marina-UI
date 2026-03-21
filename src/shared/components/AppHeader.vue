@@ -1,33 +1,18 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { useAuth } from '@/shared/composables/useAuth'
 
 const { isAuthenticated } = useAuth()
 const route = useRoute()
 
-const isDark = ref(false)
 const isMenuOpen = ref(false)
-
-const toggleTheme = () => {
-  isDark.value = !isDark.value
-  if (isDark.value) {
-    document.documentElement.classList.add('dark')
-    localStorage.setItem('theme', 'dark')
-  } else {
-    document.documentElement.classList.remove('dark')
-    localStorage.setItem('theme', 'light')
-  }
-}
 
 // Close mobile menu on route change
 watch(() => route.path, () => {
   isMenuOpen.value = false
 })
 
-onMounted(() => {
-  isDark.value = document.documentElement.classList.contains('dark')
-})
 </script>
 
 <template>
@@ -75,15 +60,7 @@ onMounted(() => {
           Panel Admin
         </RouterLink>
 
-        <button
-          @click="toggleTheme"
-          class="flex items-center justify-center rounded-lg h-9 w-9 md:h-10 md:w-10 bg-primary/5 text-primary hover:bg-primary/10 dark:text-slate-100 dark:bg-white/5 dark:hover:bg-white/10 transition-colors"
-          :title="isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
-        >
-          <span class="material-symbols-outlined shrink-0">
-            {{ isDark ? 'light_mode' : 'dark_mode' }}
-          </span>
-        </button>
+
         <button class="hidden sm:flex items-center justify-center rounded-lg h-9 w-9 md:h-10 md:w-10 bg-primary/5 text-primary hover:bg-primary/10 dark:text-slate-100 dark:bg-white/5 dark:hover:bg-white/10 transition-colors">
           <span class="material-symbols-outlined shrink-0">notifications</span>
         </button>

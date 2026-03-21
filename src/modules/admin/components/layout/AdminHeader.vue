@@ -88,11 +88,6 @@ const pageTitle = computed(() => {
       </button>
 
       <div class="hidden sm:block w-px h-5 bg-slate-200 dark:bg-slate-700 mx-1" />
-
-      <!-- Dark mode (cosmetic for now) -->
-      <button class="hidden sm:block p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-        <span class="material-symbols-outlined text-[20px]">dark_mode</span>
-      </button>
     </div>
   </header>
 </template>

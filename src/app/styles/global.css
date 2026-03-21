@@ -48,7 +48,7 @@
 
 .dark {
   --bg-color: var(--color-background-dark);
-  --text-color: var(--color-slate-100);
+  --text-color: #ffffff;
   --card-bg: var(--color-slate-900);
   --card-border: rgba(34, 211, 238, 0.1);
   --primary: #22d3ee; /* Cyan accent for dark mode pop */
@@ -138,7 +138,7 @@ textarea {
 /* Fix select option text in dark mode */
 .dark select option {
   background-color: #0f172a;
-  color: #f1f5f9;
+  color: #ffffff;
 }
 
 /* Placeholder styling */
@@ -150,11 +150,11 @@ textarea::placeholder {
 
 .dark input::placeholder,
 .dark textarea::placeholder {
-  color: #cbd5e1; /* slate-300 */
+  color: #ffffff; /* white */
 }
 
 .dark label,
 .dark .text-slate-400, 
 .dark .text-slate-500 {
-  color: #e2e8f0; /* Force lighter gray for better contrast on all small labels */
+  color: #ffffff; /* white */
 }
