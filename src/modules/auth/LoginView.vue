@@ -109,12 +109,6 @@ const handleLogin = async (e: Event) => {
             {{ error }}
           </div>
 
-          <!-- Demo Credentials Hint -->
-          <div class="bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-3 text-xs text-slate-500 dark:text-slate-400 border border-dashed border-slate-300 dark:border-slate-700">
-            <p class="font-bold mb-1 text-slate-600 dark:text-slate-300">💡 Demo rápido:</p>
-            <p><code class="font-mono">admin@biomarina.edu.co</code> / <code class="font-mono">admin123</code></p>
-            <p><code class="font-mono">investigador@biomarina.edu.co</code> / <code class="font-mono">inv123</code></p>
-          </div>
 
           <div class="flex items-center justify-between">
             <label class="flex items-center gap-3 cursor-pointer group">
