@@ -172,6 +172,7 @@ const handleSaveBase = async () => {
     }
   } finally {
     saving.value = false;
+    emit('close')
   }
 };
 
