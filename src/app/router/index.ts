@@ -60,26 +60,8 @@ const router = createRouter({
         {
           path: 'species',
           name: 'admin-species',
-          component: () => import('../../modules/admin/views/SpeciesListView.vue'),
-          meta: { title: 'Especies · BioMarina Admin' },
-        },
-        {
-          path: 'species/create',
-          name: 'admin-species-create',
-          component: () => import('../../modules/admin/views/SpeciesCreateView.vue'),
-          meta: {
-            title: 'Nueva Especie · BioMarina Admin',
-            roles: ['admin', 'investigador'],
-          },
-        },
-        {
-          path: 'species/:id/edit',
-          name: 'admin-species-edit',
-          component: () => import('../../modules/admin/views/SpeciesEditView.vue'),
-          meta: {
-            title: 'Editar Especie · BioMarina Admin',
-            roles: ['admin', 'investigador', 'editor'],
-          },
+          component: () => import('../../modules/admin/views/SpeciesAdminView.vue'),
+          meta: { title: 'Species Inventory · BioMarina Admin' },
         },
         {
           path: 'users',
