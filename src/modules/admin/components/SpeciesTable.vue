@@ -39,128 +39,127 @@ const handleDelete = async (id: string) => {
 
 const getStatusColor = (status: SpeciesStatus) => {
   switch (status) {
-    case SpeciesStatus.PUBLISHED: return 'bg-emerald-100 text-emerald-700 border-emerald-200';
-    case SpeciesStatus.DRAFT: return 'bg-amber-100 text-amber-700 border-amber-200';
-    case SpeciesStatus.REVISION: return 'bg-blue-100 text-blue-700 border-blue-200';
-    default: return 'bg-gray-100 text-gray-700 border-gray-200';
+    case SpeciesStatus.PUBLISHED: return 'bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/50';
+    case SpeciesStatus.DRAFT: return 'bg-amber-50 text-amber-600 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800/50';
+    case SpeciesStatus.REVISION: return 'bg-blue-50 text-blue-600 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800/50';
+    default: return 'bg-slate-50 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700';
   }
 };
 </script>
 
 <template>
-  <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-    <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+  <div class="bg-white dark:bg-slate-900 rounded-2xl border border-primary/10 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col min-w-0 transition-colors">
+    <div class="p-4 sm:p-6 border-b border-primary/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
-        <h2 class="text-lg font-bold text-slate-800">Species Inventory</h2>
-        <p class="text-sm text-slate-500">Manage all registered species and their publication status.</p>
+        <h2 class="text-xl sm:text-2xl font-black gradient-text">Species Inventory</h2>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">Manage all registered species and their publication status.</p>
       </div>
       <button 
         @click="emit('create')"
-        class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2 shadow-sm"
+        class="flex justify-center items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white px-5 py-2.5 rounded-xl font-black shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-[1.02] transition-all active:scale-95"
       >
-        <span class="text-lg font-bold">+</span> Add New Species
+        <span class="material-symbols-outlined text-[20px]">add_circle</span>
+        <span>Nueva Especie</span>
       </button>
     </div>
 
-    <div class="p-4 bg-white border-b border-slate-100 flex gap-4">
-      <div class="relative flex-1">
+    <div class="p-4 sm:p-6 bg-slate-50/50 dark:bg-slate-800/20 border-b border-primary/10 dark:border-slate-800 flex flex-col sm:flex-row gap-4">
+      <div class="relative flex-1 group">
         <input 
           v-model="store.searchQuery"
           type="text" 
           placeholder="Search species by name..." 
-          class="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none"
+          class="w-full pl-10 pr-4 py-2.5 sm:py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm font-medium transition-all outline-none dark:text-slate-100 placeholder:text-slate-400"
         />
-        <div class="absolute left-3 top-2.5 text-slate-400">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
+        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">
+          <span class="material-symbols-outlined text-[20px]">search</span>
         </div>
       </div>
       <select 
         v-model="store.statusFilter"
-        class="px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+        class="px-4 py-2.5 sm:py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm font-bold text-slate-600 dark:text-slate-300 transition-all outline-none w-full sm:w-auto cursor-pointer"
       >
         <option value="ALL">All Status</option>
         <option :value="SpeciesStatus.DRAFT">Draft</option>
         <option :value="SpeciesStatus.PUBLISHED">Published</option>
         <option :value="SpeciesStatus.REVISION">Revision</option>
-
       </select>
     </div>
 
-    <div class="overflow-x-auto">
-      <table class="w-full text-left border-collapse">
-        <thead class="bg-indigo-50 border-b-2 border-slate-200">
-          <tr>
-            <th class="px-6 py-4 text-xs font-black text-slate-800 uppercase tracking-wider">Species</th>
-            <th class="px-6 py-4 text-xs font-black text-slate-800 uppercase tracking-wider">Status</th>
-            <th class="px-6 py-4 text-xs font-black text-slate-800 uppercase tracking-wider">Completeness</th>
-            <th class="px-6 py-4 text-xs font-black text-slate-800 uppercase tracking-wider text-right">Actions</th>
+    <div class="overflow-x-auto w-full">
+      <table class="w-full text-left whitespace-nowrap min-w-[700px]">
+        <thead>
+          <tr class="bg-slate-50/50 dark:bg-slate-800/50 border-b border-primary/5">
+            <th class="px-4 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Species</th>
+            <th class="px-4 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</th>
+            <th class="px-4 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Completeness</th>
+            <th class="px-4 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Actions</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-slate-100">
+        <tbody class="divide-y divide-primary/5">
           <tr v-if="store.loading" class="animate-pulse">
-            <td colspan="4" class="px-6 py-8 text-center text-slate-400">Loading species data...</td>
+            <td colspan="4" class="px-6 py-8 text-center text-sm font-bold text-slate-400">Loading species data...</td>
           </tr>
           <tr v-else-if="store.filteredSpecies.length === 0">
             <td colspan="4" class="px-6 py-12 text-center text-slate-400">
               <div class="flex flex-col items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>No species found matching your filters.</span>
+                <span class="material-symbols-outlined text-4xl text-slate-300 dark:text-slate-600">fish</span>
+                <span class="text-sm font-bold">No species found matching your filters.</span>
               </div>
             </td>
           </tr>
           <tr 
             v-for="s in store.filteredSpecies" 
             :key="s._id" 
-            class="hover:bg-slate-50/80 transition-colors group"
+            class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group"
           >
-            <td class="px-6 py-4 whitespace-nowrap">
+            <td class="px-4 sm:px-6 py-3 sm:py-4">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center text-xl shadow-sm">
+                <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center text-xl shadow-sm border border-primary/5 shrink-0">
                   {{ s.emoji || '🐟' }}
                 </div>
                 <div>
-                  <div class="font-bold text-slate-800">{{ s.commonName }}</div>
-                  <div class="text-xs italic text-slate-600 font-medium">{{ s.scientificName }}</div>
+                  <div class="font-bold text-sm text-slate-900 dark:text-slate-100">{{ s.commonName }}</div>
+                  <div class="text-[11px] font-bold text-slate-500 uppercase">{{ s.scientificName }}</div>
                 </div>
               </div>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap">
+            <td class="px-4 sm:px-6 py-3 sm:py-4">
               <span 
-                :class="['px-2.5 py-1 rounded-full text-xs font-bold uppercase transition-all ring-1 ring-white shadow-sm', getStatusColor(s.status)]"
+                :class="['px-2.5 py-1 rounded-full text-[10px] font-black tracking-wide uppercase shadow-sm border', getStatusColor(s.status)]"
               >
                 {{ s.status }}
               </span>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="flex items-center gap-2 max-w-[120px]">
-                <div class="flex-1 bg-slate-100 rounded-full h-1.5 overflow-hidden">
+            <td class="px-4 sm:px-6 py-3 sm:py-4 w-32 sm:w-48">
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between text-[9px] font-black text-slate-500 uppercase">
+                  <span>{{ Math.round(s.completeness) }}%</span>
+                </div>
+                <div class="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                   <div 
-                    class="bg-indigo-500 h-full rounded-full transition-all duration-1000" 
-                    :style="{ width: `${s.completeness}%` }"
+                    class="h-full rounded-full transition-all duration-1000" 
+                    :class="s.completeness > 80 ? 'bg-emerald-500' : s.completeness > 50 ? 'bg-primary dark:bg-blue-500' : 'bg-rose-500'"
+                    :style="`width: ${s.completeness}%`"
                   ></div>
                 </div>
-                <span class="text-xs font-semibold text-slate-600">{{ Math.round(s.completeness) }}%</span>
               </div>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap text-right">
-              <div class="flex justify-end gap-2 relative z-10">
+            <td class="px-4 sm:px-6 py-3 sm:py-4 text-right">
+              <div class="flex justify-end gap-1 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity">
                 <button 
                   @click="emit('edit', s._id)"
-                  class="p-2 text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg transition-all shadow-sm"
-                  title="Edit Species"
+                  class="p-1.5 hover:bg-primary/10 rounded-lg text-slate-400 hover:text-primary dark:hover:text-blue-400 transition-colors"
+                  title="Editar Especie"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                  <span class="material-symbols-outlined text-[20px]">edit</span>
                 </button>
                 <button 
                   @click="handleDelete(s._id)"
-                  class="p-2 text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-lg transition-all shadow-sm"
-                  title="Delete Species"
+                  class="p-1.5 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg text-slate-400 hover:text-rose-500 transition-colors"
+                  title="Eliminar Especie"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                  <span class="material-symbols-outlined text-[20px]">delete</span>
                 </button>
               </div>
             </td>
