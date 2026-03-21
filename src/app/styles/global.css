@@ -3,18 +3,18 @@
 @theme {
   --color-primary: var(--primary);
   
-  /* Vibrant oceanic palette — alive & saturated */
-  --color-slate-50: #f0f7ff;
-  --color-slate-100: #dfeefb;
-  --color-slate-200: #bddcf7;
-  --color-slate-300: #8ac3f0;
-  --color-slate-400: #4da3e5;
-  --color-slate-500: #2684d6;
-  --color-slate-600: #1766b8;
-  --color-slate-700: #145295;
-  --color-slate-800: #0e2b4f;
-  --color-slate-900: #0a1f38;
-  --color-slate-950: #05101a;
+  /* Ocean-tinted neutral palette — readable & themed */
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
+  --color-slate-950: #020617;
 
   --color-background-light: var(--color-slate-50);
   --color-background-dark: var(--color-slate-950);
@@ -137,8 +137,8 @@ textarea {
 
 /* Fix select option text in dark mode */
 .dark select option {
-  background-color: #0a1f38;
-  color: #dfeefb;
+  background-color: #0f172a;
+  color: #f1f5f9;
 }
 
 /* Placeholder styling */
