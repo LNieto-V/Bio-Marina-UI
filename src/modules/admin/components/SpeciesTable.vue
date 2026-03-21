@@ -111,12 +111,12 @@ const getStatusColor = (status: SpeciesStatus) => {
           </tr>
           <tr 
             v-for="s in store.filteredSpecies" 
-            :key="s._id" 
+            :key="s?._id" 
             class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group"
           >
             <!-- Thumbnail -->
             <td class="px-4 sm:px-6 py-3 sm:py-4">
-              <div class="size-11 rounded-xl bg-primary/10 overflow-hidden shadow-sm border border-primary/5 shrink-0 flex items-center justify-center">
+              <div v-if="s" class="size-11 rounded-xl bg-primary/10 overflow-hidden shadow-sm border border-primary/5 shrink-0 flex items-center justify-center">
                 <img 
                   v-if="s.media && s.media.length > 0" 
                   :src="s.media[0].url" 
@@ -127,7 +127,7 @@ const getStatusColor = (status: SpeciesStatus) => {
             </td>
 
             <td class="px-4 sm:px-6 py-3 sm:py-4">
-              <div>
+              <div v-if="s">
                 <div class="font-bold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
                   {{ s.commonName }}
                   <span v-if="!s.media || s.media.length === 0" class="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded italic">Sin foto</span>
@@ -137,13 +137,14 @@ const getStatusColor = (status: SpeciesStatus) => {
             </td>
             <td class="px-4 sm:px-6 py-3 sm:py-4">
               <span 
+                v-if="s"
                 :class="['px-2.5 py-1 rounded-full text-[10px] font-black tracking-wide uppercase shadow-sm border', getStatusColor(s.status)]"
               >
                 {{ s.status }}
               </span>
             </td>
             <td class="px-4 sm:px-6 py-3 sm:py-4 w-32 sm:w-48">
-              <div class="space-y-1.5">
+              <div v-if="s" class="space-y-1.5">
                 <div class="flex items-center justify-between text-[9px] font-black text-slate-500 uppercase">
                   <span>{{ Math.round(s.completeness) }}%</span>
                 </div>
@@ -157,7 +158,7 @@ const getStatusColor = (status: SpeciesStatus) => {
               </div>
             </td>
             <td class="px-4 sm:px-6 py-3 sm:py-4 text-right">
-              <div class="flex justify-end gap-1 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity">
+              <div v-if="s" class="flex justify-end gap-1 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity">
                 <button 
                   @click="emit('edit', s._id)"
                   class="p-1.5 hover:bg-primary/10 rounded-lg text-slate-400 hover:text-primary dark:hover:text-blue-400 transition-colors"
