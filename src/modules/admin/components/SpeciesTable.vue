@@ -90,6 +90,7 @@ const getStatusColor = (status: SpeciesStatus) => {
       <table class="w-full text-left whitespace-nowrap min-w-[700px]">
         <thead>
           <tr class="bg-slate-50/50 dark:bg-slate-800/50 border-b border-primary/5">
+            <th class="px-4 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest w-16">Img</th>
             <th class="px-4 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Species</th>
             <th class="px-4 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</th>
             <th class="px-4 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Completeness</th>
@@ -98,10 +99,10 @@ const getStatusColor = (status: SpeciesStatus) => {
         </thead>
         <tbody class="divide-y divide-primary/5">
           <tr v-if="store.loading" class="animate-pulse">
-            <td colspan="4" class="px-6 py-8 text-center text-sm font-bold text-slate-400">Loading species data...</td>
+            <td colspan="5" class="px-6 py-8 text-center text-sm font-bold text-slate-400">Loading species data...</td>
           </tr>
           <tr v-else-if="store.filteredSpecies.length === 0">
-            <td colspan="4" class="px-6 py-12 text-center text-slate-400">
+            <td colspan="5" class="px-6 py-12 text-center text-slate-400">
               <div class="flex flex-col items-center gap-2">
                 <span class="material-symbols-outlined text-4xl text-slate-300 dark:text-slate-600">fish</span>
                 <span class="text-sm font-bold">No species found matching your filters.</span>
@@ -113,15 +114,25 @@ const getStatusColor = (status: SpeciesStatus) => {
             :key="s._id" 
             class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group"
           >
+            <!-- Thumbnail -->
             <td class="px-4 sm:px-6 py-3 sm:py-4">
-              <div class="flex items-center gap-3">
-                <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center text-xl shadow-sm border border-primary/5 shrink-0">
-                  {{ s.emoji || '🐟' }}
+              <div class="size-11 rounded-xl bg-primary/10 overflow-hidden shadow-sm border border-primary/5 shrink-0 flex items-center justify-center">
+                <img 
+                  v-if="s.media && s.media.length > 0" 
+                  :src="s.media[0].url" 
+                  class="w-full h-full object-cover transition-transform group-hover:scale-125"
+                />
+                <span v-else class="text-xl leading-none">{{ s.emoji || '🐟' }}</span>
+              </div>
+            </td>
+
+            <td class="px-4 sm:px-6 py-3 sm:py-4">
+              <div>
+                <div class="font-bold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                  {{ s.commonName }}
+                  <span v-if="!s.media || s.media.length === 0" class="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded italic">Sin foto</span>
                 </div>
-                <div>
-                  <div class="font-bold text-sm text-slate-900 dark:text-slate-100">{{ s.commonName }}</div>
-                  <div class="text-[11px] font-bold text-slate-500 uppercase">{{ s.scientificName }}</div>
-                </div>
+                <div class="text-[11px] font-bold text-slate-500 uppercase">{{ s.scientificName }}</div>
               </div>
             </td>
             <td class="px-4 sm:px-6 py-3 sm:py-4">

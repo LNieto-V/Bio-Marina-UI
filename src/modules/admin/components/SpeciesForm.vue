@@ -236,6 +236,37 @@ const handleRemoveMedia = async (url: string) => {
 
         <div v-if="activeTab === 'basic'" class="space-y-6">
           <section class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 dark:border-slate-800 shadow-xl space-y-6 transition-colors">
+            
+            <!-- Quick Image Preview -->
+            <div class="flex flex-col md:flex-row gap-6 pb-6 border-b border-slate-100 dark:border-slate-800">
+              <div class="size-32 md:size-40 rounded-2xl bg-slate-100 dark:bg-slate-800 border-2 border-dashed border-slate-200 dark:border-slate-700 shrink-0 overflow-hidden group relative">
+                <img v-if="form.media && form.media.length > 0" :src="form.media[0].url" class="w-full h-full object-cover" />
+                <div v-else class="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                  <span class="material-symbols-outlined text-4xl">image</span>
+                  <span class="text-[10px] uppercase font-black mt-1">No Image</span>
+                </div>
+                <!-- Tooltip -->
+                 <div class="absolute inset-x-0 bottom-0 bg-slate-900/60 backdrop-blur-sm py-1 text-center text-[9px] text-white font-black uppercase tracking-widest translate-y-full group-hover:translate-y-0 transition-transform cursor-pointer" @click="activeTab = 'media'">
+                   Change Photo
+                 </div>
+              </div>
+              <div class="flex-1 space-y-4">
+                <div class="space-y-1">
+                  <h3 class="text-sm font-black text-slate-500 uppercase tracking-widest">Estado de Completitud</h3>
+                  <div class="flex items-center gap-4">
+                    <div class="flex-1 h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                       <div class="h-full bg-primary dark:bg-blue-500 shadow-lg" :style="`width: ${form.completeness}%`"></div>
+                    </div>
+                    <span class="text-xl font-black text-primary dark:text-blue-400">{{ Math.round(form.completeness) }}%</span>
+                  </div>
+                </div>
+                <div class="flex gap-2">
+                  <span class="px-3 py-1 bg-primary/10 text-primary dark:bg-blue-900/40 dark:text-blue-400 rounded-lg text-[10px] font-black uppercase tracking-widest border border-primary/5">{{ form.taxonomy.class || 'Clase Pendiente' }}</span>
+                  <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-lg text-[10px] font-black uppercase tracking-widest border border-slate-200 dark:border-slate-700">{{ form.status }}</span>
+                </div>
+              </div>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-2">
                 <label class="text-sm font-medium text-white dark:text-white dark:text-slate-200 uppercase tracking-tight">Common Name</label>
@@ -608,21 +639,50 @@ const handleRemoveMedia = async (url: string) => {
           </section>
         </div>
         <div v-if="activeTab === 'media'" class="space-y-6">
+<<<<<<< HEAD
           <section class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 dark:border-slate-800 shadow-xl space-y-6 transition-colors">
             <h3 class="text-lg font-medium text-white dark:text-white">Media Gallery</h3>
             <div class="flex gap-2">
               <input v-model="newMediaUrl" type="text" placeholder="Paste Image URL here..." class="flex-1 px-4 py-3 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-primary/20 dark:focus:ring-cyan-500/20 focus:border-primary dark:focus:border-cyan-500 outline-none text-white dark:text-white" />
               <button @click="handleAddMedia" class="px-6 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-xl font-semibold shadow-lg shadow-cyan-500/25 hover:from-cyan-500 hover:to-blue-500 transition-all active:scale-95">Add Image</button>
+=======
+          <section class="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-primary/10 dark:border-slate-800 shadow-xl space-y-8 transition-colors">
+            <div>
+              <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">Multimedia & Galería</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Gestiona las imágenes que se mostrarán en el catálogo público.</p>
+>>>>>>> 92bfc90 (feat: add species thumbnails, image previews, and finalize reports module)
             </div>
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <div v-for="m in form.media" :key="m.url" class="relative group aspect-square rounded-lg overflow-hidden bg-slate-100 border border-slate-200">
-                <img :src="m.url" class="w-full h-full object-cover" />
-                <button @click="handleRemoveMedia(m.url)" class="absolute top-2 right-2 p-1.5 bg-rose-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="6 18L18 6M6 6l12 12" />
-                  </svg>
+
+            <div class="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-[24px] border border-dashed border-slate-200 dark:border-slate-700 space-y-4">
+              <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-1">Nueva URL de Imagen</label>
+              <div class="flex gap-3">
+                <input v-model="newMediaUrl" type="text" placeholder="https://ejemplo.com/imagen.jpg" class="flex-1 px-5 py-3.5 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-primary/20 dark:focus:ring-cyan-500/20 focus:border-primary dark:focus:border-cyan-500 outline-none text-slate-900 dark:text-white font-medium" />
+                <button @click="handleAddMedia" class="px-8 bg-primary hover:bg-primary-dark text-white rounded-xl font-black text-sm shadow-xl shadow-primary/30 transition-all active:scale-95 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[20px]">add_photo_alternate</span>
+                  Agregar
                 </button>
               </div>
+            </div>
+
+            <div v-if="form.media && form.media.length > 0" class="grid grid-cols-2 lg:grid-cols-3 gap-6">
+              <div v-for="m in form.media" :key="m.url" class="relative group aspect-[4/3] rounded-[24px] overflow-hidden bg-slate-100 dark:bg-slate-800 border-2 border-transparent hover:border-primary transition-all shadow-sm hover:shadow-xl">
+                <img :src="m.url" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                
+                <button @click="handleRemoveMedia(m.url)" class="absolute top-4 right-4 p-2.5 bg-rose-500/90 hover:bg-rose-600 text-white rounded-xl opacity-0 group-hover:opacity-100 transition-all backdrop-blur-md shadow-lg transform translate-y-2 group-hover:translate-y-0">
+                   <span class="material-symbols-outlined text-[18px]">delete</span>
+                </button>
+
+                <div class="absolute bottom-4 left-4 right-4 text-xs font-black text-white truncate opacity-0 group-hover:opacity-100 transition-opacity">
+                  ID: {{ m.url.split('/').pop()?.slice(0, 10) }}...
+                </div>
+              </div>
+            </div>
+
+            <div v-else class="py-20 flex flex-col items-center justify-center text-slate-300 dark:text-slate-700 space-y-4">
+              <span class="material-symbols-outlined text-6xl">add_a_photo</span>
+              <p class="text-sm font-black uppercase tracking-widest text-slate-400">No hay imágenes todavía</p>
             </div>
           </section>
         </div>
