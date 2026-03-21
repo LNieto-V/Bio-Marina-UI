@@ -199,8 +199,8 @@ const handleRemoveMedia = async (url: string) => {
     <!-- Header -->
     <div class="bg-white dark:bg-slate-900 p-6 border-b dark:border-slate-800 transition-colors border-slate-200 shadow-sm flex justify-between items-center">
       <div>
-        <h2 class="text-2xl font-black gradient-text">{{ isNew ? 'Register New Species' : 'Edit Species' }}</h2>
-        <p class="text-slate-500 dark:text-slate-300">{{ isNew ? 'Fill in the basic taxonomy to get started.' : `Editing: ${form.commonName}` }}</p>
+        <h2 class="text-2xl font-medium gradient-text">{{ isNew ? 'Register New Species' : 'Edit Species' }}</h2>
+        <p class="text-white dark:text-slate-300">{{ isNew ? 'Fill in the basic taxonomy to get started.' : `Editing: ${form.commonName}` }}</p>
       </div>
       <button @click="emit('close')" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -216,8 +216,8 @@ const handleRemoveMedia = async (url: string) => {
         :key="tab.id"
         @click="activeTab = tab.id"
         :class="[
-          'px-6 py-4 font-bold text-sm transition-all border-b-4 flex items-center gap-2 whitespace-nowrap',
-          activeTab === tab.id ? 'border-primary text-primary bg-primary/10 dark:text-cyan-400 dark:border-cyan-400 dark:bg-cyan-900/20' : 'border-transparent text-slate-500 dark:text-slate-300 hover:text-slate-800 dark:text-white hover:bg-slate-100'
+          'px-6 py-4 font-medium text-sm transition-all border-b-4 flex items-center gap-2 whitespace-nowrap',
+          activeTab === tab.id ? 'border-primary text-primary bg-primary/10 dark:text-cyan-400 dark:border-cyan-400 dark:bg-cyan-900/20' : 'border-transparent text-white dark:text-slate-300 hover:text-white dark:text-white hover:bg-slate-100'
         ]"
       >
         <span>{{ tab.icon }}</span>
@@ -238,26 +238,26 @@ const handleRemoveMedia = async (url: string) => {
           <section class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 dark:border-slate-800 shadow-xl space-y-6 transition-colors">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-2">
-                <label class="text-sm font-black text-slate-900 dark:text-white dark:text-slate-200 uppercase tracking-tight">Common Name</label>
-                <input v-model="form.commonName" type="text" class="w-full px-4 py-3 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-primary/20 dark:focus:ring-cyan-500/20 focus:border-primary dark:focus:border-cyan-500 outline-none transition-all text-slate-900 dark:text-white font-medium" />
+                <label class="text-sm font-medium text-white dark:text-white dark:text-slate-200 uppercase tracking-tight">Common Name</label>
+                <input v-model="form.commonName" type="text" class="w-full px-4 py-3 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-primary/20 dark:focus:ring-cyan-500/20 focus:border-primary dark:focus:border-cyan-500 outline-none transition-all text-white dark:text-white font-medium" />
               </div>
               <div class="space-y-2">
-                <label class="text-sm font-black text-slate-900 dark:text-white dark:text-slate-200 uppercase tracking-tight">Scientific Name</label>
-                <input v-model="form.scientificName" type="text" class="w-full px-4 py-3 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-primary/20 dark:focus:ring-cyan-500/20 focus:border-primary dark:focus:border-cyan-500 outline-none transition-all italic text-slate-900 dark:text-white font-medium" />
+                <label class="text-sm font-medium text-white dark:text-white dark:text-slate-200 uppercase tracking-tight">Scientific Name</label>
+                <input v-model="form.scientificName" type="text" class="w-full px-4 py-3 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-primary/20 dark:focus:ring-cyan-500/20 focus:border-primary dark:focus:border-cyan-500 outline-none transition-all italic text-white dark:text-white font-medium" />
               </div>
 
               <div class="space-y-2">
-                <label class="text-sm font-black text-slate-900 dark:text-white dark:text-slate-200 uppercase tracking-tight">Emoji Representative</label>
+                <label class="text-sm font-medium text-white dark:text-white dark:text-slate-200 uppercase tracking-tight">Emoji Representative</label>
                 <div class="flex gap-2">
                   <input v-model="form.emoji" type="text" class="w-20 px-4 py-3 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl text-center text-2xl" />
-                  <div class="flex-1 text-xs text-slate-500 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl flex items-center">Used as a visual identifier in maps and lists.</div>
+                  <div class="flex-1 text-xs text-white dark:text-slate-300 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl flex items-center">Used as a visual identifier in maps and lists.</div>
                 </div>
               </div>
 
               <div class="space-y-2 col-span-2">
-                <label class="text-sm font-black text-slate-900 dark:text-white dark:text-slate-200 uppercase tracking-tight">Alternative Common Names (Separated by commas)</label>
+                <label class="text-sm font-medium text-white dark:text-white dark:text-slate-200 uppercase tracking-tight">Alternative Common Names (Separated by commas)</label>
                 <div class="flex flex-wrap gap-2 mb-2" v-if="form.alternativeCommonNames.length">
-                  <span v-for="(name, i) in form.alternativeCommonNames" :key="i" class="px-2 py-1 bg-primary/10 text-primary dark:bg-cyan-500/10 dark:text-cyan-400 rounded-lg text-xs font-bold flex items-center gap-1">
+                  <span v-for="(name, i) in form.alternativeCommonNames" :key="i" class="px-2 py-1 bg-primary/10 text-primary dark:bg-cyan-500/10 dark:text-cyan-400 rounded-lg text-xs font-medium flex items-center gap-1">
                     {{ name }}
                     <button @click="form.alternativeCommonNames.splice(i, 1)" class="hover:text-rose-600">×</button>
                   </span>
@@ -274,9 +274,9 @@ const handleRemoveMedia = async (url: string) => {
               </div>
 
               <div class="space-y-2 col-span-2">
-                <label class="text-sm font-black text-slate-900 dark:text-white dark:text-slate-200 uppercase tracking-tight">Bibliographic References (Enter to add)</label>
+                <label class="text-sm font-medium text-white dark:text-white dark:text-slate-200 uppercase tracking-tight">Bibliographic References (Enter to add)</label>
                 <div class="flex flex-wrap gap-2 mb-2" v-if="form.bibliographicReferences.length">
-                  <span v-for="(ref, i) in form.bibliographicReferences" :key="i" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg text-xs font-medium italic border border-slate-200 dark:border-slate-700">
+                  <span v-for="(ref, i) in form.bibliographicReferences" :key="i" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-white dark:text-slate-200 rounded-lg text-xs font-medium italic border border-slate-200 dark:border-slate-700">
                     {{ ref }} <button @click="form.bibliographicReferences.splice(i, 1)" class="ml-1 text-slate-400 hover:text-rose-600">×</button>
                   </span>
                 </div>
@@ -292,9 +292,9 @@ const handleRemoveMedia = async (url: string) => {
               </div>
 
               <div class="space-y-2 col-span-2">
-                <label class="text-sm font-black text-slate-900 dark:text-white dark:text-slate-200 uppercase tracking-tight">Fun Facts (Enter to add)</label>
+                <label class="text-sm font-medium text-white dark:text-white dark:text-slate-200 uppercase tracking-tight">Fun Facts (Enter to add)</label>
                 <div class="flex flex-wrap gap-2 mb-2" v-if="form.funFacts.length">
-                  <span v-for="(fact, i) in form.funFacts" :key="i" class="px-2 py-1 bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400 rounded-lg text-xs font-bold border border-amber-100">
+                  <span v-for="(fact, i) in form.funFacts" :key="i" class="px-2 py-1 bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400 rounded-lg text-xs font-medium border border-amber-100">
                     💡 {{ fact }} <button @click="form.funFacts.splice(i, 1)" class="ml-1 text-amber-400 hover:text-rose-600">×</button>
                   </span>
                 </div>
@@ -310,23 +310,23 @@ const handleRemoveMedia = async (url: string) => {
               </div>
 
               <div class="space-y-2 col-span-2">
-                <label class="text-sm font-black text-slate-900 dark:text-white dark:text-slate-200 uppercase tracking-tight">General Description</label>
+                <label class="text-sm font-medium text-white dark:text-white dark:text-slate-200 uppercase tracking-tight">General Description</label>
                 <textarea v-model="form.generalDescription" rows="3" class="w-full px-4 py-3 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:border-primary dark:focus:border-cyan-500"></textarea>
               </div>
 
               <div class="space-y-2 col-span-2">
-                <label class="text-sm font-black text-slate-900 dark:text-white dark:text-slate-200 uppercase tracking-tight">Notes & Strategic Value</label>
+                <label class="text-sm font-medium text-white dark:text-white dark:text-slate-200 uppercase tracking-tight">Notes & Strategic Value</label>
                 <textarea v-model="form.notes" rows="2" class="w-full px-4 py-3 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:border-primary dark:focus:border-cyan-500"></textarea>
               </div>
 
               <div class="space-y-2">
-                <label class="text-sm font-black text-slate-900 dark:text-white dark:text-slate-200 uppercase tracking-tight">Completeness (%)</label>
+                <label class="text-sm font-medium text-white dark:text-white dark:text-slate-200 uppercase tracking-tight">Completeness (%)</label>
                 <input v-model.number="form.completeness" type="number" step="0.1" class="w-full px-4 py-3 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl outline-none" />
               </div>
 
               <div class="space-y-2">
-                <label class="text-sm font-black text-slate-900 dark:text-white dark:text-slate-200 uppercase tracking-tight">Record Status</label>
-                <select v-model="form.status" class="w-full px-4 py-3 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-primary/20 dark:focus:ring-cyan-500/20 focus:border-primary dark:focus:border-cyan-500 outline-none transition-all text-slate-900 dark:text-white font-bold">
+                <label class="text-sm font-medium text-white dark:text-white dark:text-slate-200 uppercase tracking-tight">Record Status</label>
+                <select v-model="form.status" class="w-full px-4 py-3 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-primary/20 dark:focus:ring-cyan-500/20 focus:border-primary dark:focus:border-cyan-500 outline-none transition-all text-white dark:text-white font-medium">
                   <option :value="SpeciesStatus.DRAFT">Draft (Editing)</option>
                   <option :value="SpeciesStatus.PUBLISHED">Published (Visible to all)</option>
                   <option :value="SpeciesStatus.REVISION">Revision (In Review)</option>
@@ -334,7 +334,7 @@ const handleRemoveMedia = async (url: string) => {
               </div>
             </div>
             <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end">
-              <button @click="handleSaveBase" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-black rounded-xl hover:from-cyan-500 hover:to-blue-500 shadow-lg shadow-cyan-500/25 disabled:opacity-50 transition-all shadow-md">
+              <button @click="handleSaveBase" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-medium rounded-xl hover:from-cyan-500 hover:to-blue-500 shadow-lg shadow-cyan-500/25 disabled:opacity-50 transition-all shadow-md">
                 {{ saving ? 'Saving...' : 'Save All Basic Info' }}
               </button>
             </div>
@@ -344,17 +344,17 @@ const handleRemoveMedia = async (url: string) => {
         <!-- Tab: Taxonomy -->
         <div v-if="activeTab === 'taxonomy'" class="space-y-6">
           <section class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 dark:border-slate-800 shadow-xl space-y-6 transition-colors">
-            <h3 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+            <h3 class="text-lg font-medium text-white dark:text-white flex items-center gap-2">
               <span class="text-indigo-600">🧬</span> Taxonomic Classification
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div v-for="field in ['kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species']" :key="field" class="space-y-2">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">{{ field }}</label>
-                <input v-model="form.taxonomy[field]" type="text" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-4 focus:ring-primary/20 dark:focus:ring-cyan-500/20 focus:border-primary dark:focus:border-cyan-500 outline-none transition-all text-slate-900 dark:text-white" />
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">{{ field }}</label>
+                <input v-model="form.taxonomy[field]" type="text" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-4 focus:ring-primary/20 dark:focus:ring-cyan-500/20 focus:border-primary dark:focus:border-cyan-500 outline-none transition-all text-white dark:text-white" />
               </div>
             </div>
             <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end" v-if="!isNew">
-              <button @click="handleSaveSection('taxonomy')" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-slate-700 to-slate-900 dark:from-slate-700 dark:to-slate-800 text-white font-black rounded-xl hover:bg-slate-900 shadow-md">
+              <button @click="handleSaveSection('taxonomy')" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-slate-700 to-slate-900 dark:from-slate-700 dark:to-slate-800 text-white font-medium rounded-xl hover:bg-slate-900 shadow-md">
                 Save Taxonomy
               </button>
             </div>
@@ -363,25 +363,25 @@ const handleRemoveMedia = async (url: string) => {
 
         <div v-if="activeTab === 'biology'" class="space-y-6">
           <section class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 dark:border-slate-800 shadow-xl space-y-6 transition-colors">
-            <h3 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">🔬 Biology & Life History</h3>
+            <h3 class="text-lg font-medium text-white dark:text-white flex items-center gap-2">🔬 Biology & Life History</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-2">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Diet / Eating Habits (Comma separated)</label>
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Diet / Eating Habits (Comma separated)</label>
                 <div class="flex flex-wrap gap-2 mb-2" v-if="form.biology.diet.length">
-                  <span v-for="(item, i) in form.biology.diet" :key="i" class="px-2 py-1 bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400 rounded-lg text-xs font-bold">
+                  <span v-for="(item, i) in form.biology.diet" :key="i" class="px-2 py-1 bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400 rounded-lg text-xs font-medium">
                     {{ item }} <button @click="form.biology.diet.splice(i, 1)">×</button>
                   </span>
                 </div>
                 <input
                   type="text"
                   @keydown.enter.prevent="(e) => { const v = (e.target as HTMLInputElement).value.trim(); if (v) { form.biology.diet.push(v); (e.target as HTMLInputElement).value = ''; } }"
-                  class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-white dark:text-white"
                 />
               </div>
 
               <div class="space-y-2">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Reproduction Mode</label>
-                <select v-model="form.biology.reproductionMode" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-bold">
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Reproduction Mode</label>
+                <select v-model="form.biology.reproductionMode" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-white dark:text-white font-medium">
                   <option value="OVIPAROUS">Oviparous</option>
                   <option value="VIVIPAROUS">Viviparous</option>
                   <option value="OVOVIVIPAROUS">Ovoviviparous</option>
@@ -393,36 +393,36 @@ const handleRemoveMedia = async (url: string) => {
 
               <div class="grid grid-cols-2 gap-4 col-span-2">
                 <div class="space-y-2">
-                  <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Avg Weight (kg)</label>
-                  <input v-model.number="form.biology.averageWeightKg" type="number" step="0.01" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-slate-900 dark:text-white" />
+                  <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Avg Weight (kg)</label>
+                  <input v-model.number="form.biology.averageWeightKg" type="number" step="0.01" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-white dark:text-white" />
                 </div>
                 <div class="space-y-2">
-                  <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Max Weight (kg)</label>
-                  <input v-model.number="form.biology.maximumWeightKg" type="number" step="0.01" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-slate-900 dark:text-white" />
+                  <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Max Weight (kg)</label>
+                  <input v-model.number="form.biology.maximumWeightKg" type="number" step="0.01" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-white dark:text-white" />
                 </div>
                 <div class="space-y-2">
-                  <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Avg Length (cm)</label>
-                  <input v-model.number="form.biology.averageLengthCm" type="number" step="0.1" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-slate-900 dark:text-white" />
+                  <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Avg Length (cm)</label>
+                  <input v-model.number="form.biology.averageLengthCm" type="number" step="0.1" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-white dark:text-white" />
                 </div>
                 <div class="space-y-2">
-                  <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Max Length (cm)</label>
-                  <input v-model.number="form.biology.maximumLengthCm" type="number" step="0.1" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-slate-900 dark:text-white" />
+                  <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Max Length (cm)</label>
+                  <input v-model.number="form.biology.maximumLengthCm" type="number" step="0.1" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-white dark:text-white" />
                 </div>
               </div>
 
               <div class="space-y-2">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Trophic Level</label>
-                <input v-model.number="form.biology.trophicLevel" type="number" step="0.1" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-slate-900 dark:text-white" />
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Trophic Level</label>
+                <input v-model.number="form.biology.trophicLevel" type="number" step="0.1" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-white dark:text-white" />
               </div>
               <div class="space-y-2 flex items-center gap-4 pt-6">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase cursor-pointer flex items-center gap-2">
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase cursor-pointer flex items-center gap-2">
                   <input v-model="form.biology.migration" type="checkbox" class="w-5 h-5 accent-primary dark:accent-cyan-500" />
                   Migratory Species
                 </label>
               </div>
             </div>
             <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end" v-if="!isNew">
-              <button @click="handleSaveSection('biology')" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-slate-700 to-slate-900 dark:from-slate-700 dark:to-slate-800 text-white font-black rounded-xl shadow-md hover:bg-slate-900 transition-all">
+              <button @click="handleSaveSection('biology')" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-slate-700 to-slate-900 dark:from-slate-700 dark:to-slate-800 text-white font-medium rounded-xl shadow-md hover:bg-slate-900 transition-all">
                 Save Biology
               </button>
             </div>
@@ -431,11 +431,11 @@ const handleRemoveMedia = async (url: string) => {
 
         <div v-if="activeTab === 'habitat'" class="space-y-6">
           <section class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 dark:border-slate-800 shadow-xl space-y-6 transition-colors">
-            <h3 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">🌊 Habitat & Environment</h3>
+            <h3 class="text-lg font-medium text-white dark:text-white flex items-center gap-2">🌊 Habitat & Environment</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-2">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Habitat Type</label>
-                <select v-model="form.habitat.type" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg font-bold text-slate-900 dark:text-white">
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Habitat Type</label>
+                <select v-model="form.habitat.type" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg font-medium text-white text-white dark:text-white">
                   <option value="PELAGIC">Pelagic</option>
                   <option value="BENTHIC">Benthic</option>
                   <option value="DEMERSAL">Demersal</option>
@@ -444,33 +444,33 @@ const handleRemoveMedia = async (url: string) => {
                 </select>
               </div>
               <div class="space-y-2">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Salinity (ppt)</label>
-                <input v-model.number="form.habitat.salinityPpt" type="number" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-slate-900 dark:text-white" />
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Salinity (ppt)</label>
+                <input v-model.number="form.habitat.salinityPpt" type="number" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-white dark:text-white" />
               </div>
               <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-2">
-                  <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Min Depth (m)</label>
-                  <input v-model.number="form.habitat.minDepthM" type="number" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-slate-900 dark:text-white" />
+                  <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Min Depth (m)</label>
+                  <input v-model.number="form.habitat.minDepthM" type="number" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-white dark:text-white" />
                 </div>
                 <div class="space-y-2">
-                  <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Max Depth (m)</label>
-                  <input v-model.number="form.habitat.maxDepthM" type="number" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-slate-900 dark:text-white" />
+                  <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Max Depth (m)</label>
+                  <input v-model.number="form.habitat.maxDepthM" type="number" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-white dark:text-white" />
                 </div>
               </div>
               <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-2">
-                  <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Min Temp (°C)</label>
-                  <input v-model.number="form.habitat.minTempC" type="number" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-slate-900 dark:text-white" />
+                  <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Min Temp (°C)</label>
+                  <input v-model.number="form.habitat.minTempC" type="number" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-white dark:text-white" />
                 </div>
                 <div class="space-y-2">
-                  <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Max Temp (°C)</label>
-                  <input v-model.number="form.habitat.maxTempC" type="number" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-slate-900 dark:text-white" />
+                  <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Max Temp (°C)</label>
+                  <input v-model.number="form.habitat.maxTempC" type="number" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-white dark:text-white" />
                 </div>
               </div>
               <div class="space-y-2 col-span-2">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Substrate / Environment Details (Comma separated)</label>
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Substrate / Environment Details (Comma separated)</label>
                 <div class="flex flex-wrap gap-2 mb-2" v-if="form.habitat.substrate.length">
-                  <span v-for="(item, i) in form.habitat.substrate" :key="i" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg text-xs font-bold border dark:border-slate-700">
+                  <span v-for="(item, i) in form.habitat.substrate" :key="i" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-white dark:text-slate-200 rounded-lg text-xs font-medium border dark:border-slate-700">
                     {{ item }} <button @click="form.habitat.substrate.splice(i, 1)">×</button>
                   </span>
                 </div>
@@ -478,18 +478,18 @@ const handleRemoveMedia = async (url: string) => {
                   type="text"
                   @keydown.enter.prevent="(e) => { const v = (e.target as HTMLInputElement).value.trim(); if (v) { form.habitat.substrate.push(v); (e.target as HTMLInputElement).value = ''; } }"
                   placeholder="e.g. Water column, Rocky reef..."
-                  class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-white dark:text-white"
                 />
               </div>
             </div>
           </section>
 
           <section class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 dark:border-slate-800 shadow-xl space-y-6 transition-colors">
-            <h3 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">🛡️ Conservation & Protection</h3>
+            <h3 class="text-lg font-medium text-white dark:text-white flex items-center gap-2">🛡️ Conservation & Protection</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-2">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">IUCN Status</label>
-                <select v-model="form.conservation.iucn" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg font-bold text-slate-900 dark:text-white">
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">IUCN Status</label>
+                <select v-model="form.conservation.iucn" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg font-medium text-white text-white dark:text-white">
                   <option value="EX">Extinct (EX)</option>
                   <option value="EW">Extinct in the Wild (EW)</option>
                   <option value="CR">Critically Endangered (CR)</option>
@@ -502,12 +502,12 @@ const handleRemoveMedia = async (url: string) => {
                 </select>
               </div>
               <div class="space-y-2">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">IUCN Evaluation Year</label>
-                <input v-model.number="form.conservation.iucnYear" type="number" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-slate-900 dark:text-white" />
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">IUCN Evaluation Year</label>
+                <input v-model.number="form.conservation.iucnYear" type="number" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-white dark:text-white" />
               </div>
               <div class="space-y-2">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Ecological Value</label>
-                <select v-model="form.conservation.ecologicalValue" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg font-bold text-slate-900 dark:text-white">
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Ecological Value</label>
+                <select v-model="form.conservation.ecologicalValue" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg font-medium text-white text-white dark:text-white">
                   <option value="VERY_HIGH">Very High</option>
                   <option value="HIGH">High</option>
                   <option value="MEDIUM">Medium</option>
@@ -515,16 +515,16 @@ const handleRemoveMedia = async (url: string) => {
                 </select>
               </div>
               <div class="space-y-2 flex items-center gap-4 pt-6">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase cursor-pointer flex items-center gap-2">
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase cursor-pointer flex items-center gap-2">
                   <input v-model="form.conservation.protected" type="checkbox" class="w-5 h-5 accent-emerald-600" />
                   Legally Protected
                 </label>
               </div>
               <div class="space-y-2 col-span-2">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase italic">Fishing Closure Months</label>
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase italic">Fishing Closure Months</label>
                 <div class="grid grid-cols-4 md:grid-cols-6 gap-2">
                   <label v-for="m in ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']" :key="m"
-                    class="flex items-center gap-1 text-[10px] font-bold p-1 border rounded cursor-pointer transition-colors"
+                    class="flex items-center gap-1 text-[11px] font-medium p-1 border rounded cursor-pointer transition-colors"
                     :class="form.conservation.closureMonths.includes(m) ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-400 border-slate-200'"
                   >
                     <input type="checkbox" :value="m" v-model="form.conservation.closureMonths" class="hidden" />
@@ -533,12 +533,12 @@ const handleRemoveMedia = async (url: string) => {
                 </div>
               </div>
               <div class="space-y-2 col-span-2">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Legal Protection Notes</label>
-                <textarea v-model="form.conservation.legalNotes" rows="2" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"></textarea>
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Legal Protection Notes</label>
+                <textarea v-model="form.conservation.legalNotes" rows="2" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-white dark:text-white"></textarea>
               </div>
             </div>
             <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end" v-if="!isNew">
-              <button @click="handleSaveSection('habitat')" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-slate-700 to-slate-900 dark:from-slate-700 dark:to-slate-800 text-white font-black rounded-xl shadow-md hover:bg-slate-900 transition-all">
+              <button @click="handleSaveSection('habitat')" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-slate-700 to-slate-900 dark:from-slate-700 dark:to-slate-800 text-white font-medium rounded-xl shadow-md hover:bg-slate-900 transition-all">
                 Save Hab/Cons
               </button>
             </div>
@@ -548,32 +548,32 @@ const handleRemoveMedia = async (url: string) => {
         <!-- Tab: Fishery -->
         <div v-if="activeTab === 'fishery'" class="space-y-6">
           <section class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 dark:border-slate-800 shadow-xl space-y-6 transition-colors">
-            <h3 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">⚓ Fishery & Commercial Data</h3>
+            <h3 class="text-lg font-medium text-white dark:text-white flex items-center gap-2">⚓ Fishery & Commercial Data</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-2 col-span-2">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Commercial Value (Description)</label>
-                <textarea v-model="form.fishery.commercialValue" rows="2" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"></textarea>
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Commercial Value (Description)</label>
+                <textarea v-model="form.fishery.commercialValue" rows="2" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-white dark:text-white"></textarea>
               </div>
               <div class="space-y-2">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Annual Catch (Tons)</label>
-                <input v-model.number="form.fishery.annualCatchTon" type="number" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-slate-900 dark:text-white" />
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Annual Catch (Tons)</label>
+                <input v-model.number="form.fishery.annualCatchTon" type="number" class="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-900 rounded-lg text-white dark:text-white" />
               </div>
               <div class="grid grid-cols-3 gap-2 py-4 items-center h-full">
-                <label class="flex items-center gap-1 text-[10px] font-black uppercase text-slate-500 dark:text-slate-300 cursor-pointer italic">
+                <label class="flex items-center gap-1 text-[10px] font-medium uppercase text-white dark:text-slate-300 cursor-pointer italic">
                   <input v-model="form.fishery.artisanal" type="checkbox" class="w-4 h-4 accent-primary dark:accent-cyan-500" /> Artisanal
                 </label>
-                <label class="flex items-center gap-1 text-[10px] font-black uppercase text-slate-500 dark:text-slate-300 cursor-pointer italic">
+                <label class="flex items-center gap-1 text-[10px] font-medium uppercase text-white dark:text-slate-300 cursor-pointer italic">
                   <input v-model="form.fishery.industrial" type="checkbox" class="w-4 h-4 accent-primary dark:accent-cyan-500" /> Industrial
                 </label>
-                <label class="flex items-center gap-1 text-[10px] font-black uppercase text-slate-500 dark:text-slate-300 cursor-pointer italic">
+                <label class="flex items-center gap-1 text-[10px] font-medium uppercase text-white dark:text-slate-300 cursor-pointer italic">
                   <input v-model="form.fishery.aquariumTrade" type="checkbox" class="w-4 h-4 accent-primary dark:accent-cyan-500" /> Aquarium
                 </label>
               </div>
 
               <div class="space-y-2">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Fishing Gears Used</label>
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Fishing Gears Used</label>
                 <div class="flex flex-wrap gap-2 mb-2" v-if="form.fishery.fishingGears.length">
-                  <span v-for="(gear, i) in form.fishery.fishingGears" :key="i" class="px-2 py-1 bg-indigo-50 text-indigo-700 rounded-lg text-xs font-bold border border-indigo-100">
+                  <span v-for="(gear, i) in form.fishery.fishingGears" :key="i" class="px-2 py-1 bg-indigo-50 text-indigo-700 rounded-lg text-xs font-medium border border-indigo-100">
                     {{ gear }} <button @click="form.fishery.fishingGears.splice(i, 1)">×</button>
                   </span>
                 </div>
@@ -581,14 +581,14 @@ const handleRemoveMedia = async (url: string) => {
                   type="text"
                   @keydown.enter.prevent="(e) => { const v = (e.target as HTMLInputElement).value.trim(); if (v) { form.fishery.fishingGears.push(v); (e.target as HTMLInputElement).value = ''; } }"
                   placeholder="e.g. Purse seine, Trawling..."
-                  class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-white dark:text-white"
                 />
               </div>
 
               <div class="space-y-2">
-                <label class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase">Main Landing Ports</label>
+                <label class="text-xs font-medium text-white dark:text-slate-300 uppercase">Main Landing Ports</label>
                 <div class="flex flex-wrap gap-2 mb-2" v-if="form.fishery.mainPorts.length">
-                  <span v-for="(port, i) in form.fishery.mainPorts" :key="i" class="px-2 py-1 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-200 rounded-lg text-xs font-bold border border-slate-100 dark:border-slate-700">
+                  <span v-for="(port, i) in form.fishery.mainPorts" :key="i" class="px-2 py-1 bg-slate-50 dark:bg-slate-800 text-white dark:text-slate-200 rounded-lg text-xs font-medium border border-slate-100 dark:border-slate-700">
                     {{ port }} <button @click="form.fishery.mainPorts.splice(i, 1)">×</button>
                   </span>
                 </div>
@@ -596,12 +596,12 @@ const handleRemoveMedia = async (url: string) => {
                   type="text"
                   @keydown.enter.prevent="(e) => { const v = (e.target as HTMLInputElement).value.trim(); if (v) { form.fishery.mainPorts.push(v); (e.target as HTMLInputElement).value = ''; } }"
                   placeholder="e.g. Chimbote, Pisco..."
-                  class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-white dark:text-white"
                 />
               </div>
             </div>
             <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end" v-if="!isNew">
-              <button @click="handleSaveSection('fishery')" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-cyan-700 to-blue-800 text-white font-black rounded-xl shadow-lg hover:from-cyan-600 hover:to-blue-700 transition-all">
+              <button @click="handleSaveSection('fishery')" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-cyan-700 to-blue-800 text-white font-medium rounded-xl shadow-lg hover:from-cyan-600 hover:to-blue-700 transition-all">
                 Save Fishery Info
               </button>
             </div>
@@ -609,10 +609,10 @@ const handleRemoveMedia = async (url: string) => {
         </div>
         <div v-if="activeTab === 'media'" class="space-y-6">
           <section class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 dark:border-slate-800 shadow-xl space-y-6 transition-colors">
-            <h3 class="text-lg font-bold text-slate-800 dark:text-white">Media Gallery</h3>
+            <h3 class="text-lg font-medium text-white dark:text-white">Media Gallery</h3>
             <div class="flex gap-2">
-              <input v-model="newMediaUrl" type="text" placeholder="Paste Image URL here..." class="flex-1 px-4 py-3 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-primary/20 dark:focus:ring-cyan-500/20 focus:border-primary dark:focus:border-cyan-500 outline-none text-slate-900 dark:text-white" />
-              <button @click="handleAddMedia" class="px-6 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-xl font-black shadow-lg shadow-cyan-500/25 hover:from-cyan-500 hover:to-blue-500 transition-all active:scale-95">Add Image</button>
+              <input v-model="newMediaUrl" type="text" placeholder="Paste Image URL here..." class="flex-1 px-4 py-3 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-primary/20 dark:focus:ring-cyan-500/20 focus:border-primary dark:focus:border-cyan-500 outline-none text-white dark:text-white" />
+              <button @click="handleAddMedia" class="px-6 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-xl font-semibold shadow-lg shadow-cyan-500/25 hover:from-cyan-500 hover:to-blue-500 transition-all active:scale-95">Add Image</button>
             </div>
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <div v-for="m in form.media" :key="m.url" class="relative group aspect-square rounded-lg overflow-hidden bg-slate-100 border border-slate-200">
