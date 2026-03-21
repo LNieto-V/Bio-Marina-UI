@@ -398,7 +398,7 @@ const handleImageError = (event: Event) => {
                 </select>
               </div>
             </div>
-            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end cursor-pointer">
               <button @click="handleSaveBase" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-medium rounded-xl hover:from-cyan-500 hover:to-blue-500 shadow-lg shadow-cyan-500/25 disabled:opacity-50 transition-all shadow-md">
                 {{ saving ? 'Saving...' : 'Save All Basic Info' }}
               </button>
@@ -418,8 +418,8 @@ const handleImageError = (event: Event) => {
                 <input v-model="form.taxonomy[field]" type="text" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-4 focus:ring-primary/20 dark:focus:ring-cyan-500/20 focus:border-primary dark:focus:border-cyan-500 outline-none transition-all text-white dark:text-white" />
               </div>
             </div>
-            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end" v-if="!isNew">
-              <button @click="handleSaveSection('taxonomy')" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-slate-700 to-slate-900 dark:from-slate-700 dark:to-slate-800 text-white font-medium rounded-xl hover:bg-slate-900 shadow-md">
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end cursor-pointer" v-if="!isNew">
+              <button @click="handleSaveSection('taxonomy')" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-medium rounded-xl hover:from-cyan-500 hover:to-blue-500 shadow-lg shadow-cyan-500/25 disabled:opacity-50 transition-all shadow-md">
                 Save Taxonomy
               </button>
             </div>
@@ -486,8 +486,8 @@ const handleImageError = (event: Event) => {
                 </label>
               </div>
             </div>
-            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end" v-if="!isNew">
-              <button @click="handleSaveSection('biology')" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-slate-700 to-slate-900 dark:from-slate-700 dark:to-slate-800 text-white font-medium rounded-xl shadow-md hover:bg-slate-900 transition-all">
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end cursor-pointer" v-if="!isNew">
+              <button @click="handleSaveSection('biology')" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-medium rounded-xl hover:from-cyan-500 hover:to-blue-500 shadow-lg shadow-cyan-500/25 disabled:opacity-50 transition-all shadow-md">
                 Save Biology
               </button>
             </div>
@@ -602,8 +602,8 @@ const handleImageError = (event: Event) => {
                 <textarea v-model="form.conservation.legalNotes" rows="2" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-white dark:text-white"></textarea>
               </div>
             </div>
-            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end" v-if="!isNew">
-              <button @click="handleSaveSection('habitat')" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-slate-700 to-slate-900 dark:from-slate-700 dark:to-slate-800 text-white font-medium rounded-xl shadow-md hover:bg-slate-900 transition-all">
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end cursor-pointer" v-if="!isNew">
+              <button @click="handleSaveSection('habitat')" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-medium rounded-xl hover:from-cyan-500 hover:to-blue-500 shadow-lg shadow-cyan-500/25 disabled:opacity-50 transition-all shadow-md">
                 Save Hab/Cons
               </button>
             </div>
@@ -665,8 +665,8 @@ const handleImageError = (event: Event) => {
                 />
               </div>
             </div>
-            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end" v-if="!isNew">
-              <button @click="handleSaveSection('fishery')" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-cyan-700 to-blue-800 text-white font-medium rounded-xl shadow-lg hover:from-cyan-600 hover:to-blue-700 transition-all">
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end cursor-pointer" v-if="!isNew">
+              <button @click="handleSaveSection('fishery')" :disabled="saving" class="px-6 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-medium rounded-xl hover:from-cyan-500 hover:to-blue-500 shadow-lg shadow-cyan-500/25 disabled:opacity-50 transition-all shadow-md">
                 Save Fishery Info
               </button>
             </div>
@@ -682,7 +682,7 @@ const handleImageError = (event: Event) => {
               <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-1">Nueva URL de Imagen</label>
               <div class="flex gap-3">
                 <input v-model="newMediaUrl" type="text" placeholder="https://ejemplo.com/imagen.jpg" class="flex-1 px-5 py-3.5 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-primary/20 dark:focus:ring-cyan-500/20 focus:border-primary dark:focus:border-cyan-500 outline-none text-slate-900 dark:text-white font-medium" />
-                <button @click="handleAddMedia" class="px-8 bg-primary hover:bg-primary-dark text-white rounded-xl font-black text-sm shadow-xl shadow-primary/30 transition-all active:scale-95 flex items-center gap-2">
+                <button @click="handleAddMedia" class="px-8 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-xl font-black text-sm shadow-xl shadow-cyan-500/30 transition-all active:scale-95 flex items-center gap-2">
                   <span class="material-symbols-outlined text-[20px]">add_photo_alternate</span>
                   Agregar
                 </button>
