@@ -43,7 +43,7 @@ if (stored) {
   try {
     _currentUser.value = JSON.parse(stored)
     _token.value = localStorage.getItem('biomarina_token')
-  } catch (_) {
+  } catch {
     localStorage.removeItem('biomarina_user')
   }
 }
