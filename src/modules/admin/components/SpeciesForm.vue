@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed } from 'vue';
 import { useSpecies } from '../../species/composables/useSpecies';
-import { SpeciesStatus, type Species, type CreateSpeciesInput } from '../../species/types/species';
+import { SpeciesStatus, MediaType, type Species, type CreateSpeciesInput } from '../../species/types/species';
 
 const props = defineProps<{
   speciesId?: string;
@@ -85,7 +85,11 @@ const handleSaveBase = async () => {
         commonName: form.commonName,
         scientificName: form.scientificName,
         emoji: form.emoji,
-        taxonomy: form.taxonomy
+        taxonomy: form.taxonomy,
+        biology: form.biology,
+        habitat: form.habitat,
+        conservation: form.conservation,
+        fishery: form.fishery
       };
       const result = await createSpecies(input);
       emit('saved', result._id);
@@ -119,8 +123,8 @@ const handleSaveSection = async (section: string) => {
 const newMediaUrl = ref('');
 const handleAddMedia = async () => {
   if (!newMediaUrl.value || isNew.value) return;
-  await addMedia(props.speciesId!, { url: newMediaUrl.value, type: 'IMAGE', title: '' });
-  form.media.push({ url: newMediaUrl.value, type: 'IMAGE', title: '' });
+  await addMedia(props.speciesId!, { url: newMediaUrl.value, type: MediaType.IMAGE, title: '' });
+  form.media.push({ url: newMediaUrl.value, type: MediaType.IMAGE, title: '' });
   newMediaUrl.value = '';
 };
 
