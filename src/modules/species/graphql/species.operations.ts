@@ -48,7 +48,7 @@ export const GET_SPECIES_BY_ID = gql`
         commercialValue annualCatchTon artisanal industrial aquariumTrade fishingGears mainPorts
       }
       media {
-        url title type
+        _id url type isMain authorship license thumbnail createdAt
       }
       zones {
         name coordinates
@@ -148,18 +148,18 @@ export const ADD_SPECIES_MEDIA = gql`
     addSpeciesMedia(id: $id, input: $input) {
       _id
       media {
-        url title type
+        _id url type isMain authorship license thumbnail createdAt
       }
     }
   }
 `;
 
 export const REMOVE_SPECIES_MEDIA = gql`
-  mutation RemoveSpeciesMedia($id: ID!, $mediaUrl: String!) {
-    removeSpeciesMedia(id: $id, mediaUrl: $mediaUrl) {
+  mutation RemoveSpeciesMedia($speciesId: ID!, $mediaId: ID!) {
+    removeSpeciesMedia(speciesId: $speciesId, mediaId: $mediaId) {
       _id
       media {
-        url title type
+        _id url type isMain authorship license thumbnail createdAt
       }
     }
   }

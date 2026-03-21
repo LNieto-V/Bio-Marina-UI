@@ -112,8 +112,8 @@ export function useSpecies() {
     addMediaMutation({ id, input });
 
   const { mutate: removeMediaMutation } = useMutation(REMOVE_SPECIES_MEDIA);
-  const removeMedia = (id: string, mediaUrl: string) =>
-    removeMediaMutation({ id, mediaUrl });
+  const removeMedia = (speciesId: string, mediaId: string) =>
+    removeMediaMutation({ speciesId, mediaId });
 
   const { mutate: addZoneMutation } = useMutation(ADD_SPECIES_ZONE);
   const addZone = (id: string, input: Zone) =>

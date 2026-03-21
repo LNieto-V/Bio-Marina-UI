@@ -48,8 +48,8 @@ export enum FishingClosureType {
 }
 
 export enum MediaType {
-    AUDIO = 'AUDIO',
-    IMAGE = 'IMAGE',
+    ILLUSTRATION = 'ILLUSTRATION',
+    PHOTO = 'PHOTO',
     VIDEO = 'VIDEO',
 }
 
@@ -65,7 +65,7 @@ export interface Taxonomy {
 
 export interface Biology {
     diet?: string[];
-    reproductionMode?: ReproductionMode;
+    reproductionMode?: string;
     averageWeightKg?: number;
     maximumWeightKg?: number;
     averageLengthCm?: number;
@@ -88,9 +88,9 @@ export interface Habitat {
 export interface Conservation {
     iucn: string;
     iucnYear?: number;
-    closureType?: FishingClosureType;
+    closureType?: string;
     closureMonths?: string[];
-    ecologicalValue?: EcologicalValue;
+    ecologicalValue?: string;
     protected?: boolean;
     legalNotes?: string;
 }
@@ -106,9 +106,14 @@ export interface Fishery {
 }
 
 export interface Media {
+    _id?: string;
     url: string;
-    title?: string;
+    authorship: string;
+    isMain: boolean;
+    license: string;
+    thumbnail?: string;
     type: MediaType;
+    createdAt?: string;
 }
 
 export interface Zone {

@@ -180,14 +180,23 @@ const handleSaveSection = async (section: string) => {
 const newMediaUrl = ref('');
 const handleAddMedia = async () => {
   if (!newMediaUrl.value || isNew.value) return;
-  await addMedia(props.speciesId!, { url: newMediaUrl.value, type: MediaType.IMAGE, title: '' });
-  form.media.push({ url: newMediaUrl.value, type: MediaType.IMAGE, title: '' });
+  const newMedia = {
+    url: newMediaUrl.value,
+    type: MediaType.PHOTO,
+    authorship: 'Unknown',
+    isMain: form.media.length === 0,
+    license: 'CC BY 4.0'
+  };
+  await addMedia(props.speciesId!, newMedia);
+  form.media.push(newMedia);
   newMediaUrl.value = '';
 };
 
-const handleRemoveMedia = async (url: string) => {
+const handleRemoveMedia = async (mediaId: string, url: string) => {
   if (isNew.value) return;
-  await removeMedia(props.speciesId!, url);
+  if (mediaId && props.speciesId) {
+    await removeMedia(props.speciesId, mediaId);
+  }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form.media = form.media.filter((m: any) => m.url !== url);
 };
@@ -617,7 +626,7 @@ const handleRemoveMedia = async (url: string) => {
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <div v-for="m in form.media" :key="m.url" class="relative group aspect-square rounded-lg overflow-hidden bg-slate-100 border border-slate-200">
                 <img :src="m.url" class="w-full h-full object-cover" />
-                <button @click="handleRemoveMedia(m.url)" class="absolute top-2 right-2 p-1.5 bg-rose-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                <button @click="handleRemoveMedia(m._id, m.url)" class="absolute top-2 right-2 p-1.5 bg-rose-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="6 18L18 6M6 6l12 12" />
                   </svg>
