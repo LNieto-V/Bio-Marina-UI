@@ -14,7 +14,7 @@ export const useSpeciesStore = defineStore('species-management', () => {
   const filteredSpecies = computed(() => {
     return species.value.filter(s => {
       const matchesSearch = s.commonName.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-                          s.scientificName.toLowerCase().includes(searchQuery.value.toLowerCase());
+        s.scientificName.toLowerCase().includes(searchQuery.value.toLowerCase());
       const matchesStatus = statusFilter.value === 'ALL' || s.status === statusFilter.value;
       return matchesSearch && matchesStatus;
     });

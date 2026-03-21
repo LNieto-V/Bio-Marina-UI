@@ -25,9 +25,15 @@ watch(loadingSpecies, (isLoading) => {
 });
 
 const handleDelete = async (id: string) => {
-  if (confirm('Are you sure you want to delete this species?')) {
-    await removeSpecies(id);
-    store.removeSpecies(id);
+  console.log('Attempting to delete species:', id);
+  if (window.confirm('Are you sure you want to delete this species?')) {
+    try {
+      await removeSpecies(id);
+      store.removeSpecies(id);
+      console.log('Successfully deleted species:', id);
+    } catch (e) {
+      console.error('Failed to delete species:', e);
+    }
   }
 };
 
@@ -118,7 +124,7 @@ const getStatusColor = (status: SpeciesStatus) => {
                 </div>
                 <div>
                   <div class="font-bold text-slate-800">{{ s.commonName }}</div>
-                  <div class="text-xs italic text-slate-500">{{ s.scientificName }}</div>
+                  <div class="text-xs italic text-slate-600 font-medium">{{ s.scientificName }}</div>
                 </div>
               </div>
             </td>
@@ -141,24 +147,20 @@ const getStatusColor = (status: SpeciesStatus) => {
               </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-right">
-              <div class="flex justify-end gap-2">
+              <div class="flex justify-end gap-2 relative z-10">
                 <button 
                   @click="emit('edit', s._id)"
                   class="p-2 text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg transition-all shadow-sm"
                   title="Edit Species"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
                 </button>
                 <button 
                   @click="handleDelete(s._id)"
                   class="p-2 text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-lg transition-all shadow-sm"
                   title="Delete Species"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                 </button>
               </div>
             </td>

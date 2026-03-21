@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed } from 'vue';
+import { ref, reactive, computed, watch } from 'vue';
+import { useQuery } from '@vue/apollo-composable';
 import { useSpecies } from '../../species/composables/useSpecies';
-import { SpeciesStatus, type Species, type CreateSpeciesInput } from '../../species/types/species';
+import { GET_SPECIES_BY_ID } from '../../species/graphql/species.operations';
+import { SpeciesStatus, type CreateSpeciesInput } from '../../species/types/species';
 
 const props = defineProps<{
   speciesId?: string;
@@ -10,12 +12,13 @@ const props = defineProps<{
 const emit = defineEmits(['close', 'saved']);
 
 const { 
-  getSpeciesDetail, 
   createSpecies, 
   updateSpecies,
   updateTaxonomy,
   updateBiology,
   updateHabitat,
+  updateConservation,
+  updateFishery,
   addMedia,
   removeMedia
 } = useSpecies();
@@ -27,44 +30,79 @@ const saving = ref(false);
 const form = reactive<any>({
   commonName: '',
   scientificName: '',
+  alternativeCommonNames: [],
   emoji: '🐟',
   status: SpeciesStatus.DRAFT,
+  generalDescription: '',
+  notes: '',
+  funFacts: [],
+  bibliographicReferences: [],
+  completeness: 0,
   taxonomy: { kingdom: 'Animalia', phylum: 'Chordata', class: '', order: '', family: '', genus: '', species: '' },
-  biology: { commonNames: [], description: '', feedingHabits: '', reproduction: '', reproductionMode: 'SEXUAL', weightAverageKg: 0, lengthAverageCm: 0 },
-  habitat: { distribution: '', depthRange: [0, 0], temperatureRange: [0, 0], environment: '', habitatType: 'MARINO' },
-  conservation: { iucnStatus: 'NE', cites: '', localProtection: '' },
-  fishery: { commercialValue: 'MEDIO', catchMethods: [], seasonality: '', closureType: 'TEMPORAL' },
+  biology: { 
+    diet: [], 
+    reproductionMode: 'OVIPAROUS', 
+    averageWeightKg: 0, 
+    maximumWeightKg: 0, 
+    averageLengthCm: 0, 
+    maximumLengthCm: 0,
+    trophicLevel: 0,
+    migration: false,
+    longevityYears: 0
+  },
+  habitat: { 
+    type: 'PELAGIC', 
+    minDepthM: 0, 
+    maxDepthM: 0, 
+    minTempC: 0, 
+    maxTempC: 0, 
+    salinityPpt: 0, 
+    substrate: [],
+  },
+  conservation: { 
+    iucn: 'NE', 
+    iucnYear: new Date().getFullYear(),
+    closureType: 'TEMPORARY',
+    closureMonths: [],
+    ecologicalValue: 'MEDIUM',
+    protected: false,
+    legalNotes: ''
+  },
+  fishery: { 
+    commercialValue: '', 
+    annualCatchTon: 0, 
+    artisanal: false, 
+    industrial: false, 
+    aquariumTrade: false, 
+    fishingGears: [], 
+    mainPorts: [] 
+  },
   media: [],
   zones: []
 });
 
-onMounted(async () => {
-  if (props.speciesId) {
-    loading.value = true;
-    const { onResult, onError } = getSpeciesDetail(props.speciesId);
-    
-    onResult((result) => {
-      const s = result.data?.getSpeciesById;
-      if (s) {
-        // Deep merge/assign to keep reactivity for nested objects
-        Object.keys(s).forEach(key => {
-          if (s[key] && typeof s[key] === 'object' && !Array.isArray(s[key])) {
-             form[key] = { ...form[key], ...s[key] };
-          } else if (Array.isArray(s[key])) {
-             form[key] = [...s[key]];
-          } else {
-             form[key] = s[key];
-          }
-        });
-      }
-      loading.value = false;
-    });
+const { result, loading: queryLoading, error } = useQuery(GET_SPECIES_BY_ID, 
+  () => ({ id: props.speciesId }), 
+  () => ({ enabled: !!props.speciesId, fetchPolicy: 'network-only' })
+);
 
-    onError((error) => {
-      console.error('Error loading species:', error);
-      loading.value = false;
+watch(result, (newVal) => {
+  const s = newVal?.getSpeciesById;
+  if (s) {
+    // Reset form with new data, ensuring we don't lose structure
+    Object.assign(form, {
+      ...s,
+      taxonomy: { ...form.taxonomy, ...s.taxonomy },
+      biology: { ...form.biology, ...s.biology },
+      habitat: { ...form.habitat, ...s.habitat },
+      conservation: { ...form.conservation, ...s.conservation },
+      fishery: { ...form.fishery, ...s.fishery },
     });
   }
+}, { immediate: true });
+
+watch(error, (err) => {
+  if (err) console.error('Error loading species:', err);
 });
 
 const isNew = computed(() => !props.speciesId);
@@ -74,6 +112,7 @@ const tabs = [
   { id: 'taxonomy', label: 'Taxonomy', icon: '🧬' },
   { id: 'biology', label: 'Biology', icon: '🔬' },
   { id: 'habitat', label: 'Habitat & Conservation', icon: '🌊' },
+  { id: 'fishery', label: 'Fishery & Commercial', icon: '⚓' },
   { id: 'media', label: 'Media & Zones', icon: '📸' }
 ];
 
@@ -84,8 +123,19 @@ const handleSaveBase = async () => {
       const input: CreateSpeciesInput = {
         commonName: form.commonName,
         scientificName: form.scientificName,
+        alternativeCommonNames: form.alternativeCommonNames,
         emoji: form.emoji,
-        taxonomy: form.taxonomy
+        status: form.status,
+        generalDescription: form.generalDescription,
+        notes: form.notes,
+        funFacts: form.funFacts,
+        bibliographicReferences: form.bibliographicReferences,
+        completeness: form.completeness,
+        taxonomy: form.taxonomy,
+        biology: form.biology,
+        habitat: form.habitat,
+        conservation: form.conservation,
+        fishery: form.fishery
       };
       const result = await createSpecies(input);
       emit('saved', result._id);
@@ -93,8 +143,14 @@ const handleSaveBase = async () => {
       await updateSpecies(props.speciesId!, {
         commonName: form.commonName,
         scientificName: form.scientificName,
+        alternativeCommonNames: form.alternativeCommonNames,
         emoji: form.emoji,
-        status: form.status
+        status: form.status,
+        generalDescription: form.generalDescription,
+        notes: form.notes,
+        funFacts: form.funFacts,
+        bibliographicReferences: form.bibliographicReferences,
+        completeness: form.completeness
       });
     }
   } finally {
@@ -109,7 +165,11 @@ const handleSaveSection = async (section: string) => {
     switch (section) {
       case 'taxonomy': await updateTaxonomy(props.speciesId!, form.taxonomy); break;
       case 'biology': await updateBiology(props.speciesId!, form.biology); break;
-      case 'habitat': await updateHabitat(props.speciesId!, form.habitat); break;
+      case 'habitat': 
+        await updateHabitat(props.speciesId!, form.habitat); 
+        await updateConservation(props.speciesId!, form.conservation);
+        break;
+      case 'fishery': await updateFishery(props.speciesId!, form.fishery); break;
     }
   } finally {
     saving.value = false;
@@ -172,7 +232,6 @@ const handleRemoveMedia = async (url: string) => {
 
       <div v-else class="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
         
-        <!-- Tab: Basic Info -->
         <div v-if="activeTab === 'basic'" class="space-y-6">
           <section class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -184,13 +243,85 @@ const handleRemoveMedia = async (url: string) => {
                 <label class="text-sm font-black text-slate-900 uppercase tracking-tight">Scientific Name</label>
                 <input v-model="form.scientificName" type="text" class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 outline-none transition-all italic text-slate-900 font-medium" />
               </div>
+
               <div class="space-y-2">
-                <label class="text-sm font-bold text-slate-700 uppercase tracking-tight">Emoji Representative</label>
+                <label class="text-sm font-black text-slate-900 uppercase tracking-tight">Emoji Representative</label>
                 <div class="flex gap-2">
-                  <input v-model="form.emoji" type="text" class="w-16 px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-center text-xl" />
-                  <div class="flex-1 text-xs text-slate-500 bg-slate-50 p-2 rounded-lg items-center flex">This icon will be used in lists and maps.</div>
+                  <input v-model="form.emoji" type="text" class="w-20 px-4 py-3 bg-white border-2 border-slate-300 rounded-xl text-center text-2xl" />
+                  <div class="flex-1 text-xs text-slate-500 bg-slate-50 p-3 rounded-xl flex items-center">Used as a visual identifier in maps and lists.</div>
                 </div>
               </div>
+              
+              <div class="space-y-2 col-span-2">
+                <label class="text-sm font-black text-slate-900 uppercase tracking-tight">Alternative Common Names (Separated by commas)</label>
+                <div class="flex flex-wrap gap-2 mb-2" v-if="form.alternativeCommonNames.length">
+                  <span v-for="(name, i) in form.alternativeCommonNames" :key="i" class="px-2 py-1 bg-indigo-100 text-indigo-700 rounded-lg text-xs font-bold flex items-center gap-1">
+                    {{ name }}
+                    <button @click="form.alternativeCommonNames.splice(i, 1)" class="hover:text-rose-600">×</button>
+                  </span>
+                </div>
+                <input 
+                  type="text" 
+                  placeholder="Type and press Enter to add..."
+                  @keydown.enter.prevent="(e) => { 
+                    const val = (e.target as HTMLInputElement).value.trim(); 
+                    if (val) { form.alternativeCommonNames.push(val); (e.target as HTMLInputElement).value = ''; }
+                  }"
+                  class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl outline-none" 
+                />
+              </div>
+
+              <div class="space-y-2 col-span-2">
+                <label class="text-sm font-black text-slate-900 uppercase tracking-tight">Bibliographic References (Enter to add)</label>
+                <div class="flex flex-wrap gap-2 mb-2" v-if="form.bibliographicReferences.length">
+                  <span v-for="(ref, i) in form.bibliographicReferences" :key="i" class="px-2 py-1 bg-slate-100 text-slate-700 rounded-lg text-xs font-medium italic border border-slate-200">
+                    {{ ref }} <button @click="form.bibliographicReferences.splice(i, 1)" class="ml-1 text-slate-400 hover:text-rose-600">×</button>
+                  </span>
+                </div>
+                <input 
+                  type="text" 
+                  @keydown.enter.prevent="(e) => { 
+                    const v = (e.target as HTMLInputElement).value.trim(); 
+                    if (v) { form.bibliographicReferences.push(v); (e.target as HTMLInputElement).value = ''; } 
+                  }"
+                  placeholder="e.g. FAO Species Fact Sheets: Engraulis ringens"
+                  class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl outline-none focus:border-indigo-600" 
+                />
+              </div>
+
+              <div class="space-y-2 col-span-2">
+                <label class="text-sm font-black text-slate-900 uppercase tracking-tight">Fun Facts (Enter to add)</label>
+                <div class="flex flex-wrap gap-2 mb-2" v-if="form.funFacts.length">
+                  <span v-for="(fact, i) in form.funFacts" :key="i" class="px-2 py-1 bg-amber-50 text-amber-700 rounded-lg text-xs font-bold border border-amber-100">
+                    💡 {{ fact }} <button @click="form.funFacts.splice(i, 1)" class="ml-1 text-amber-400 hover:text-rose-600">×</button>
+                  </span>
+                </div>
+                <input 
+                  type="text" 
+                  @keydown.enter.prevent="(e) => { 
+                    const v = (e.target as HTMLInputElement).value.trim(); 
+                    if (v) { form.funFacts.push(v); (e.target as HTMLInputElement).value = ''; } 
+                  }"
+                  placeholder="e.g. It is the most captured marine species in the world."
+                  class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl outline-none focus:border-indigo-600" 
+                />
+              </div>
+
+              <div class="space-y-2 col-span-2">
+                <label class="text-sm font-black text-slate-900 uppercase tracking-tight">General Description</label>
+                <textarea v-model="form.generalDescription" rows="3" class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl outline-none focus:border-indigo-600"></textarea>
+              </div>
+
+              <div class="space-y-2 col-span-2">
+                <label class="text-sm font-black text-slate-900 uppercase tracking-tight">Notes & Strategic Value</label>
+                <textarea v-model="form.notes" rows="2" class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl outline-none focus:border-indigo-600"></textarea>
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-sm font-black text-slate-900 uppercase tracking-tight">Completeness (%)</label>
+                <input v-model.number="form.completeness" type="number" step="0.1" class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl outline-none" />
+              </div>
+              
               <div class="space-y-2">
                 <label class="text-sm font-black text-slate-900 uppercase tracking-tight">Record Status</label>
                 <select v-model="form.status" class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 outline-none transition-all text-slate-900 font-bold">
@@ -202,7 +333,7 @@ const handleRemoveMedia = async (url: string) => {
             </div>
             <div class="pt-4 border-t border-slate-100 flex justify-end">
               <button @click="handleSaveBase" :disabled="saving" class="px-6 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition-all shadow-md">
-                {{ saving ? 'Saving...' : 'Save Base Info' }}
+                {{ saving ? 'Saving...' : 'Save All Basic Info' }}
               </button>
             </div>
           </section>
@@ -228,67 +359,248 @@ const handleRemoveMedia = async (url: string) => {
           </section>
         </div>
 
-        <!-- Tab: Biology -->
         <div v-if="activeTab === 'biology'" class="space-y-6">
           <section class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
-            <div class="space-y-2">
-              <label class="text-xs font-black text-slate-600 uppercase">General Description</label>
-              <textarea v-model="form.biology.description" rows="4" class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 text-slate-900"></textarea>
-            </div>
+            <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">🔬 Biology & Life History</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-2">
-                <label class="text-xs font-black text-slate-600 uppercase">Feeding Habits</label>
-                <input v-model="form.biology.feedingHabits" type="text" class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl" />
+                <label class="text-xs font-black text-slate-600 uppercase">Diet / Eating Habits (Comma separated)</label>
+                <div class="flex flex-wrap gap-2 mb-2" v-if="form.biology.diet.length">
+                  <span v-for="(item, i) in form.biology.diet" :key="i" class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg text-xs font-bold">
+                    {{ item }} <button @click="form.biology.diet.splice(i, 1)">×</button>
+                  </span>
+                </div>
+                <input 
+                  type="text" 
+                  @keydown.enter.prevent="(e) => { const v = (e.target as HTMLInputElement).value.trim(); if (v) { form.biology.diet.push(v); (e.target as HTMLInputElement).value = ''; } }"
+                  class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg" 
+                />
               </div>
+
               <div class="space-y-2">
                 <label class="text-xs font-black text-slate-600 uppercase">Reproduction Mode</label>
-                <select v-model="form.biology.reproductionMode" class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl text-slate-900 font-bold">
-                  <option value="SEXUAL">Sexual</option>
+                <select v-model="form.biology.reproductionMode" class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg text-slate-900 font-bold">
+                  <option value="OVIPAROUS">Oviparous</option>
+                  <option value="VIVIPAROUS">Viviparous</option>
+                  <option value="OVOVIVIPAROUS">Ovoviviparous</option>
                   <option value="ASEXUAL">Asexual</option>
-                  <option value="HERMAFRODITA">Hermafrodita</option>
+                  <option value="SEXUAL">Sexual</option>
+                  <option value="HERMAFRODITA">Hermaphrodite</option>
                 </select>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 col-span-2">
+                <div class="space-y-2">
+                  <label class="text-xs font-black text-slate-600 uppercase">Avg Weight (kg)</label>
+                  <input v-model.number="form.biology.averageWeightKg" type="number" step="0.01" class="w-full px-4 py-2 border-2 border-slate-200 rounded-lg" />
+                </div>
+                <div class="space-y-2">
+                  <label class="text-xs font-black text-slate-600 uppercase">Max Weight (kg)</label>
+                  <input v-model.number="form.biology.maximumWeightKg" type="number" step="0.01" class="w-full px-4 py-2 border-2 border-slate-200 rounded-lg" />
+                </div>
+                <div class="space-y-2">
+                  <label class="text-xs font-black text-slate-600 uppercase">Avg Length (cm)</label>
+                  <input v-model.number="form.biology.averageLengthCm" type="number" step="0.1" class="w-full px-4 py-2 border-2 border-slate-200 rounded-lg" />
+                </div>
+                <div class="space-y-2">
+                  <label class="text-xs font-black text-slate-600 uppercase">Max Length (cm)</label>
+                  <input v-model.number="form.biology.maximumLengthCm" type="number" step="0.1" class="w-full px-4 py-2 border-2 border-slate-200 rounded-lg" />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-xs font-black text-slate-600 uppercase">Trophic Level</label>
+                <input v-model.number="form.biology.trophicLevel" type="number" step="0.1" class="w-full px-4 py-2 border-2 border-slate-200 rounded-lg" />
+              </div>
+              <div class="space-y-2 flex items-center gap-4 pt-6">
+                <label class="text-xs font-black text-slate-600 uppercase cursor-pointer flex items-center gap-2">
+                  <input v-model="form.biology.migration" type="checkbox" class="w-5 h-5 accent-indigo-600" />
+                  Migratory Species
+                </label>
               </div>
             </div>
             <div class="pt-4 border-t border-slate-100 flex justify-end" v-if="!isNew">
-              <button @click="handleSaveSection('biology')" :disabled="saving" class="px-6 py-2 bg-slate-800 text-white font-bold rounded-lg shadow-md">
+              <button @click="handleSaveSection('biology')" :disabled="saving" class="px-6 py-2 bg-slate-800 text-white font-bold rounded-lg shadow-md hover:bg-slate-900 transition-all">
                 Save Biology
               </button>
             </div>
           </section>
         </div>
 
-        <!-- Tab: Habitat & Conservation -->
         <div v-if="activeTab === 'habitat'" class="space-y-6">
           <section class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
-            <h3 class="text-lg font-bold text-slate-800">Habitat & Distribution</h3>
+            <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">🌊 Habitat & Environment</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-2">
                 <label class="text-xs font-black text-slate-600 uppercase">Habitat Type</label>
-                <select v-model="form.habitat.habitatType" class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl text-slate-900 font-bold">
-                  <option value="MARINO">Marino</option>
-                  <option value="AGUA_DULCE">Agua Dulce</option>
-                  <option value="ESTUARIO">Estuario</option>
-                  <option value="SALOBRE">Salobre</option>
+                <select v-model="form.habitat.type" class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg font-bold">
+                  <option value="PELAGIC">Pelagic</option>
+                  <option value="BENTHIC">Benthic</option>
+                  <option value="DEMERSAL">Demersal</option>
+                  <option value="REEF">Reef</option>
+                  <option value="ESTUARY">Estuary</option>
                 </select>
               </div>
               <div class="space-y-2">
+                <label class="text-xs font-black text-slate-600 uppercase">Salinity (ppt)</label>
+                <input v-model.number="form.habitat.salinityPpt" type="number" class="w-full px-4 py-2 border-2 border-slate-200 rounded-lg" />
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                  <label class="text-xs font-black text-slate-600 uppercase">Min Depth (m)</label>
+                  <input v-model.number="form.habitat.minDepthM" type="number" class="w-full px-4 py-2 border-2 border-slate-200 rounded-lg" />
+                </div>
+                <div class="space-y-2">
+                  <label class="text-xs font-black text-slate-600 uppercase">Max Depth (m)</label>
+                  <input v-model.number="form.habitat.maxDepthM" type="number" class="w-full px-4 py-2 border-2 border-slate-200 rounded-lg" />
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                  <label class="text-xs font-black text-slate-600 uppercase">Min Temp (°C)</label>
+                  <input v-model.number="form.habitat.minTempC" type="number" class="w-full px-4 py-2 border-2 border-slate-200 rounded-lg" />
+                </div>
+                <div class="space-y-2">
+                  <label class="text-xs font-black text-slate-600 uppercase">Max Temp (°C)</label>
+                  <input v-model.number="form.habitat.maxTempC" type="number" class="w-full px-4 py-2 border-2 border-slate-200 rounded-lg" />
+                </div>
+              </div>
+              <div class="space-y-2 col-span-2">
+                <label class="text-xs font-black text-slate-600 uppercase">Substrate / Environment Details (Comma separated)</label>
+                <div class="flex flex-wrap gap-2 mb-2" v-if="form.habitat.substrate.length">
+                  <span v-for="(item, i) in form.habitat.substrate" :key="i" class="px-2 py-1 bg-slate-100 text-slate-700 rounded-lg text-xs font-bold">
+                    {{ item }} <button @click="form.habitat.substrate.splice(i, 1)">×</button>
+                  </span>
+                </div>
+                <input 
+                  type="text" 
+                  @keydown.enter.prevent="(e) => { const v = (e.target as HTMLInputElement).value.trim(); if (v) { form.habitat.substrate.push(v); (e.target as HTMLInputElement).value = ''; } }"
+                  placeholder="e.g. Water column, Rocky reef..."
+                  class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg" 
+                />
+              </div>
+            </div>
+          </section>
+
+          <section class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
+            <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">🛡️ Conservation & Protection</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-2">
                 <label class="text-xs font-black text-slate-600 uppercase">IUCN Status</label>
-                <select v-model="form.conservation.iucnStatus" class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl text-slate-900 font-bold">
-                  <option value="NE">No Evaluado (NE)</option>
-                  <option value="DD">Datos Insuficientes (DD)</option>
-                  <option value="LC">Preocupación Menor (LC)</option>
-                  <option value="NT">Casi Amenazado (NT)</option>
+                <select v-model="form.conservation.iucn" class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg font-bold">
+                  <option value="EX">Extinct (EX)</option>
+                  <option value="EW">Extinct in the Wild (EW)</option>
+                  <option value="CR">Critically Endangered (CR)</option>
+                  <option value="EN">Endangered (EN)</option>
                   <option value="VU">Vulnerable (VU)</option>
-                  <option value="EN">En Peligro (EN)</option>
-                  <option value="CR">En Peligro Crítico (CR)</option>
-                  <option value="EW">Extinto en Naturaleza (EW)</option>
-                  <option value="EX">Extinto (EX)</option>
+                  <option value="NT">Near Threatened (NT)</option>
+                  <option value="LC">Least Concern (LC)</option>
+                  <option value="DD">Data Deficient (DD)</option>
+                  <option value="NE">Not Evaluated (NE)</option>
                 </select>
+              </div>
+              <div class="space-y-2">
+                <label class="text-xs font-black text-slate-600 uppercase">IUCN Evaluation Year</label>
+                <input v-model.number="form.conservation.iucnYear" type="number" class="w-full px-4 py-2 border-2 border-slate-200 rounded-lg" />
+              </div>
+              <div class="space-y-2">
+                <label class="text-xs font-black text-slate-600 uppercase">Ecological Value</label>
+                <select v-model="form.conservation.ecologicalValue" class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg font-bold">
+                  <option value="VERY_HIGH">Very High</option>
+                  <option value="HIGH">High</option>
+                  <option value="MEDIUM">Medium</option>
+                  <option value="LOW">Low</option>
+                </select>
+              </div>
+              <div class="space-y-2 flex items-center gap-4 pt-6">
+                <label class="text-xs font-black text-slate-600 uppercase cursor-pointer flex items-center gap-2">
+                  <input v-model="form.conservation.protected" type="checkbox" class="w-5 h-5 accent-emerald-600" />
+                  Legally Protected
+                </label>
+              </div>
+              <div class="space-y-2 col-span-2">
+                <label class="text-xs font-black text-slate-600 uppercase italic">Fishing Closure Months</label>
+                <div class="grid grid-cols-4 md:grid-cols-6 gap-2">
+                  <label v-for="m in ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']" :key="m" 
+                    class="flex items-center gap-1 text-[10px] font-bold p-1 border rounded cursor-pointer transition-colors"
+                    :class="form.conservation.closureMonths.includes(m) ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-400 border-slate-200'"
+                  >
+                    <input type="checkbox" :value="m" v-model="form.conservation.closureMonths" class="hidden" />
+                    {{ m }}
+                  </label>
+                </div>
+              </div>
+              <div class="space-y-2 col-span-2">
+                <label class="text-xs font-black text-slate-600 uppercase">Legal Protection Notes</label>
+                <textarea v-model="form.conservation.legalNotes" rows="2" class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg"></textarea>
               </div>
             </div>
             <div class="pt-4 border-t border-slate-100 flex justify-end" v-if="!isNew">
-              <button @click="handleSaveSection('habitat')" :disabled="saving" class="px-6 py-2 bg-slate-800 text-white font-bold rounded-lg shadow-md">
-                Save Habitat & Conservation
+              <button @click="handleSaveSection('habitat')" :disabled="saving" class="px-6 py-2 bg-slate-800 text-white font-bold rounded-lg shadow-md hover:bg-slate-900 transition-all">
+                Save Hab/Cons
+              </button>
+            </div>
+          </section>
+        </div>
+
+        <!-- Tab: Fishery -->
+        <div v-if="activeTab === 'fishery'" class="space-y-6">
+          <section class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
+            <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">⚓ Fishery & Commercial Data</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-2 col-span-2">
+                <label class="text-xs font-black text-slate-600 uppercase">Commercial Value (Description)</label>
+                <textarea v-model="form.fishery.commercialValue" rows="2" class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg"></textarea>
+              </div>
+              <div class="space-y-2">
+                <label class="text-xs font-black text-slate-600 uppercase">Annual Catch (Tons)</label>
+                <input v-model.number="form.fishery.annualCatchTon" type="number" class="w-full px-4 py-2 border-2 border-slate-200 rounded-lg" />
+              </div>
+              <div class="grid grid-cols-3 gap-2 py-4 items-center h-full">
+                <label class="flex items-center gap-1 text-[10px] font-black uppercase text-slate-500 cursor-pointer italic">
+                  <input v-model="form.fishery.artisanal" type="checkbox" class="w-4 h-4 accent-indigo-600" /> Artisanal
+                </label>
+                <label class="flex items-center gap-1 text-[10px] font-black uppercase text-slate-500 cursor-pointer italic">
+                  <input v-model="form.fishery.industrial" type="checkbox" class="w-4 h-4 accent-indigo-600" /> Industrial
+                </label>
+                <label class="flex items-center gap-1 text-[10px] font-black uppercase text-slate-500 cursor-pointer italic">
+                  <input v-model="form.fishery.aquariumTrade" type="checkbox" class="w-4 h-4 accent-indigo-600" /> Aquarium
+                </label>
+              </div>
+              
+              <div class="space-y-2">
+                <label class="text-xs font-black text-slate-600 uppercase">Fishing Gears Used</label>
+                <div class="flex flex-wrap gap-2 mb-2" v-if="form.fishery.fishingGears.length">
+                  <span v-for="(gear, i) in form.fishery.fishingGears" :key="i" class="px-2 py-1 bg-indigo-50 text-indigo-700 rounded-lg text-xs font-bold border border-indigo-100">
+                    {{ gear }} <button @click="form.fishery.fishingGears.splice(i, 1)">×</button>
+                  </span>
+                </div>
+                <input 
+                  type="text" 
+                  @keydown.enter.prevent="(e) => { const v = (e.target as HTMLInputElement).value.trim(); if (v) { form.fishery.fishingGears.push(v); (e.target as HTMLInputElement).value = ''; } }"
+                  placeholder="e.g. Purse seine, Trawling..."
+                  class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg" 
+                />
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-xs font-black text-slate-600 uppercase">Main Landing Ports</label>
+                <div class="flex flex-wrap gap-2 mb-2" v-if="form.fishery.mainPorts.length">
+                  <span v-for="(port, i) in form.fishery.mainPorts" :key="i" class="px-2 py-1 bg-slate-50 text-slate-600 rounded-lg text-xs font-bold border border-slate-100">
+                    {{ port }} <button @click="form.fishery.mainPorts.splice(i, 1)">×</button>
+                  </span>
+                </div>
+                <input 
+                  type="text" 
+                  @keydown.enter.prevent="(e) => { const v = (e.target as HTMLInputElement).value.trim(); if (v) { form.fishery.mainPorts.push(v); (e.target as HTMLInputElement).value = ''; } }"
+                  placeholder="e.g. Chimbote, Pisco..."
+                  class="w-full px-4 py-2 bg-white border-2 border-slate-200 rounded-lg" 
+                />
+              </div>
+            </div>
+            <div class="pt-4 border-t border-slate-100 flex justify-end" v-if="!isNew">
+              <button @click="handleSaveSection('fishery')" :disabled="saving" class="px-6 py-2 bg-indigo-800 text-white font-bold rounded-lg shadow-md hover:bg-indigo-900 transition-all">
+                Save Fishery Info
               </button>
             </div>
           </section>

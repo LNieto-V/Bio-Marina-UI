@@ -1,25 +1,29 @@
 import { useQuery, useMutation } from '@vue/apollo-composable';
-import { 
-  GET_SPECIES, 
-  GET_SPECIES_BY_ID, 
-  CREATE_SPECIES, 
-  UPDATE_SPECIES, 
+import {
+  GET_SPECIES,
+  GET_SPECIES_BY_ID,
+  CREATE_SPECIES,
+  UPDATE_SPECIES,
   REMOVE_SPECIES,
   UPDATE_SPECIES_TAXONOMY,
   UPDATE_SPECIES_BIOLOGY,
   UPDATE_SPECIES_HABITAT,
+  UPDATE_SPECIES_CONSERVATION,
+  UPDATE_SPECIES_FISHERY,
   ADD_SPECIES_MEDIA,
   REMOVE_SPECIES_MEDIA,
   ADD_SPECIES_ZONE,
   REMOVE_SPECIES_ZONE
 } from '../graphql/species.operations';
-import type { 
-  Species, 
-  CreateSpeciesInput, 
+import type {
+  Species,
+  CreateSpeciesInput,
   UpdateSpeciesInput,
   Taxonomy,
   Biology,
   Habitat,
+  Conservation,
+  Fishery,
   Media,
   Zone
 } from '../types/species';
@@ -27,11 +31,11 @@ import { computed } from 'vue';
 
 export function useSpecies() {
   // Query: Get All Species
-  const { 
-    result: speciesResult, 
-    loading: loadingSpecies, 
-    error: errorSpecies, 
-    refetch: refetchSpecies 
+  const {
+    result: speciesResult,
+    loading: loadingSpecies,
+    error: errorSpecies,
+    refetch: refetchSpecies
   } = useQuery(GET_SPECIES);
 
   const speciesList = computed(() => speciesResult.value?.getSpecies ?? []);
@@ -43,7 +47,7 @@ export function useSpecies() {
 
   // Mutation: Create
   const { mutate: createSpeciesMutation } = useMutation(CREATE_SPECIES);
-  
+
   const createSpecies = async (input: CreateSpeciesInput) => {
     try {
       const result = await createSpeciesMutation({ input });
@@ -85,31 +89,39 @@ export function useSpecies() {
   // ─── Granular Updates ───────────────────────────────────────
 
   const { mutate: updateTaxonomyMutation } = useMutation(UPDATE_SPECIES_TAXONOMY);
-  const updateTaxonomy = (id: string, input: Partial<Taxonomy>) => 
+  const updateTaxonomy = (id: string, input: Partial<Taxonomy>) =>
     updateTaxonomyMutation({ id, input });
 
   const { mutate: updateBiologyMutation } = useMutation(UPDATE_SPECIES_BIOLOGY);
-  const updateBiology = (id: string, input: Partial<Biology>) => 
+  const updateBiology = (id: string, input: Partial<Biology>) =>
     updateBiologyMutation({ id, input });
 
   const { mutate: updateHabitatMutation } = useMutation(UPDATE_SPECIES_HABITAT);
-  const updateHabitat = (id: string, input: Partial<Habitat>) => 
+  const updateHabitat = (id: string, input: Partial<Habitat>) =>
     updateHabitatMutation({ id, input });
 
+  const { mutate: updateConservationMutation } = useMutation(UPDATE_SPECIES_CONSERVATION);
+  const updateConservation = (id: string, input: Partial<Conservation>) =>
+    updateConservationMutation({ id, input });
+
+  const { mutate: updateFisheryMutation } = useMutation(UPDATE_SPECIES_FISHERY);
+  const updateFishery = (id: string, input: Partial<Fishery>) =>
+    updateFisheryMutation({ id, input });
+
   const { mutate: addMediaMutation } = useMutation(ADD_SPECIES_MEDIA);
-  const addMedia = (id: string, input: Media) => 
+  const addMedia = (id: string, input: Media) =>
     addMediaMutation({ id, input });
 
   const { mutate: removeMediaMutation } = useMutation(REMOVE_SPECIES_MEDIA);
-  const removeMedia = (id: string, mediaUrl: string) => 
+  const removeMedia = (id: string, mediaUrl: string) =>
     removeMediaMutation({ id, mediaUrl });
 
   const { mutate: addZoneMutation } = useMutation(ADD_SPECIES_ZONE);
-  const addZone = (id: string, input: Zone) => 
+  const addZone = (id: string, input: Zone) =>
     addZoneMutation({ id, input });
 
   const { mutate: removeZoneMutation } = useMutation(REMOVE_SPECIES_ZONE);
-  const removeZone = (id: string, zoneName: string) => 
+  const removeZone = (id: string, zoneName: string) =>
     removeZoneMutation({ id, zoneName });
 
   return {
@@ -124,6 +136,8 @@ export function useSpecies() {
     updateTaxonomy,
     updateBiology,
     updateHabitat,
+    updateConservation,
+    updateFishery,
     addMedia,
     removeMedia,
     addZone,
