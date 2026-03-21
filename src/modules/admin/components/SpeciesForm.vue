@@ -2,9 +2,8 @@
 import { ref, reactive, computed, watch } from 'vue';
 import { useQuery } from '@vue/apollo-composable';
 import { useSpecies } from '../../species/composables/useSpecies';
-import { SpeciesStatus, MediaType, type Species, type CreateSpeciesInput } from '../../species/types/species';
 import { GET_SPECIES_BY_ID } from '../../species/graphql/species.operations';
-import { SpeciesStatus, type CreateSpeciesInput } from '../../species/types/species';
+import { SpeciesStatus, MediaType, type CreateSpeciesInput } from '../../species/types/species';
 
 const props = defineProps<{
   speciesId?: string;
@@ -82,7 +81,7 @@ const form = reactive<any>({
   zones: []
 });
 
-const { result, loading: queryLoading, error } = useQuery(GET_SPECIES_BY_ID,
+const { result, error } = useQuery(GET_SPECIES_BY_ID,
   () => ({ id: props.speciesId }),
   () => ({ enabled: !!props.speciesId, fetchPolicy: 'network-only' })
 );
