@@ -100,6 +100,11 @@ router.beforeEach((to, _from, next) => {
 
   const { isAuthenticated, currentUser } = useAuth()
 
+  // Prevent authenticated users from visiting the login page
+  if (to.name === 'login' && isAuthenticated.value) {
+    return next({ name: 'admin-dashboard' })
+  }
+
   // Check authentication requirement
   if (to.meta.requiresAuth && !isAuthenticated.value) {
     return next({ name: 'login', query: { redirect: to.fullPath } })
