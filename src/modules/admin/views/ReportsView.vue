@@ -59,18 +59,19 @@ const formatDate = (iso: string) =>
               :key="key"
               @click="formato = key as FormatoReporte"
               :class="[
-                'flex-1 flex items-center gap-3 p-4 rounded-xl border-2 transition-all text-left',
+                'flex-1 flex items-center gap-3 p-5 rounded-2xl border-2 transition-all text-left group overflow-hidden relative shadow-sm hover:shadow-md',
                 formato === key
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                  : 'border-slate-200 dark:border-slate-700 hover:border-slate-300',
+                  ? 'border-blue-500 bg-white dark:bg-slate-900'
+                  : 'border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-200 dark:hover:border-blue-900/50',
               ]"
             >
-              <span :class="['material-symbols-outlined text-[28px] fill', formato === key ? 'text-blue-600' : 'text-slate-400']">
+              <div v-if="formato === key" class="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-cyan-500/5 pointer-events-none"></div>
+              <span :class="['material-symbols-outlined text-[32px] transition-all duration-300', formato === key ? 'text-blue-600 scale-110 fill' : 'text-slate-300 group-hover:text-blue-400']">
                 {{ FORMATO_ICONS[key as FormatoReporte] }}
               </span>
-              <div>
-                <p :class="['text-sm font-black', formato === key ? 'text-blue-700 dark:text-blue-400' : 'text-slate-700 dark:text-slate-300']">{{ label }}</p>
-                <p class="text-[10px] text-slate-400">{{ key === 'pdf' ? 'Diseño visual' : 'Datos estructurados' }}</p>
+              <div class="relative z-10">
+                <p :class="['text-sm font-black uppercase tracking-tight', formato === key ? 'text-blue-700 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300']">{{ label }}</p>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{{ key === 'pdf' ? 'Visual Document' : 'Spreadsheet' }}</p>
               </div>
             </button>
           </div>
