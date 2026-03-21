@@ -119,7 +119,7 @@ const getStatusColor = (status: SpeciesStatus) => {
               <div v-if="s" class="size-11 rounded-xl bg-primary/10 overflow-hidden shadow-sm border border-primary/5 shrink-0 flex items-center justify-center">
                 <img 
                   v-if="s.media && s.media.length > 0" 
-                  :src="s.media[0].url" 
+                  :src="s.media[0]?.url" 
                   class="w-full h-full object-cover transition-transform group-hover:scale-125"
                 />
                 <span v-else class="text-xl leading-none">{{ s.emoji || '🐟' }}</span>

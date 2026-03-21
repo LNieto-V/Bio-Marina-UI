@@ -670,7 +670,7 @@ const handleRemoveMedia = async (mediaId: string, url: string) => {
                 
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 
-                <button @click="handleRemoveMedia(m.url)" class="absolute top-4 right-4 p-2.5 bg-rose-500/90 hover:bg-rose-600 text-white rounded-xl opacity-0 group-hover:opacity-100 transition-all backdrop-blur-md shadow-lg transform translate-y-2 group-hover:translate-y-0">
+                <button @click="handleRemoveMedia(m._id || '', m.url)" class="absolute top-4 right-4 p-2.5 bg-rose-500/90 hover:bg-rose-600 text-white rounded-xl opacity-0 group-hover:opacity-100 transition-all backdrop-blur-md shadow-lg transform translate-y-2 group-hover:translate-y-0">
                    <span class="material-symbols-outlined text-[18px]">delete</span>
                 </button>
 
