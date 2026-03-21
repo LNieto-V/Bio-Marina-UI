@@ -51,7 +51,7 @@ const handleSaved = (id?: string) => {
 </script>
 
 <template>
-  <div class="p-6 max-w-[1600px] mx-auto space-y-6 min-h-screen bg-slate-50/30">
+  <div class="p-6 max-w-[1600px] mx-auto space-y-6 min-h-screen bg-slate-50/30 dark:bg-transparent transition-colors">
     <!-- Breadcrumbs / Header -->
     <div class="flex items-center gap-2 text-sm text-slate-400 mb-2">
       <span>Admin</span>
