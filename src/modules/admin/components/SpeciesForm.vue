@@ -1,4 +1,5 @@
-<script setup lang="ts">
+ <script setup lang="ts">
+import { getProxyUrl, isImageUrl } from '../../../shared/utils/image';
 import { ref, reactive, computed, watch } from 'vue';
 import { useQuery } from '@vue/apollo-composable';
 import { useSpecies } from '../../species/composables/useSpecies';
@@ -139,6 +140,20 @@ const handleSaveBase = async () => {
         fishery: form.fishery
       };
       const result = await createSpecies(input);
+      
+      // Save any media that was added while creating the new species
+      if (form.media && form.media.length > 0) {
+        for (const m of form.media) {
+          await addMedia(result._id, {
+            url: m.url,
+            type: m.type,
+            authorship: m.authorship,
+            isMain: m.isMain,
+            license: m.license
+          });
+        }
+      }
+      
       emit('saved', result._id);
     } else {
       await updateSpecies(props.speciesId!, {
@@ -179,7 +194,7 @@ const handleSaveSection = async (section: string) => {
 
 const newMediaUrl = ref('');
 const handleAddMedia = async () => {
-  if (!newMediaUrl.value || isNew.value) return;
+  if (!newMediaUrl.value) return;
   const newMedia = {
     url: newMediaUrl.value,
     type: MediaType.PHOTO,
@@ -187,18 +202,26 @@ const handleAddMedia = async () => {
     isMain: form.media.length === 0,
     license: 'CC BY 4.0'
   };
-  await addMedia(props.speciesId!, newMedia);
+  
+  if (!isNew.value) {
+    await addMedia(props.speciesId!, newMedia);
+  }
+  
   form.media.push(newMedia);
   newMediaUrl.value = '';
 };
 
 const handleRemoveMedia = async (mediaId: string, url: string) => {
-  if (isNew.value) return;
-  if (mediaId && props.speciesId) {
+  if (!isNew.value && mediaId && props.speciesId) {
     await removeMedia(props.speciesId, mediaId);
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form.media = form.media.filter((m: any) => m.url !== url);
+};
+
+const handleImageError = (event: Event) => {
+  const target = event.target as HTMLImageElement;
+  target.src = 'https://placehold.co/600x400?text=Imagen+no+disponible';
 };
 
 </script>
@@ -249,7 +272,7 @@ const handleRemoveMedia = async (mediaId: string, url: string) => {
             <!-- Quick Image Preview -->
             <div class="flex flex-col md:flex-row gap-6 pb-6 border-b border-slate-100 dark:border-slate-800">
               <div class="size-32 md:size-40 rounded-2xl bg-slate-100 dark:bg-slate-800 border-2 border-dashed border-slate-200 dark:border-slate-700 shrink-0 overflow-hidden group relative">
-                <img v-if="form.media && form.media.length > 0" :src="form.media[0].url" class="w-full h-full object-cover" />
+                <img v-if="form.media && form.media.length > 0" :src="getProxyUrl(form.media[0].url)" @error="handleImageError" class="w-full h-full object-cover" />
                 <div v-else class="w-full h-full flex flex-col items-center justify-center text-slate-400">
                   <span class="material-symbols-outlined text-4xl">image</span>
                   <span class="text-[10px] uppercase font-black mt-1">No Image</span>
@@ -648,28 +671,11 @@ const handleRemoveMedia = async (mediaId: string, url: string) => {
           </section>
         </div>
         <div v-if="activeTab === 'media'" class="space-y-6">
-<<<<<<< HEAD
-          <section class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-primary/10 dark:border-slate-800 shadow-xl space-y-6 transition-colors">
-            <h3 class="text-lg font-medium text-white dark:text-white">Media Gallery</h3>
-            <div class="flex gap-2">
-              <input v-model="newMediaUrl" type="text" placeholder="Paste Image URL here..." class="flex-1 px-4 py-3 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-primary/20 dark:focus:ring-cyan-500/20 focus:border-primary dark:focus:border-cyan-500 outline-none text-white dark:text-white" />
-              <button @click="handleAddMedia" class="px-6 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-xl font-semibold shadow-lg shadow-cyan-500/25 hover:from-cyan-500 hover:to-blue-500 transition-all active:scale-95">Add Image</button>
-=======
           <section class="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-primary/10 dark:border-slate-800 shadow-xl space-y-8 transition-colors">
             <div>
               <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">Multimedia & Galería</h3>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Gestiona las imágenes que se mostrarán en el catálogo público.</p>
->>>>>>> 92bfc90 (feat: add species thumbnails, image previews, and finalize reports module)
             </div>
-<<<<<<< HEAD
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <div v-for="m in form.media" :key="m.url" class="relative group aspect-square rounded-lg overflow-hidden bg-slate-100 border border-slate-200">
-                <img :src="m.url" class="w-full h-full object-cover" />
-                <button @click="handleRemoveMedia(m._id, m.url)" class="absolute top-2 right-2 p-1.5 bg-rose-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="6 18L18 6M6 6l12 12" />
-                  </svg>
-=======
 
             <div class="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-[24px] border border-dashed border-slate-200 dark:border-slate-700 space-y-4">
               <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-1">Nueva URL de Imagen</label>
@@ -678,18 +684,21 @@ const handleRemoveMedia = async (mediaId: string, url: string) => {
                 <button @click="handleAddMedia" class="px-8 bg-primary hover:bg-primary-dark text-white rounded-xl font-black text-sm shadow-xl shadow-primary/30 transition-all active:scale-95 flex items-center gap-2">
                   <span class="material-symbols-outlined text-[20px]">add_photo_alternate</span>
                   Agregar
->>>>>>> ef1803f0edfb3824a34d9a682d8d87ba8acd6a19
                 </button>
               </div>
+              <p v-if="newMediaUrl && !isImageUrl(newMediaUrl)" class="text-[10px] text-amber-500 font-bold px-2 flex items-center gap-1 animate-pulse">
+                <span class="material-symbols-outlined text-sm">warning</span>
+                Esta URL no parece ser una imagen directa. Se intentará cargar mediante proxy.
+              </p>
             </div>
 
             <div v-if="form.media && form.media.length > 0" class="grid grid-cols-2 lg:grid-cols-3 gap-6">
               <div v-for="m in form.media" :key="m.url" class="relative group aspect-[4/3] rounded-[24px] overflow-hidden bg-slate-100 dark:bg-slate-800 border-2 border-transparent hover:border-primary transition-all shadow-sm hover:shadow-xl">
-                <img :src="m.url" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <img :src="getProxyUrl(m.url)" @error="handleImageError" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 
-                <button @click="handleRemoveMedia(m.url)" class="absolute top-4 right-4 p-2.5 bg-rose-500/90 hover:bg-rose-600 text-white rounded-xl opacity-0 group-hover:opacity-100 transition-all backdrop-blur-md shadow-lg transform translate-y-2 group-hover:translate-y-0">
+                <button @click="handleRemoveMedia(m._id, m.url)" class="absolute top-4 right-4 p-2.5 bg-rose-500/90 hover:bg-rose-600 text-white rounded-xl opacity-0 group-hover:opacity-100 transition-all backdrop-blur-md shadow-lg transform translate-y-2 group-hover:translate-y-0">
                    <span class="material-symbols-outlined text-[18px]">delete</span>
                 </button>
 
