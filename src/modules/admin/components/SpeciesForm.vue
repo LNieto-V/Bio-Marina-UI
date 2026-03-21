@@ -30,18 +30,18 @@ const saving = ref(false);
 const form = reactive({
   commonName: '',
   scientificName: '',
-  alternativeCommonNames: [],
+  alternativeCommonNames: [] as string[],
   emoji: '🐟',
   status: SpeciesStatus.DRAFT,
   generalDescription: '',
   notes: '',
-  funFacts: [],
-  bibliographicReferences: [],
+  funFacts: [] as string[],
+  bibliographicReferences: [] as string[],
   completeness: 0,
   taxonomy: { kingdom: 'Animalia', phylum: 'Chordata', class: '', order: '', family: '', genus: '', species: '' },
   biology: { 
-    diet: [], 
-    reproductionMode: 'OVIPAROUS', 
+    diet: [] as string[], 
+    reproductionMode: ReproductionMode.OVIPAROUS, 
     averageWeightKg: 0, 
     maximumWeightKg: 0, 
     averageLengthCm: 0, 
@@ -57,14 +57,14 @@ const form = reactive({
     minTempC: 0, 
     maxTempC: 0, 
     salinityPpt: 0, 
-    substrate: [],
+    substrate: [] as string[],
   },
   conservation: { 
     iucn: 'NE', 
     iucnYear: new Date().getFullYear(),
-    closureType: 'TEMPORARY',
-    closureMonths: [],
-    ecologicalValue: 'MEDIUM',
+    closureType: FishingClosureType.TEMPORARY,
+    closureMonths: [] as string[],
+    ecologicalValue: EcologicalValue.MEDIUM,
     protected: false,
     legalNotes: ''
   },
@@ -74,14 +74,14 @@ const form = reactive({
     artisanal: false, 
     industrial: false, 
     aquariumTrade: false, 
-    fishingGears: [], 
-    mainPorts: [] 
+    fishingGears: [] as string[], 
+    mainPorts: [] as string[]
   },
-  media: [],
-  zones: []
+  media: [] as Media[],
+  zones: [] as Zone[]
 });
 
-const { result, loading: queryLoading, error } = useQuery(GET_SPECIES_BY_ID, 
+const { result, error } = useQuery(GET_SPECIES_BY_ID, 
   () => ({ id: props.speciesId }), 
   () => ({ enabled: !!props.speciesId, fetchPolicy: 'network-only' })
 );

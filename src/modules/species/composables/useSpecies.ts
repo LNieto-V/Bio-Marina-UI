@@ -16,7 +16,6 @@ import {
   REMOVE_SPECIES_ZONE
 } from '../graphql/species.operations';
 import type {
-  Species,
   CreateSpeciesInput,
   UpdateSpeciesInput,
   Taxonomy,
