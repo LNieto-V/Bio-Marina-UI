@@ -1,10 +1,28 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import SpeciesTable from '../components/SpeciesTable.vue';
 import SpeciesForm from '../components/SpeciesForm.vue';
 
+const route = useRoute();
+const router = useRouter();
 const viewMode = ref<'list' | 'form'>('list');
 const selectedId = ref<string | undefined>(undefined);
+
+const checkQuery = () => {
+  if (route.query.action === 'create') {
+    selectedId.value = undefined;
+    viewMode.value = 'form';
+    router.replace({ query: {} }); // clean up
+  } else if (route.query.action === 'edit' && route.query.id) {
+    selectedId.value = route.query.id as string;
+    viewMode.value = 'form';
+    router.replace({ query: {} });
+  }
+};
+
+onMounted(checkQuery);
+watch(() => route.query, checkQuery);
 
 const handleCreate = () => {
   selectedId.value = undefined;

@@ -153,10 +153,10 @@ const getImageUrl = (item: Especie) => {
             <h2 class="text-2xl sm:text-3xl font-black tracking-tight gradient-text">Gestión de Especies</h2>
             <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">Monitoreo de {{ adminStore.stats.totalEspecies }} especies registradas.</p>
           </div>
-          <button class="flex justify-center items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white px-5 py-2.5 rounded-xl font-black shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-[1.02] transition-all active:scale-95">
+          <RouterLink to="/admin/species?action=create" class="flex justify-center items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white px-5 py-2.5 rounded-xl font-black shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-[1.02] transition-all active:scale-95">
             <span class="material-symbols-outlined text-[20px]">add_circle</span>
             <span>Nueva Especie</span>
-          </button>
+          </RouterLink>
         </div>
 
         <!-- Stats Overview -->

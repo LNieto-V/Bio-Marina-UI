@@ -51,7 +51,7 @@ const completitudColor = computed(() =>
       </div>
       <RouterLink
         v-if="can('species.create')"
-        to="/admin/species/create"
+        to="/admin/species?action=create"
         class="flex justify-center items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all active:scale-95"
       >
         <span class="material-symbols-outlined text-[20px]">add_circle</span>

@@ -70,7 +70,7 @@ const totalPages = computed(() => Math.ceil(displayedSpecies.value.length / admi
         </button>
         <RouterLink
           v-if="can('species.create')"
-          to="/admin/species/create"
+          to="/admin/species?action=create"
           class="flex-1 sm:flex-none flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-blue-600/20 transition-all active:scale-95"
         >
           <span class="material-symbols-outlined text-[18px]">add</span>
