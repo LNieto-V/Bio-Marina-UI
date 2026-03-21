@@ -1,137 +1,161 @@
 export enum SpeciesStatus {
-  DRAFT = 'DRAFT',
-  PUBLISHED = 'PUBLISHED',
-  REVISION = 'REVISION',
+    DRAFT = 'DRAFT',
+    PUBLISHED = 'PUBLISHED',
+    REVISION = 'REVISION',
 }
 
 export enum IUCNStatus {
-  CR = 'CR',
-  DD = 'DD',
-  EN = 'EN',
-  EW = 'EW',
-  EX = 'EX',
-  LC = 'LC',
-  NE = 'NE',
-  NT = 'NT',
-  VU = 'VU',
+    CR = 'CR',
+    DD = 'DD',
+    EN = 'EN',
+    EW = 'EW',
+    EX = 'EX',
+    LC = 'LC',
+    NE = 'NE',
+    NT = 'NT',
+    VU = 'VU',
 }
 
 export enum HabitatType {
-  AGUA_DULCE = 'AGUA_DULCE',
-  ESTUARIO = 'ESTUARIO',
-  MARINO = 'MARINO',
-  SALOBRE = 'SALOBRE',
+    PELAGIC = 'PELAGIC',
+    BENTHIC = 'BENTHIC',
+    DEMERSAL = 'DEMERSAL',
+    REEF = 'REEF',
+    ESTUARY = 'ESTUARY',
 }
 
 export enum ReproductionMode {
-  ASEXUAL = 'ASEXUAL',
-  SEXUAL = 'SEXUAL',
-  HERMAFRODITA = 'HERMAFRODITA',
+    OVIPAROUS = 'OVIPAROUS',
+    VIVIPAROUS = 'VIVIPAROUS',
+    OVOVIVIPAROUS = 'OVOVIVIPAROUS',
+    ASEXUAL = 'ASEXUAL',
+    SEXUAL = 'SEXUAL',
+    HERMAFRODITA = 'HERMAFRODITA',
 }
 
 export enum EcologicalValue {
-  ALTO = 'ALTO',
-  MEDIO = 'MEDIO',
-  BAJO = 'BAJO',
+    VERY_HIGH = 'VERY_HIGH',
+    HIGH = 'HIGH',
+    MEDIUM = 'MEDIUM',
+    LOW = 'LOW',
 }
 
 export enum FishingClosureType {
-  MORATORIA = 'MORATORIA',
-  REGLAMENTADA = 'REGLAMENTADA',
-  TEMPORAL = 'TEMPORAL',
-  TOTAL = 'TOTAL',
+    TEMPORARY = 'TEMPORARY',
+    PERMANENT = 'PERMANENT',
+    REGLAMENTADA = 'REGLAMENTADA',
+    TOTAL = 'TOTAL',
 }
 
 export enum MediaType {
-  AUDIO = 'AUDIO',
-  IMAGE = 'IMAGE',
-  VIDEO = 'VIDEO',
+    AUDIO = 'AUDIO',
+    IMAGE = 'IMAGE',
+    VIDEO = 'VIDEO',
 }
 
 export interface Taxonomy {
-  kingdom: string;
-  phylum: string;
-  class?: string;
-  order?: string;
-  family?: string;
-  genus: string;
-  species: string;
+    kingdom: string;
+    phylum: string;
+    class?: string;
+    order?: string;
+    family?: string;
+    genus: string;
+    species: string;
 }
 
 export interface Biology {
-  commonNames?: string[];
-  description?: string;
-  feedingHabits?: string;
-  reproduction?: string;
-  reproductionMode?: ReproductionMode;
-  weightAverageKg?: number;
-  lengthAverageCm?: number;
+    diet?: string[];
+    reproductionMode?: ReproductionMode;
+    averageWeightKg?: number;
+    maximumWeightKg?: number;
+    averageLengthCm?: number;
+    maximumLengthCm?: number;
+    trophicLevel?: number;
+    migration?: boolean;
+    longevityYears?: number;
 }
 
 export interface Habitat {
-  distribution?: string;
-  depthRange?: [number, number];
-  temperatureRange?: [number, number];
-  environment?: string;
-  habitatType?: HabitatType;
+    type?: string;
+    minDepthM?: number;
+    maxDepthM?: number;
+    minTempC?: number;
+    maxTempC?: number;
+    salinityPpt?: number;
+    substrate?: string[];
 }
 
 export interface Conservation {
-  iucnStatus: IUCNStatus;
-  cites?: string;
-  localProtection?: string;
+    iucn: string;
+    iucnYear?: number;
+    closureType?: FishingClosureType;
+    closureMonths?: string[];
+    ecologicalValue?: EcologicalValue;
+    protected?: boolean;
+    legalNotes?: string;
 }
 
 export interface Fishery {
-  commercialValue?: EcologicalValue;
-  catchMethods?: string[];
-  seasonality?: string;
-  closureType?: FishingClosureType;
+    commercialValue?: string;
+    annualCatchTon?: number;
+    artisanal?: boolean;
+    industrial?: boolean;
+    aquariumTrade?: boolean;
+    fishingGears?: string[];
+    mainPorts?: string[];
 }
 
 export interface Media {
-  url: string;
-  title?: string;
-  type: MediaType;
+    url: string;
+    title?: string;
+    type: MediaType;
 }
 
 export interface Zone {
-  name: string;
-  coordinates?: number[][];
+    name: string;
+    coordinates?: number[][];
 }
 
 export interface Species {
-  _id: string;
-  commonName: string;
-  scientificName: string;
-  emoji?: string;
-  status: SpeciesStatus;
-  completeness: number;
-  publishedAt?: string;
-  taxonomy: Taxonomy;
-  biology: Biology;
-  habitat: Habitat;
-  conservation: Conservation;
-  fishery: Fishery;
-  media: Media[];
-  zones: Zone[];
-  alternativeCommonNames?: string[];
-  funFacts?: string[];
-  generalDescription?: string;
-  createdAt?: string;
-  updatedAt?: string;
+    _id: string;
+    commonName: string;
+    scientificName: string;
+    alternativeCommonNames?: string[];
+    emoji?: string;
+    status: SpeciesStatus;
+    completeness: number;
+    generalDescription?: string;
+    notes?: string;
+    funFacts?: string[];
+    bibliographicReferences?: string[];
+    publishedAt?: string;
+    taxonomy: Taxonomy;
+    biology: Biology;
+    habitat: Habitat;
+    conservation: Conservation;
+    fishery: Fishery;
+    media: Media[];
+    zones: Zone[];
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 export interface CreateSpeciesInput {
-  commonName: string;
-  scientificName: string;
-  emoji?: string;
-  status?: SpeciesStatus;
-  taxonomy: Partial<Taxonomy>;
-  biology: Partial<Biology>;
-  habitat: Partial<Habitat>;
-  conservation: Partial<Conservation>;
-  fishery: Partial<Fishery>;
+    commonName: string;
+    scientificName: string;
+    alternativeCommonNames?: string[];
+    emoji?: string;
+    generalDescription?: string;
+    notes?: string;
+    funFacts?: string[];
+    bibliographicReferences?: string[];
+    status?: SpeciesStatus;
+    completeness?: number;
+    taxonomy: Partial<Taxonomy>;
+    biology: Partial<Biology>;
+    habitat: Partial<Habitat>;
+    conservation: Partial<Conservation>;
+    fishery: Partial<Fishery>;
 }
 
-export interface UpdateSpeciesInput extends Partial<Omit<Species, '_id' | 'createdAt' | 'updatedAt'>> {}
+export interface UpdateSpeciesInput extends Partial<Omit<Species, '_id' | 'createdAt' | 'updatedAt'>> { }

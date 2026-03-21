@@ -22,27 +22,30 @@ export const GET_SPECIES_BY_ID = gql`
       _id
       commonName
       scientificName
+      alternativeCommonNames
       emoji
       status
       completeness
       publishedAt
-      alternativeCommonNames
-      funFacts
       generalDescription
+      notes
+      funFacts
+      bibliographicReferences
       taxonomy {
         kingdom phylum class order family genus species
       }
       biology {
-        commonNames description feedingHabits reproduction reproductionMode weightAverageKg lengthAverageCm
+        diet reproductionMode averageWeightKg maximumWeightKg averageLengthCm maximumLengthCm
+        trophicLevel migration longevityYears
       }
       habitat {
-        distribution depthRange temperatureRange environment habitatType
+        type minDepthM maxDepthM minTempC maxTempC salinityPpt substrate
       }
       conservation {
-        iucnStatus cites localProtection
+        iucn iucnYear closureType closureMonths ecologicalValue protected legalNotes
       }
       fishery {
-        commercialValue catchMethods seasonality closureType
+        commercialValue annualCatchTon artisanal industrial aquariumTrade fishingGears mainPorts
       }
       media {
         url title type
@@ -69,12 +72,9 @@ export const CREATE_SPECIES = gql`
 
 export const UPDATE_SPECIES = gql`
   mutation UpdateSpecies($id: ID!, $input: UpdateSpeciesInput!) {
-    updateSpecies(updateSpeciesInput: $input) {
+    updateSpecies(id: $id, updateSpeciesInput: $input) {
       _id
-      commonName
-      scientificName
       status
-      completeness
     }
   }
 `;
@@ -103,7 +103,8 @@ export const UPDATE_SPECIES_BIOLOGY = gql`
     updateSpeciesBiology(id: $id, input: $input) {
       _id
       biology {
-        commonNames description feedingHabits reproduction reproductionMode weightAverageKg lengthAverageCm
+        diet reproductionMode averageWeightKg maximumWeightKg averageLengthCm maximumLengthCm
+        trophicLevel migration longevityYears
       }
     }
   }
@@ -114,7 +115,29 @@ export const UPDATE_SPECIES_HABITAT = gql`
     updateSpeciesHabitat(id: $id, input: $input) {
       _id
       habitat {
-        distribution depthRange temperatureRange environment habitatType
+        type minDepthM maxDepthM minTempC maxTempC salinityPpt substrate
+      }
+    }
+  }
+`;
+
+export const UPDATE_SPECIES_CONSERVATION = gql`
+  mutation UpdateSpeciesConservation($id: ID!, $input: UpdateConservationInput!) {
+    updateSpeciesConservation(id: $id, input: $input) {
+      _id
+      conservation {
+        iucn iucnYear closureType closureMonths ecologicalValue protected legalNotes
+      }
+    }
+  }
+`;
+
+export const UPDATE_SPECIES_FISHERY = gql`
+  mutation UpdateSpeciesFishery($id: ID!, $input: UpdateFisheryInput!) {
+    updateSpeciesFishery(id: $id, input: $input) {
+      _id
+      fishery {
+        commercialValue annualCatchTon artisanal industrial aquariumTrade fishingGears mainPorts
       }
     }
   }
