@@ -1,9 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #0b3c5b;
-  --color-background-light: #f6f7f8;
-  --color-background-dark: #111b21;
+  --color-primary: var(--primary);
+  
+  /* Oceanic bespoke palette replacing standard slate */
+  --color-slate-50: #f4f8fb;
+  --color-slate-100: #e4f0f7;
+  --color-slate-200: #cadfed;
+  --color-slate-300: #a2c4dd;
+  --color-slate-400: #71a3c7;
+  --color-slate-500: #4982a8;
+  --color-slate-600: #366688;
+  --color-slate-700: #2c536f;
+  --color-slate-800: #24445c;
+  --color-slate-900: #1a3246;
+  --color-slate-950: #0f1c29;
+
+  --color-background-light: var(--color-slate-50);
+  --color-background-dark: var(--color-slate-950);
 
   --font-family-display: "Inter", sans-serif;
 
@@ -14,17 +28,19 @@
 
 :root {
   font-family: 'Inter', sans-serif;
-  --bg-color: #f6f7f8;
-  --text-color: #0f172a;
+  --bg-color: var(--color-background-light);
+  --text-color: var(--color-slate-900);
   --card-bg: #ffffff;
-  --card-border: rgba(11, 60, 91, 0.05);
+  --card-border: rgba(11, 60, 91, 0.08);
+  --primary: #0b3c5b; /* Navy blue */
 }
 
 .dark {
-  --bg-color: #111b21;
-  --text-color: #f1f5f9;
-  --card-bg: #1e293b;
-  --card-border: rgba(255, 255, 255, 0.1);
+  --bg-color: var(--color-background-dark);
+  --text-color: var(--color-slate-100);
+  --card-bg: var(--color-slate-900);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --primary: #3b82f6; /* Brighter blue for prominent contrast in dark mode */
 }
 
 body {
