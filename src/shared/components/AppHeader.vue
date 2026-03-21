@@ -31,7 +31,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 border-b border-primary/10 bg-white/80 backdrop-blur-md dark:bg-slate-900/80 transition-colors duration-300">
+  <header class="sticky top-0 z-50 border-b border-primary/10 bg-white/80 backdrop-blur-md dark:bg-slate-950/90 dark:border-slate-800 transition-colors duration-300">
     <!-- Main bar -->
     <div class="flex items-center justify-between px-4 sm:px-6 md:px-20 lg:px-40 py-3 md:py-4">
       <RouterLink to="/" class="flex items-center gap-3 md:gap-4 text-primary dark:text-slate-100">
@@ -117,7 +117,7 @@ onMounted(() => {
       leave-from-class="opacity-100 translate-y-0"
       leave-to-class="opacity-0 -translate-y-4"
     >
-      <nav v-if="isMenuOpen" class="md:hidden border-t border-primary/10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl px-4 pb-6 pt-2">
+      <nav v-if="isMenuOpen" class="md:hidden border-t border-primary/10 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl px-4 pb-6 pt-2">
         <div class="flex flex-col gap-1">
           <RouterLink
             to="/"
