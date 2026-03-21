@@ -46,63 +46,64 @@ const getImageUrl = (item: Especie) => {
     <!-- Sidebar -->
     <aside 
       :class="[
-        'fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-900 border-r border-primary/10 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:shrink-0',
+        'fixed inset-y-0 left-0 z-50 w-64 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:shrink-0',
         isSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
       ]"
+      style="background: var(--sidebar-gradient)"
     >
       <div class="p-5 lg:p-6 flex items-center justify-between gap-3">
         <div class="flex items-center gap-3">
-          <div class="bg-primary text-white p-2 rounded-lg">
+          <div class="bg-white/20 backdrop-blur-sm text-white p-2 rounded-xl shadow-lg shadow-black/10">
             <span class="material-symbols-outlined">waves</span>
           </div>
           <div>
-            <h1 class="font-bold text-lg leading-tight text-primary dark:text-blue-400">BioMarina</h1>
-            <p class="text-[10px] text-slate-500 uppercase tracking-widest font-black flex items-center gap-1">
+            <h1 class="font-bold text-lg leading-tight text-white">BioMarina</h1>
+            <p class="text-[10px] text-cyan-200/70 uppercase tracking-widest font-black flex items-center gap-1">
               Admin Panel
             </p>
           </div>
         </div>
         <button 
           @click="isSidebarOpen = false" 
-          class="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          class="lg:hidden p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors"
         >
           <span class="material-symbols-outlined text-[20px]">close</span>
         </button>
       </div>
       
       <nav class="flex-1 px-4 space-y-1 overflow-y-auto">
-        <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/5 hover:text-primary dark:hover:text-blue-400 rounded-lg transition-colors cursor-pointer" @click="isSidebarOpen = false">
+        <a class="flex items-center gap-3 px-3 py-2.5 text-white/70 hover:bg-white/10 hover:text-white rounded-xl transition-all cursor-pointer" @click="isSidebarOpen = false">
           <span class="material-symbols-outlined">dashboard</span>
           <span class="font-bold text-sm">Dashboard</span>
         </a>
-        <a class="flex items-center gap-3 px-3 py-2 bg-primary text-white rounded-lg shadow-md cursor-pointer" @click="isSidebarOpen = false">
-          <span class="material-symbols-outlined text-fill-1">inventory_2</span>
+        <a class="flex items-center gap-3 px-3 py-2.5 bg-white/20 backdrop-blur-sm text-white rounded-xl shadow-lg shadow-black/10 cursor-pointer border border-white/10" @click="isSidebarOpen = false">
+          <span class="material-symbols-outlined text-fill-1 text-cyan-300">inventory_2</span>
           <span class="font-bold text-sm">Inventario de Especies</span>
         </a>
-        <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/5 hover:text-primary rounded-lg transition-colors cursor-pointer" @click="isSidebarOpen = false">
+        <a class="flex items-center gap-3 px-3 py-2.5 text-white/70 hover:bg-white/10 hover:text-white rounded-xl transition-all cursor-pointer" @click="isSidebarOpen = false">
           <span class="material-symbols-outlined">description</span>
           <span class="font-bold text-sm">Bitácoras</span>
         </a>
-        <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/5 hover:text-primary rounded-lg transition-colors cursor-pointer" @click="isSidebarOpen = false">
+        <a class="flex items-center gap-3 px-3 py-2.5 text-white/70 hover:bg-white/10 hover:text-white rounded-xl transition-all cursor-pointer" @click="isSidebarOpen = false">
           <span class="material-symbols-outlined">groups</span>
           <span class="font-bold text-sm">Equipo de Investigación</span>
         </a>
-        <a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/5 hover:text-primary rounded-lg transition-colors cursor-pointer" @click="isSidebarOpen = false">
+        <a class="flex items-center gap-3 px-3 py-2.5 text-white/70 hover:bg-white/10 hover:text-white rounded-xl transition-all cursor-pointer" @click="isSidebarOpen = false">
           <span class="material-symbols-outlined">bar_chart</span>
           <span class="font-bold text-sm">Reportes</span>
         </a>
       </nav>
       
-      <div class="p-4 mt-auto border-t border-primary/10">
-        <div class="flex items-center gap-3 p-2 bg-primary/5 dark:bg-slate-800/50 rounded-xl transition-colors hover:bg-primary/10 cursor-pointer group">
-          <div class="size-10 rounded-full bg-primary/20 flex items-center justify-center shrink-0 border border-primary/10">
-            <span class="material-symbols-outlined text-primary dark:text-blue-400">person</span>
+      <div class="p-4 mt-auto border-t border-white/10">
+        <div class="flex items-center gap-3 p-2 bg-white/10 backdrop-blur-sm rounded-xl transition-colors hover:bg-white/15 cursor-pointer group">
+          <div class="size-10 rounded-full bg-cyan-400/20 flex items-center justify-center shrink-0 border border-cyan-300/20">
+            <span class="material-symbols-outlined text-cyan-300">person</span>
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-sm font-black text-slate-900 dark:text-slate-100 truncate">{{ currentUser?.nombre || 'Visitante' }}</p>
-            <p class="text-[10px] text-slate-500 uppercase font-black truncate">{{ currentUser?.rol || 'Consultor' }}</p>
+            <p class="text-sm font-black text-white truncate">{{ currentUser?.nombre || 'Visitante' }}</p>
+            <p class="text-[10px] text-cyan-200/60 uppercase font-black truncate">{{ currentUser?.rol || 'Consultor' }}</p>
           </div>
-          <button @click="logout" title="Cerrar sesión" class="material-symbols-outlined text-slate-400 text-lg hover:text-red-500 transition-colors">logout</button>
+          <button @click="logout" title="Cerrar sesión" class="material-symbols-outlined text-white/40 text-lg hover:text-red-400 transition-colors">logout</button>
         </div>
       </div>
     </aside>
@@ -149,10 +150,10 @@ const getImageUrl = (item: Especie) => {
         <!-- Hero Header -->
         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div class="space-y-1">
-            <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-primary dark:text-blue-400">Gestión de Especies</h2>
+            <h2 class="text-2xl sm:text-3xl font-black tracking-tight gradient-text">Gestión de Especies</h2>
             <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">Monitoreo de {{ adminStore.stats.totalEspecies }} especies registradas.</p>
           </div>
-          <button class="flex justify-center items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg font-black shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-95">
+          <button class="flex justify-center items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white px-5 py-2.5 rounded-xl font-black shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-[1.02] transition-all active:scale-95">
             <span class="material-symbols-outlined text-[20px]">add_circle</span>
             <span>Nueva Especie</span>
           </button>
@@ -160,28 +161,28 @@ const getImageUrl = (item: Especie) => {
 
         <!-- Stats Overview -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border border-primary/10 shadow-sm flex flex-col gap-1 sm:gap-2 transition-all hover:scale-[1.02]">
+          <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border-l-4 border-l-cyan-500 border border-slate-200/50 dark:border-slate-800 shadow-sm hover:shadow-md flex flex-col gap-1 sm:gap-2 transition-all hover:scale-[1.02] hover:-translate-y-0.5">
             <span class="text-[9px] sm:text-[10px] font-black text-slate-500 uppercase tracking-widest truncate">Total Biodiversidad</span>
-            <div class="text-2xl sm:text-4xl font-black text-primary dark:text-blue-400">{{ adminStore.stats.totalEspecies }}</div>
+            <div class="text-2xl sm:text-4xl font-black text-cyan-600 dark:text-cyan-400">{{ adminStore.stats.totalEspecies }}</div>
             <p class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase truncate">Especies catalogadas</p>
           </div>
           
-          <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border border-primary/10 shadow-sm flex flex-col gap-1 sm:gap-2 transition-all hover:scale-[1.02]">
+          <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border-l-4 border-l-rose-500 border border-slate-200/50 dark:border-slate-800 shadow-sm hover:shadow-md flex flex-col gap-1 sm:gap-2 transition-all hover:scale-[1.02] hover:-translate-y-0.5">
             <span class="text-[9px] sm:text-[10px] font-black text-slate-500 uppercase tracking-widest truncate">En Peligro (EN/CR)</span>
-            <div class="text-2xl sm:text-4xl font-black text-red-600 dark:text-red-400">{{ adminStore.stats.enPeligro }}</div>
-            <p class="text-[9px] sm:text-[10px] text-red-400 font-bold uppercase truncate">Requieren atención</p>
+            <div class="text-2xl sm:text-4xl font-black text-rose-600 dark:text-rose-400">{{ adminStore.stats.enPeligro }}</div>
+            <p class="text-[9px] sm:text-[10px] text-rose-400 font-bold uppercase truncate">Requieren atención</p>
           </div>
           
-          <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border border-primary/10 shadow-sm flex flex-col gap-1 sm:gap-2 transition-all hover:scale-[1.02]">
+          <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border-l-4 border-l-blue-500 border border-slate-200/50 dark:border-slate-800 shadow-sm hover:shadow-md flex flex-col gap-1 sm:gap-2 transition-all hover:scale-[1.02] hover:-translate-y-0.5">
             <span class="text-[9px] sm:text-[10px] font-black text-slate-500 uppercase tracking-widest truncate">Salud de Datos</span>
-            <div class="text-2xl sm:text-4xl font-black text-primary dark:text-blue-400">{{ adminStore.stats.completitudMedia }}%</div>
+            <div class="text-2xl sm:text-4xl font-black text-blue-600 dark:text-blue-400">{{ adminStore.stats.completitudMedia }}%</div>
             <p class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase truncate">Completitud promedio</p>
           </div>
 
-          <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border border-primary/10 shadow-sm flex flex-col gap-1 sm:gap-2 transition-all hover:scale-[1.02]">
+          <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border-l-4 border-l-emerald-500 border border-slate-200/50 dark:border-slate-800 shadow-sm hover:shadow-md flex flex-col gap-1 sm:gap-2 transition-all hover:scale-[1.02] hover:-translate-y-0.5">
             <span class="text-[9px] sm:text-[10px] font-black text-slate-500 uppercase tracking-widest truncate">Protegidas</span>
-            <div class="text-2xl sm:text-4xl font-black text-green-600 dark:text-green-400">{{ adminStore.stats.protegidas }}</div>
-            <p class="text-[9px] sm:text-[10px] text-green-400 font-bold uppercase truncate">Bajo marco legal</p>
+            <div class="text-2xl sm:text-4xl font-black text-emerald-600 dark:text-emerald-400">{{ adminStore.stats.protegidas }}</div>
+            <p class="text-[9px] sm:text-[10px] text-emerald-400 font-bold uppercase truncate">Bajo marco legal</p>
           </div>
         </div>
 

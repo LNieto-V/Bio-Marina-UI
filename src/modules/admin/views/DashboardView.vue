@@ -44,7 +44,7 @@ const completitudColor = computed(() =>
     <!-- Page Header -->
     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
       <div>
-        <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">Panel de Control</h2>
+        <h2 class="text-xl sm:text-2xl font-black gradient-text">Panel de Control</h2>
         <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
           Resumen del catálogo marino — {{ new Date().toLocaleDateString('es-CO', { dateStyle: 'long' }) }}
         </p>
@@ -52,7 +52,7 @@ const completitudColor = computed(() =>
       <RouterLink
         v-if="can('species.create')"
         to="/admin/species/create"
-        class="flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40 transition-all active:scale-95"
+        class="flex justify-center items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all active:scale-95"
       >
         <span class="material-symbols-outlined text-[20px]">add_circle</span>
         Nueva Especie

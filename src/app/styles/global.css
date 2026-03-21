@@ -3,21 +3,30 @@
 @theme {
   --color-primary: var(--primary);
   
-  /* Oceanic bespoke palette replacing standard slate */
-  --color-slate-50: #f4f8fb;
-  --color-slate-100: #e4f0f7;
-  --color-slate-200: #cadfed;
-  --color-slate-300: #a2c4dd;
-  --color-slate-400: #71a3c7;
-  --color-slate-500: #4982a8;
-  --color-slate-600: #366688;
-  --color-slate-700: #2c536f;
-  --color-slate-800: #24445c;
-  --color-slate-900: #1a3246;
-  --color-slate-950: #0f1c29;
+  /* Vibrant oceanic palette — alive & saturated */
+  --color-slate-50: #f0f7ff;
+  --color-slate-100: #dfeefb;
+  --color-slate-200: #bddcf7;
+  --color-slate-300: #8ac3f0;
+  --color-slate-400: #4da3e5;
+  --color-slate-500: #2684d6;
+  --color-slate-600: #1766b8;
+  --color-slate-700: #145295;
+  --color-slate-800: #13447a;
+  --color-slate-900: #153966;
+  --color-slate-950: #0d2440;
 
   --color-background-light: var(--color-slate-50);
   --color-background-dark: var(--color-slate-950);
+
+  /* Accent colors for the ocean theme */
+  --color-ocean: #0891b2;
+  --color-ocean-light: #22d3ee;
+  --color-ocean-dark: #0e7490;
+  --color-coral: #f97316;
+  --color-coral-light: #fb923c;
+  --color-sea-green: #10b981;
+  --color-sea-green-light: #34d399;
 
   --font-family-display: "Inter", sans-serif;
 
@@ -31,16 +40,20 @@
   --bg-color: var(--color-background-light);
   --text-color: var(--color-slate-900);
   --card-bg: #ffffff;
-  --card-border: rgba(11, 60, 91, 0.08);
-  --primary: #0b3c5b; /* Navy blue */
+  --card-border: rgba(8, 145, 178, 0.1);
+  --primary: #0369a1; /* Vivid ocean blue */
+  --accent-gradient: linear-gradient(135deg, #0891b2, #0369a1, #4f46e5);
+  --sidebar-gradient: linear-gradient(180deg, #0c4a6e 0%, #0e7490 50%, #155e75 100%);
 }
 
 .dark {
   --bg-color: var(--color-background-dark);
   --text-color: var(--color-slate-100);
   --card-bg: var(--color-slate-900);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --primary: #3b82f6; /* Brighter blue for prominent contrast in dark mode */
+  --card-border: rgba(34, 211, 238, 0.1);
+  --primary: #22d3ee; /* Cyan accent for dark mode pop */
+  --accent-gradient: linear-gradient(135deg, #22d3ee, #3b82f6, #8b5cf6);
+  --sidebar-gradient: linear-gradient(180deg, #0d2440 0%, #153966 50%, #1e3a5f 100%);
 }
 
 body {
@@ -87,6 +100,32 @@ body {
 /* Glassmorphism helpers */
 .glass {
   @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-white/20 dark:border-white/10;
+}
+
+/* Gradient text helper */
+.gradient-text {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animated gradient border */
+.gradient-border {
+  position: relative;
+  border: none;
+}
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--accent-gradient);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 /* Force black text on all form inputs regardless of theme */

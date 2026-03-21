@@ -35,7 +35,7 @@ onMounted(() => {
     <!-- Main bar -->
     <div class="flex items-center justify-between px-4 sm:px-6 md:px-20 lg:px-40 py-3 md:py-4">
       <RouterLink to="/" class="flex items-center gap-3 md:gap-4 text-primary dark:text-slate-100">
-        <div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+        <div class="size-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center text-white shadow-md shadow-cyan-500/20">
           <span class="material-symbols-outlined">water_drop</span>
         </div>
         <h2 class="text-lg md:text-xl font-bold leading-tight tracking-tight">BioMarina</h2>
@@ -73,7 +73,7 @@ onMounted(() => {
         <RouterLink
           v-if="isAuthenticated"
           to="/admin"
-          class="hidden sm:flex items-center gap-2 px-4 py-2 mr-2 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-bold rounded-xl transition-colors shadow-sm shadow-blue-500/20"
+          class="hidden sm:flex items-center gap-2 px-4 py-2 mr-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-[13px] font-bold rounded-xl transition-all shadow-md shadow-cyan-500/20"
         >
           <span class="material-symbols-outlined text-[18px]">admin_panel_settings</span>
           Panel Admin
